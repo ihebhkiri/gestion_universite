@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+
+  backend:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: registry.gitlab.com/ihebhk10/university-management:latest
+    container_name: lms-backend
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./backend-certs/truststore.jks:/app/truststore.jks
+  
+    
+    networks:
+      - lms-network
+
+  frontend:
+    image:
+    container_name: lms-frontend
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend
+    networks:
+      - lms-network
+  mysql:
+    image: mysql:8.0
+    container_name: lms-mysql
+    restart: always
+    env_file :
+      - .env
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lms-network
+
+
+networks:
+  lms-network:
+    driver: bridge
+volumes :
+  mysql_data :
+
