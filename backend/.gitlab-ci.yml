@@ -1,6 +1,6 @@
 workflow:
   rules:
-    - if: $CI_COMMIT_BRANCH == "auth"
+    - if: $CI_COMMIT_BRANCH == "main"
     - when: never
 stages:
   - test
@@ -10,12 +10,13 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  IMAGE_BACK: "$CI_REGISTRY_IMAGE/backend"
 
 
 cache:
   key :
     files  :
-      - pom.xml
+      - backend/pom.xml
   paths:
     - .m2/repository
 
@@ -26,7 +27,7 @@ test:
   image: maven:3.9.6-eclipse-temurin-17
   stage: test
   script:
-    - mvn clean verify -Dspring.profiles.active=test
+    - mvn -f backend/pom.xml clean verify -Dspring.profiles.active=test
 
 
 # -------------------------
@@ -36,10 +37,10 @@ package:
   image: maven:3.9.6-eclipse-temurin-17
   stage: package
   script:
-    - mvn clean package -DskipTests
+    - mvn -f backend/pom.xml clean  package -DskipTests
   artifacts:
     paths:
-      - target/*.jar
+      - backend/target/*.jar
 
 # -------------------------
 # DOCKER BUILD
@@ -52,16 +53,17 @@ docker:
       command: ["--tls=false"]
 
   needs:
-    - package
+     - job: package
+       artifacts : true 
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
-    - docker pull "$CI_REGISTRY_IMAGE:latest" || true
-    - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"  .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
-    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
-    - docker push "$CI_REGISTRY_IMAGE:latest"
+    - docker pull "$IMAGE_BACK:latest" || true
+    - docker build --cache-from "$IMAGE_BACK:latest" -t "$IMAGE_BACK:$CI_COMMIT_SHORT_SHA"  backend/
+    - docker push "$IMAGE_BACK:$CI_COMMIT_SHORT_SHA"
+    - docker tag "$IMAGE_BACK:$CI_COMMIT_SHORT_SHA" "$IMAGE_BACK:latest"
+    - docker push "$IMAGE_BACK:latest"
 
 # -------------------------
 # DEPLOY DEV (auto)
