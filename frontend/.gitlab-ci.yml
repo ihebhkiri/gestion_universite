@@ -5,12 +5,13 @@ stages:
 cache:
   key:
     files:
-      - package-lock.json
+      - frontend/package-lock.json
   paths:
-    - .npm/
+    - frontend/.npm/
 variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
+  IMAGE_FRONT: "$CI_REGISTRY_IMAGE/frontend"
 # -----------------------------
 # BUILD ANGULAR 
 # -----------------------------
@@ -18,12 +19,13 @@ build_app:
   stage: build
   image: node:20-alpine
   script:
+    - cd frontend 
     - npm ci --cache .npm --prefer-offline
     - npm run build -- --configuration production
   artifacts:
     expire_in: 7d
     paths:
-      - dist/
+      - frontend/dist/
   rules:
   - if: '$CI_COMMIT_BRANCH == "main"'
 
@@ -38,16 +40,17 @@ build_image:
       command: ["--tls=false"]
   needs:
     - build_app
+      artifacts :true
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
   script:
-    - docker pull "$CI_REGISTRY_IMAGE:latest" || true
-    - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+    - docker pull "$IMAGE_FRONT:latest" || true
+    - docker build --cache-from "$IMAGE_FRONT:latest" -t "$IMAGE_FRONT:$CI_COMMIT_SHORT_SHA" frontend/
+    - docker push "$IMAGE_FRONT:$CI_COMMIT_SHORT_SHA"
 
-    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
+    - docker tag "$IMAGE_FRONT:$CI_COMMIT_SHORT_SHA" "$IMAGE_FRONT:latest"
 
-    - docker push "$CI_REGISTRY_IMAGE:latest"
+    - docker push "$IMAGE_FRONT:latest"
 # -----------------------------
 # DEPLOY STAGING
 # -----------------------------
