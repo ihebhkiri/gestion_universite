@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: GestionUniversite
+  profiles:
+     active: dev
+
+
+reset :
+  token :
+    expiration : 900
+refresh :
+  token :
+    expiration : 604800
+access :
+  token :
+    expiration : 900

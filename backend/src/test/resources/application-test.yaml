@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+  flyway:
+    enabled: false
+  application:
+    jwt:
+      secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 3600000
+  mail:
+    port: 1025
+    host: localhost
+    username: iheb_hkiri
+    password: test
+
+management:
+  health:
+    mail:
+      enabled: false #pour eviter le probleme de javailmail bean me famech
+reset:
+  token:
+    expiration: 900
+
+refresh:
+  token:
+    expiration: 604800
+
+access:
+  token:
+    expiration: 900

@@ -1,0 +1,63 @@
+-- -- Roles
+-- INSERT INTO roles (id, name) VALUES (1, 'ROLE_ADMIN');
+-- INSERT INTO roles (id, name) VALUES (2, 'ROLE_TEACHER');
+-- INSERT INTO roles (id, name) VALUES (3, 'ROLE_STUDENT');
+--
+-- -- Users (password is 'password' encoded or plain as per current dev config)
+-- INSERT INTO users (id, email, password) VALUES (1, 'admin@university.com', '$2a$12$XRUYfqZ8K8jn7W4fe2ro9OxVgEHSPxNjkP/IKAxIDA6kOvRJx2vFa');
+-- INSERT INTO users (id, email, password) VALUES (2, 'teacher.mohamed@university.com', '$2a$12$cRRLmL2VFwZh2uMQeVqYweJLYlydrKeDql7mSHV0s/mSO7XMcunTG');
+-- INSERT INTO users (id, email, password) VALUES (3, 'teacher.fatma@university.com', '$2a$12$SNyFxFu7xFJuqb4YmcqmROZlHdW3CmvwjT/AcbqpIcp9/.P2MSyNy');
+-- INSERT INTO users (id, email, password) VALUES (4, 'student.iheb@university.com', '$2a$12$V92AYnrCASgHJSzkCIJGPOdfBSCY/Zf.wdGYsVZmNYih5jkeDPPS2');
+-- INSERT INTO users (id, email, password) VALUES (5, 'student.sarah@university.com', '$2a$12$sixfwKy3woe5l8tW26cXYOdrq9zOL.jA4wS2Ot6U.pU1UuJibKv3.');
+--
+-- -- User Roles
+-- INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
+-- INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);
+-- INSERT INTO user_roles (user_id, role_id) VALUES (3, 2);
+-- INSERT INTO user_roles (user_id, role_id) VALUES (4, 3);
+-- INSERT INTO user_roles (user_id, role_id) VALUES (5, 3);
+--
+-- -- Departments
+-- INSERT INTO departments (id, department_name) VALUES (1, 'Informatique');
+-- INSERT INTO departments (id, department_name) VALUES (2, 'Mathématiques');
+-- INSERT INTO departments (id, department_name) VALUES (3, 'Génie Civil');
+--
+-- -- Specialities
+-- INSERT INTO specialities (id, speciality_name, department_id) VALUES (1, 'GLSI', 1);
+-- INSERT INTO specialities (id, speciality_name, department_id) VALUES (2, 'SSIR', 1);
+-- INSERT INTO specialities (id, speciality_name, department_id) VALUES (3, 'SDIA', 1);
+-- INSERT INTO specialities (id, speciality_name, department_id) VALUES (4, 'Statistiques', 2);
+--
+-- -- Academic Levels
+-- INSERT INTO academic_level (id, name, academic_year, speciality_id) VALUES (1, 'Licence 1', '2025-2026', 1);
+-- INSERT INTO academic_level (id, name, academic_year, speciality_id) VALUES (2, 'Licence 2', '2025-2026', 1);
+-- INSERT INTO academic_level (id, name, academic_year, speciality_id) VALUES (3, 'Licence 3', '2025-2026', 1);
+-- INSERT INTO academic_level (id, name, academic_year, speciality_id) VALUES (4, 'Master 1', '2025-2026', 2);
+--
+-- -- Groups
+-- INSERT INTO groups (id, group_name, academic_level_id) VALUES (1, 'Groupe A', 1);
+-- INSERT INTO groups (id, group_name, academic_level_id) VALUES (2, 'Groupe B', 1);
+-- INSERT INTO groups (id, group_name, academic_level_id) VALUES (3, 'Groupe G1', 4);
+--
+-- -- Subjects
+-- INSERT INTO subjects (id, subject_name, coff) VALUES (1, 'Développement Java Spring Boot', 4.0);
+-- INSERT INTO subjects (id, subject_name, coff) VALUES (2, 'Bases de Données Avancées', 3.0);
+-- INSERT INTO subjects (id, subject_name, coff) VALUES (3, 'Sécurité Réseau', 3.0);
+-- INSERT INTO subjects (id, subject_name, coff) VALUES (4, 'Analyse Mathématique', 2.0);
+--
+-- -- Students
+-- INSERT INTO students (id, matricule, first_name, last_name, gender, cin, phone, user_id, group_id, enrollment_date, created_at)
+-- VALUES (1, 'ST001', 'Iheb', 'Kiri', 'MALE', '09876543', '22334455', 4, 1, '2025-09-01', CURRENT_TIMESTAMP);
+-- INSERT INTO students (id, matricule, first_name, last_name, gender, cin, phone, user_id, group_id, enrollment_date, created_at)
+-- VALUES (2, 'ST002', 'Sarah', 'Ben Ali', 'FEMALE', '01234567', '55667788', 5, 3, '2025-09-01', CURRENT_TIMESTAMP);
+--
+-- -- Teachers
+-- INSERT INTO teachers (id, matricule, first_name, last_name, cin, phone, grade, hire_date, id_department, speciality_id, user_id, created_at)
+-- VALUES (1, 'TCH001', 'Mohamed', 'Trabelsi', '11223344', '99887766', 'Professeur', '2010-01-15', 1, 1, 2, CURRENT_TIMESTAMP);
+-- INSERT INTO teachers (id, matricule, first_name, last_name, cin, phone, grade, hire_date, id_department, speciality_id, user_id, created_at)
+-- VALUES (2, 'TCH002', 'Fatma', 'Ghorbel', '44332211', '88776655', 'Maître Assistant', '2018-05-20', 1, 2, 3, CURRENT_TIMESTAMP);
+--
+-- -- Teaching Assignments
+-- INSERT INTO teaching_assignment (id, group_id, subject_id, teacher_id, period) VALUES (1, 1, 1, 1, 'S1');
+-- INSERT INTO teaching_assignment (id, group_id, subject_id, teacher_id, period) VALUES (2, 3, 3, 2, 'S1');
+-- INSERT INTO teaching_assignment (id, group_id, subject_id, teacher_id, period) VALUES (3, 2, 2, 1, 'S2');

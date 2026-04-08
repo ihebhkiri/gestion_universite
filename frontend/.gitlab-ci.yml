@@ -1,0 +1,57 @@
+stages:
+  - build
+  - docker
+  - deploy
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - .npm/
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+# -----------------------------
+# BUILD ANGULAR 
+# -----------------------------
+build_app:
+  stage: build
+  image: node:20-alpine
+  script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run build -- --configuration production
+  artifacts:
+    expire_in: 7d
+    paths:
+      - dist/
+  rules:
+  - if: '$CI_COMMIT_BRANCH == "main"'
+
+# -----------------------------
+# DOCKER BUILD 
+# -----------------------------
+build_image:
+  stage: docker
+  image: docker:27
+  services:
+    - name: docker:27-dind
+      command: ["--tls=false"]
+  needs:
+    - build_app
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+  script:
+    - docker pull "$CI_REGISTRY_IMAGE:latest" || true
+    - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
+
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+# -----------------------------
+# DEPLOY STAGING
+# -----------------------------
+deploy :
+  stage : deploy
+  script:
+    - echo  " deploying ... "
