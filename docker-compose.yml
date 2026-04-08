@@ -41,11 +41,8 @@ services:
     image: mysql:8.0
     container_name: lms-mysql
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: Mysql123@@
-      MYSQL_DATABASE: lmsdb
-      MYSQL_USER: lms_user
-      MYSQL_PASSWORD: lms_password
+    env_file:
+      - .env 
     ports:
       - "3308:3306"  
     volumes:
