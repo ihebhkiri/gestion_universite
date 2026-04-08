@@ -9,8 +9,6 @@ cache:
   paths:
     - frontend/.npm/
 variables:
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_DRIVER: overlay2
   IMAGE_FRONT: "$CI_REGISTRY_IMAGE/frontend"
 # -----------------------------
 # BUILD ANGULAR 
