@@ -37,8 +37,8 @@ build_image:
     - name: docker:27-dind
       command: ["--tls=false"]
   needs:
-    - build_app
-      artifacts :true
+    - job: build_app
+      artifacts : true
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
   script:
