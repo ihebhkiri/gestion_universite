@@ -21,7 +21,7 @@ services:
       - lms-network
 
   frontend:
-    image:
+    image: registry.gitlab.com/ihebhk10/university-management:latest
     container_name: lms-frontend
     restart: always
     ports:
