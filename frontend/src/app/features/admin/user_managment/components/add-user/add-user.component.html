@@ -1,0 +1,68 @@
+
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000e24]/60 backdrop-blur-sm">
+  <div class="w-full max-w-2xl bg-surface-container-lowest rounded-xl p-8 shadow-[0px_24px_48px_rgba(2,36,72,0.1)] relative">
+
+    <!-- Close button -->
+    <button (click)="onCancel()" class="absolute top-6 right-6 text-slate-400 hover:text-primary transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-bold text-primary tracking-tight mb-2">Create New User</h1>
+      <p class="text-secondary font-body">Register a new member to the Academix database.</p>
+    </div>
+
+    <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()" class="space-y-8">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <!-- Email Address -->
+        <div class="flex flex-col space-y-2">
+          <label class="text-sm font-semibold text-primary font-body">Email Address</label>
+          <input formControlName="email" class="bg-surface-container-low border-0 border-b border-outline/20 focus:ring-0 focus:border-primary-container focus:bg-surface-container-lowest transition-all p-3 text-sm placeholder:text-gray-400" placeholder="*****@academix.de" type="email"/>
+          @if (addUserForm.get('email')?.touched && addUserForm.get('email')?.invalid) {
+            <div class="text-red-500 text-xs">
+              A valid email is required.
+            </div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="flex flex-col space-y-2 relative">
+          <label class="text-sm font-semibold text-primary font-body">Password</label>
+          <div class="relative">
+             <input formControlName="password" class="w-full bg-surface-container-low border-0 border-b border-outline/20 focus:ring-0 focus:border-primary-container focus:bg-surface-container-lowest transition-all p-3 pr-10 text-sm placeholder:text-gray-400" [type]="showPassword ? 'text':'password' " placeholder="••••••••••••"/>
+             <span class="material-symbols-outlined absolute right-3 top-3 text-slate-400 cursor-pointer hover:text-primary transition-colors" (click)="togglePassword()">{{showPassword ? 'visibility' : 'visibility_off'}}</span>
+          </div>
+          @if (addUserForm.get('password')?.touched && addUserForm.get('password')?.invalid) {
+            <div class="text-red-500 text-xs">
+              Password must be at least 6 characters.
+            </div>
+          }
+        </div>
+
+        <!-- Role Selection -->
+        <div class="flex flex-col space-y-2 md:col-span-2">
+          <label class="text-sm font-semibold text-primary font-body mb-2">Role Selection</label>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 p-3 bg-surface-container-low rounded-lg border-0 border-b border-outline/20">
+            @for (role of rolesList; track role.id) {
+              <label class="flex items-center space-x-3 cursor-pointer group">
+                <input type="checkbox" [value]="formatRolesList(role)" (change)="onRoleChange($event)" class="w-4 h-4 rounded border-outline-variant text-primary-container focus:ring-primary-container transition-colors"/>
+                <span class="text-sm text-on-surface-variant group-hover:text-primary transition-colors">{{formatRolesList(role)}}</span>
+              </label>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col md:flex-row items-center justify-end space-y-4 md:space-y-0 md:space-x-4 pt-6 border-t border-slate-100">
+        <button (click)="onCancel()" class="w-full md:w-auto px-8 py-3 text-sm font-bold text-slate-500 hover:text-primary transition-colors font-body" type="button">
+          Cancel
+        </button>
+        <button [disabled]="addUserForm.invalid" class="w-full md:w-auto px-10 py-3 bg-primary-container bg-gradient-to-br from-[#000e24] to-[#022448] text-white rounded-lg font-bold text-sm shadow-lg hover:shadow-primary-container/20 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
+          Save User
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

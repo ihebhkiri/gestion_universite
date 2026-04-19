@@ -1,0 +1,270 @@
+<div class="bg-surface-container-lowest rounded-xl curator-shadow overflow-hidden">
+  <!-- Filter Row -->
+  <div class="px-8 py-5 flex items-center justify-between bg-surface-container-low/30">
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold text-slate-400 uppercase">Role:</span>
+        <select class="text-xs font-semibold bg-transparent border-none focus:ring-0 p-0 text-primary cursor-pointer"
+                (change)="onSelectRole($event)">
+          <option value="">All Roles</option>
+
+          @for (role of roleList; track role.id) {
+            <option>{{ formatRolesList(role) }}</option>
+          }
+
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold text-slate-400 uppercase">Status:</span>
+        <select class="text-xs font-semibold bg-transparent border-none focus:ring-0 p-0 text-primary cursor-pointer"
+                (change)="onSelectStatus($event)">
+          <option value="">All</option>
+          <option value="true">Enabled</option>
+          <option value="false">Disabled</option>
+        </select>
+      </div>
+      <div class="flex items-center flex-1 max-w-xl">
+        @if (selectedUserIds.size > 0) {
+          <div
+            class="flex items-center gap-4 bg-primary-container/10 px-4 py-1.5 rounded-lg border border-primary-container/20 w-full animate-in fade-in slide-in-from-top-1">
+            <span class="text-xs font-bold text-primary-container">{{ selectedUserIds.size }} selected</span>
+            <div class="h-4 w-px bg-primary-container/20"></div>
+            <button
+              class="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors"
+              (click)="triggerBulkStatus(true)">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span> Enable
+            </button>
+            <button
+              class="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-700 transition-colors"
+              (click)="triggerBulkStatus(false)">
+              <span class="material-symbols-outlined text-[16px]">cancel</span> Disable
+            </button>
+            <button
+              class="flex items-center gap-1 text-xs font-bold text-error hover:text-error/80 transition-colors ml-auto"
+              (click)="triggerBulkDelete()">
+              <span class="material-symbols-outlined text-[16px]">delete</span> Delete Selected
+            </button>
+          </div>
+        } @else {
+          <div class="relative w-full group animate-in fade-in">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input
+              class="w-full pl-10 pr-4 py-2 bg-white  border-none rounded-lg focus:ring-2 focus:ring-primary-container/20 text-sm transition-all placeholder:text-gray-400"
+              placeholder="Search by email..." type="text" (input)="onSearch($event)"/>
+          </div>
+        }
+      </div>
+    </div>
+    @if (userss.totalElements !== 0) {
+      <div class="text-xs text-slate-400 italic">Showing {{ getStart() }}-{{ getEnd() }} of {{ userss.totalElements }}
+        users
+      </div>
+    } @else {
+      <div class="text-xs text-slate-400 italic">Showing {{ 0 }}-{{ 0 }} of {{ 0 }} users</div>
+
+    }
+  </div>
+  <!-- Table Content -->
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse text-left">
+      <thead>
+      <tr class="bg-surface-container-low text-on-surface-variant text-[11px] uppercase tracking-widest font-bold">
+        <th class="px-6 py-4 w-12 text-center">
+          <input type="checkbox"
+                 class="w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant/50 cursor-pointer"
+                 [checked]="isAllSelected()" (change)="toggleAll($event)">
+        </th>
+        <th class="px-2 py-4">User Email</th>
+        <th class="px-6 py-4">Role</th>
+        <th class="px-6 py-4">Created</th>
+        <th class="px-6 py-4">Updated</th>
+        <th class="px-6 py-4 text-center">Status</th>
+        <th class="px-8 py-4 text-right">Actions</th>
+      </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+
+
+        @for (user of userss.content; track user.id) {
+          <!-- Row 1 -->
+          <tr class="hover:bg-surface-container-low/20 transition-colors"
+              [ngClass]="{'bg-primary-container/5': selectedUserIds.has(user.id)}">
+            <td class="px-6 py-5 text-center">
+              <input type="checkbox"
+                     class="w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant/30 cursor-pointer"
+                     [checked]="selectedUserIds.has(user.id)" (change)="toggleSelection(user.id, $event)">
+            </td>
+            <td class="px-2 py-5">
+              <div class="flex items-center gap-4">
+                <img class="w-10 h-10 rounded-lg object-cover"
+                     data-alt="professional portrait of a middle-aged academic man with glasses against a clean grey background"
+                     [src]="'https://ui-avatars.com/api/?name=' +user.email"/>
+                <div>
+                  <p class="text-sm font-bold text-primary">{{ user.email }}</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-5">
+          <span
+            class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded text-[10px] font-bold uppercase tracking-tight">
+            {{ formatRoles(user.roles) }}</span>
+            </td>
+            <td class="px-6 py-5 text-xs text-slate-500">{{ user.createdAt | date:'short' }}</td>
+            <td
+              class="px-6 py-5 text-xs text-slate-500">{{ user.updatedAt ? (user.updatedAt | date:'short') : 'Not Updated Yet' }}
+            </td>
+            <td class="px-6 py-5 text-center">
+              <div class="inline-flex items-center justify-center w-8 h-4 rounded-full cursor-pointer relative"
+                   [ngClass]="user.isEnabled ? 'bg-emerald-100' :'bg-slate-200' "
+                   (click)="onChangeStatus(!user.isEnabled,user.id)">
+                <div class="absolute  w-2 h-2  rounded-full"
+                     [ngClass]="user.isEnabled ? 'bg-emerald-600 right-1' :'bg-slate-400 left-1' "></div>
+              </div>
+            </td>
+            <td class="px-8 py-5 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button class="p-2 text-slate-400 hover:text-primary transition-colors" (click)="openEditModal(user)">
+                  <span class="material-symbols-outlined text-lg">edit</span></button>
+                <button class="p-2 text-slate-400 hover:text-error transition-colors" (click)="deleteUser(user.id)">
+                  <span class="material-symbols-outlined text-lg">delete</span></button>
+              </div>
+            </td>
+          </tr>
+
+        } @empty {
+
+          <tr>
+            <td colspan="7" class="text-center py-6 text-slate-400">
+              No users found
+            </td>
+          </tr>
+
+
+        }
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination (Bottom controls) -->
+  <div class="px-8 py-6 flex items-center justify-between bg-surface-container-low/10">
+    <div class="flex items-center gap-2">
+      <button
+        class="w-8 h-8 rounded flex items-center justify-center bg-white border border-outline-variant/30 text-slate-400 hover:bg-slate-50 transition-colors">
+        <span class="material-symbols-outlined text-sm"
+              [ngClass]="userss.first ? 'cursor-not-allowed':'cursor-pointer'"
+              (click)="onPrevious()">chevron_left</span>
+      </button>
+      @for (page of getPages(); track page) {
+
+        <button class="w-8 h-8 rounded flex items-center justify-center  text-white text-xs font-bold"
+                [ngClass]="userss.number==page ? 'bg-primary-container' : 'bg-primary-container-soft'"
+                (click)="onPageSelect(page)">{{ page + 1 }}
+        </button>
+
+      }
+      <button
+        class="w-8 h-8 rounded flex items-center justify-center bg-white border border-outline-variant/30 text-slate-400 hover:bg-slate-50 transition-colors">
+        <span class="material-symbols-outlined text-sm"
+              [ngClass]="userss.last ? 'cursor-not-allowed':'cursor-pointer'"
+              (click)="onNext()">chevron_right</span>
+      </button>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="text-xs text-slate-400 font-medium">Rows per page:</span>
+      <select
+        class="text-xs font-bold border-none bg-surface-container-low rounded-md px-3 py-1 text-primary focus:ring-0"
+        (change)="onSizeChange($event)">
+        <option>5</option>
+        <option>10</option>
+        <option>25</option>
+        <option>50</option>
+        <option>100</option>
+      </select>
+    </div>
+  </div>
+</div>
+@if (modal) {
+  <body class="bg-background font-body text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Main Content Canvas -->
+    <main class="flex-grow overflow-y-auto relative bg-surface-container-low">
+      <!--     Modal Overlay-->
+      <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-[#022448]/40 backdrop-blur-sm"></div>
+        <!-- Modal Window -->
+        <div
+          class="relative w-full max-w-lg bg-surface-container-lowest rounded-2xl curator-shadow overflow-hidden border border-white/20">
+          <!-- Header -->
+          <div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center">
+            <div>
+              <h2 class="text-xl font-headline font-bold text-primary-container tracking-tight">Update User
+                Data</h2>
+              <p class="text-sm text-slate-500 font-body mt-1">Modify user email and rols </p>
+            </div>
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-slate-400">
+              <span class="material-symbols-outlined" data-icon="close" (click)="closeModal()">close</span>
+            </button>
+          </div>
+          <!-- Content -->
+          <form class="p-8 space-y-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!-- Email Input -->
+            <div class="space-y-2">
+              <label class="text-xs font-label font-bold text-primary-container uppercase tracking-widest" for="email">Email
+                Address</label>
+              <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <span class="material-symbols-outlined text-lg" data-icon="mail">mail</span>
+                </div>
+                <input
+                  class="w-full bg-surface-container-low border-0 border-b border-outline-variant/20 py-3 pl-10 pr-4 text-sm font-body text-primary focus:bg-white focus:ring-0 focus:border-primary-container transition-all"
+                  id="email" formControlName="email"/>
+              </div>
+            </div>
+            <!-- Role Selection -->
+            <div class="space-y-3">
+              <label class="text-xs font-label font-bold text-primary-container uppercase tracking-widest">Academic
+                Roles</label>
+              <div class="grid grid-cols-2 gap-3">
+                @for (role of roleList; track role.id) {
+                  <label
+                    class="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors">
+                    <input class="w-4 h-4 rounded text-[#022448] focus:ring-[#022448] border-outline-variant/30"
+                           name="roles" type="checkbox" [value]="formatRolesList(role)"
+                           [checked]="hasRole(formatRolesList(role))" (change)="onChange($event)"/>
+                    <span class="text-sm font-body text-primary">{{ formatRolesList(role) }}</span>
+                  </label>
+                }
+              </div>
+            </div>
+            <!-- Actions -->
+            <div class="flex gap-4 pt-4">
+              <button
+                class="flex-1 bg-surface-container-highest text-primary font-medium py-3 rounded-lg hover:bg-surface-dim transition-all"
+                type="button" (click)="closeModal()">Cancel
+              </button>
+              <button
+                class="flex-1 bg-primary-container text-on-primary font-medium py-3 rounded-lg shadow-lg shadow-primary-container/20 hover:scale-[1.02] active:scale-[0.98] transition-all relative overflow-hidden group"
+                type="submit">
+                <span class="relative z-10">Update User</span>
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-primary to-primary-container opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </button>
+            </div>
+          </form>
+          <!-- Footer Micro-copy -->
+          <div class="px-8 py-4 bg-surface-container-low/50 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[10px] text-slate-400" data-icon="info">info</span>
+            <p class="text-[10px] text-slate-400 font-label uppercase tracking-widest">Changes are logged in the
+              registry
+              audit trail</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  </body>
+
+}

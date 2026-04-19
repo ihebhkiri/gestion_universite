@@ -1,0 +1,5 @@
+package com.iheb.gestion_universite.student_managment.student_enrollment.dto;
+
+public record EnrollStudentRequest(Long studentId ) {
+
+}

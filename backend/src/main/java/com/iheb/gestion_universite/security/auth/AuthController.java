@@ -1,19 +1,22 @@
 package com.iheb.gestion_universite.security.auth;
 
 
+import com.iheb.gestion_universite.security.JwtService;
+import com.iheb.gestion_universite.security.UserPrincipal;
 import com.iheb.gestion_universite.security.auth.dto.ForgotPasswordRequest;
 import com.iheb.gestion_universite.security.auth.dto.LoginRequest;
 import com.iheb.gestion_universite.security.auth.dto.ResetPasswordRequest;
 import com.iheb.gestion_universite.security.auth.services.AuthService;
-import com.iheb.gestion_universite.security.JwtService;
 import com.iheb.gestion_universite.security.user.UserRepository;
+import com.iheb.gestion_universite.security.user.dto.Me;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 
 @RestController
@@ -72,6 +75,11 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .build();
+    }
+    @GetMapping ("/me")
+    public ResponseEntity<Me> getCurrentUser (@AuthenticationPrincipal UserPrincipal principal) {
+        Me me = authService.getCurrentUser(principal);
+        return ResponseEntity.ok(me);
     }
 
 

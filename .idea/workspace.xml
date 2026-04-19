@@ -31,7 +31,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/backend" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitToolBoxStore">
     <option name="recentBranches">
@@ -284,6 +284,7 @@
       <workItem from="1775496731465" duration="157000" />
       <workItem from="1775567414089" duration="8214000" />
       <workItem from="1775642530831" duration="3226000" />
+      <workItem from="1775731770889" duration="169000" />
     </task>
     <servers />
   </component>

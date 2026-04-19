@@ -1,0 +1,7 @@
+.env
+makefile
+nginx-certs/
+backend-certs/
+docker-compose-dev.yml
+docker-compose.yml
+.idea/

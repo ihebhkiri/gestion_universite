@@ -27,11 +27,10 @@ public class InsertAdmin implements CommandLineRunner {
         var roleProff = createRole("ROLE_TEACHER");
         if (userRepository.findByEmail("test@gmail.com")
                 .isEmpty()) {
-            UserEntity userEntity = UserEntity.builder()
-                    .email("test@gmail.com")
-                    .password(passwordEncoder.encode("testtest"))
-                    .build();
-            userEntity.getRole()
+            UserEntity userEntity =  new UserEntity();
+            userEntity.setEmail("test@gmail.com");
+            userEntity.setPassword(passwordEncoder.encode("testtest"));
+            userEntity.getRoles()
                     .add(roleAdmin);
             userRepository.save(userEntity);
 
@@ -40,11 +39,11 @@ public class InsertAdmin implements CommandLineRunner {
 
         if (userRepository.findByEmail("naaymyh@gmail.com")
                 .isEmpty()) {
-            UserEntity student = UserEntity.builder()
-                    .email("naaymyh@gmail.com")
-                    .password(passwordEncoder.encode("testtest"))
-                    .build();
-            student.getRole()
+            UserEntity student = new UserEntity();
+            student.setEmail("naaymyh@gmail.com");
+
+            student.setPassword(passwordEncoder.encode("testtest"));
+            student.getRoles()
                     .add(roleStudent);
             userRepository.save(student);
         }

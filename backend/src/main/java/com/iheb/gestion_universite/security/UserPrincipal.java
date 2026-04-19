@@ -14,9 +14,13 @@ import java.util.Set;
 public class UserPrincipal implements UserDetails {
     private final UserEntity user;
 
+    public UserEntity getUser() {
+        return user;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<RoleEntity> roles = user.getRole();
+        Set<RoleEntity> roles = user.getRoles();
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
@@ -49,7 +53,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 
 }

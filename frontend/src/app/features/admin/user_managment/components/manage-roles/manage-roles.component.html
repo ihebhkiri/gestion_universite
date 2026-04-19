@@ -1,0 +1,100 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000e24]/60 backdrop-blur-sm overflow-y-auto">
+  <div class="w-full max-w-3xl bg-surface-container-lowest rounded-xl p-8 shadow-[0px_24px_48px_rgba(2,36,72,0.1)] relative my-8">
+
+    <!-- Close button -->
+    <button (click)="onCancel()" class="absolute top-6 right-6 text-slate-400 hover:text-primary transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-bold text-primary tracking-tight mb-2">Manage Roles</h1>
+      <p class="text-secondary font-body">Create, edit, or remove roles determining system access.</p>
+    </div>
+
+    <!-- Add Role Form -->
+    <form [formGroup]="addRoleForm" (ngSubmit)="onSubmit()" class="mb-8 p-4 bg-surface-container-low rounded-lg border border-outline/10">
+      <h3 class="text-sm font-semibold text-primary font-body mb-3">Add New Role</h3>
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div class="flex-1 w-full relative">
+          <input formControlName="name" class="w-full bg-surface-container-lowest border-0 border-b border-outline/20 focus:ring-0 focus:border-primary-container transition-all p-3 text-sm placeholder:text-gray-400 uppercase rounded shadow-sm" placeholder="e.g. MODERATOR" type="text"/>
+          @if (addRoleForm.get('name')?.touched && addRoleForm.get('name')?.invalid) {
+            <div class="absolute -bottom-5 left-0 text-red-500 text-xs">
+              A valid role name is required.
+            </div>
+          }
+        </div>
+        <button [disabled]="addRoleForm.invalid" class="w-full md:w-auto px-6 py-2.5 bg-primary-container text-white rounded-lg font-bold text-sm shadow-md hover:shadow-primary-container/20 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap" type="submit">
+          Add Role
+        </button>
+      </div>
+    </form>
+
+    <!-- Roles Table -->
+    <div class="bg-white rounded-lg border border-slate-100 overflow-hidden mb-6">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low text-xs uppercase text-slate-500 tracking-wider">
+            <th class="px-6 py-4 font-semibold">ID</th>
+            <th class="px-6 py-4 font-semibold">Role Name</th>
+            <th class="px-6 py-4 font-semibold text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          @for (role of rolesList; track role.id) {
+            <tr class="hover:bg-slate-50/50 transition-colors group">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                #{{ role.id }}
+              </td>
+
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800">
+                @if (editingRoleId === role.id) {
+                  <input type="text" [(ngModel)]="editRoleName" class="px-3 py-1.5 border border-outline/30 rounded text-sm bg-surface-container-lowest focus:ring-1 focus:ring-primary-container uppercase" />
+                } @else {
+                  <span class="px-2.5 py-1 bg-secondary-container/10 text-primary-container rounded-md text-xs font-bold tracking-wide">
+                    {{ role.name }}
+                  </span>
+                }
+              </td>
+
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                @if (editingRoleId === role.id) {
+                  <div class="flex justify-end gap-2 text-slate-500">
+                    <button (click)="saveEdit(role.id)" class="hover:text-green-600 transition-colors tooltip" title="Save">
+                      <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                    </button>
+                    <button (click)="cancelEdit()" class="hover:text-red-500 transition-colors tooltip" title="Cancel">
+                      <span class="material-symbols-outlined text-[20px]">cancel</span>
+                    </button>
+                  </div>
+                } @else {
+                  <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button (click)="startEdit(role)" class="text-slate-400 hover:text-primary transition-colors tooltip" title="Edit Role">
+                      <span class="material-symbols-outlined text-[20px]">edit</span>
+                    </button>
+                    <button (click)="onDelete(role.id)" class="text-slate-400 hover:text-red-500 transition-colors tooltip" title="Delete Role">
+                      <span class="material-symbols-outlined text-[20px]">delete</span>
+                    </button>
+                  </div>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="3" class="px-6 py-8 text-center text-slate-500 text-sm">
+                No roles found.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Close Action -->
+    <div class="flex justify-end pt-4 border-t border-slate-100">
+        <button (click)="onCancel()" class="px-8 py-2.5 text-sm font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg transition-colors font-body" type="button">
+          Close
+        </button>
+    </div>
+
+  </div>
+</div>

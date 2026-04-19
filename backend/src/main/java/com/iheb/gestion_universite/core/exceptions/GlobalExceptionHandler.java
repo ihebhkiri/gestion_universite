@@ -5,15 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler ({UserNotFoundException.class, TeacherNotFoundException.class, RefreshTokenNotFoundException.class, ExamNotFoundException.class, StudentNotFoundException.class})
+    @ExceptionHandler ({UserNotFoundException.class, TeacherNotFoundException.class, RefreshTokenNotFoundException.class, ExamNotFoundException.class, StudentNotFoundException.class, RoleNotFoundException.class})
     public ResponseEntity<?> handleNotFound (UserNotFoundException ex) {
 
         return ResponseEntity
@@ -93,7 +94,7 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler ( PasswordMismatchException.class)
+    @ExceptionHandler (PasswordMismatchException.class)
     public ResponseEntity<?> handlePasswordMismatch (PasswordMismatchException ex) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

@@ -2,6 +2,7 @@ package com.iheb.gestion_universite.security.auth.services;
 
 
 import com.iheb.gestion_universite.core.exceptions.*;
+import com.iheb.gestion_universite.security.UserPrincipal;
 import com.iheb.gestion_universite.security.auth.dto.LoginRequest;
 import com.iheb.gestion_universite.security.auth.dto.LoginResponse;
 import com.iheb.gestion_universite.security.auth.dto.RefreshTokenResponse;
@@ -11,6 +12,7 @@ import com.iheb.gestion_universite.security.auth.repositories.RefreshTokenRepo;
 import com.iheb.gestion_universite.security.CustomUserDetailService;
 import com.iheb.gestion_universite.security.JwtService;
 import com.iheb.gestion_universite.security.user.UserRepository;
+import com.iheb.gestion_universite.security.user.dto.Me;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -136,15 +138,25 @@ public class AuthService {
 
     private Map<String, Object> createUserRoles (UserDetails userDetails) {
 
-        List<String> roles = userDetails.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
+        var user = userRepository.findByEmailWithRoles(userDetails.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         Map<String, Object> claims = new HashMap<>();
+        var roles = user.getRoles()
+                .stream()
+                .map(role -> role.getName())
+                .toList();
         claims.put("roles", roles);
         return claims;
 
     }
 
 
+    public Me getCurrentUser (UserPrincipal principal) {
+        var user = principal.getUser();
+        return new Me(user.getEmail(), user.getRoles()
+                .stream()
+                .map(role -> role.getName())
+                .collect(java.util.stream.Collectors.toSet()));
+
+    }
 }

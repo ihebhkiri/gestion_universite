@@ -13,6 +13,7 @@ import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -60,6 +61,15 @@ public class JwtService {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
 
+    }
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+
+        List<?> roles = claims.get("roles", List.class);
+
+        return roles.stream()
+                .map(Object::toString)
+                .toList();
     }
 
 

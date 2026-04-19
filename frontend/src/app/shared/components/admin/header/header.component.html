@@ -1,0 +1,57 @@
+
+
+<header
+  class="bg-[#f7f9fb]/80 dark:bg-[#022448]/80 backdrop-blur-xl font-['Space_Grotesk'] text-sm tracking-wide uppercase font-bold docked full-width top-0 z-30 shadow-[0px_32px_64px_rgba(0,14,36,0.04)] sticky">
+  <div class="flex justify-between items-center px-8 md:px-12 py-2 w-full">
+    <!-- Mobile Menu Button -->
+    <button class="md:hidden text-[#022448] p-2 -ml-2">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+    <div class="hidden md:flex items-center gap-8">
+      <!-- Search Bar -->
+      <div
+        class="relative bg-surface-container-lowest  rounded-full border border-outline-variant/15 flex items-center px-4 py-2 w-100 shadow-sm  transition-colors">
+        <span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2">search</span>
+        <input
+          class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-full p-0 font-['Inter'] font-normal placeholder-on-surface-variant/50  outline-none "
+          placeholder="Search archive..." type="text"/>
+      </div>
+
+    </div>
+    <div class="flex items-center gap-6 text-[#022448] dark:text-[#f7f9fb]">
+      <button (click)="themeService.toggleMode()" mode="button"
+              class="relative p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition active:scale-95 flex items-center justify-center">
+        @if (themeService.isDarkMode$ | async) {
+          <span class="material-symbols-outlined text-amber-400">light_mode</span>
+        } @else {
+          <span class="material-symbols-outlined text-indigo-600">dark_mode</span>
+        }
+      </button>
+      <button
+        class="hover:bg-white/50 dark:hover:bg-slate-800/50 p-2 rounded-full transition-all duration-300 scale-95 active:scale-90 relative">
+        <span class="material-symbols-outlined">notifications_active</span>
+        <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+      </button>
+
+      <div class="relative ml-2">
+        <!-- Avatar toujours visible -->
+        <div
+          class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-lowest shadow-sm cursor-pointer"
+          (click)="toggleDropdown($event)">
+          <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeeqC7RQ1wLaOfKJlEPANNY9p-rV9593BIIdNqL63skdiIZ6nqYz1V-ktCan3q_N5sY0GtVROQqeCQ3QWN9vgeAZeRVmVAC1utHHpnKWcGKZFkw34MCdRLpvfXL1YEGnd4x09SHJK9eqSlFrUNGghZ3cKVwteflDvvGeh6odL6scTI4-joMWja0j51NnWabvlNJoT1BwcXoQ8L1fgZXKcj6csf2lbQOcVKz_coOVJCS2wi6bjhUUfrarLBkKbUF5Dnok4xea_4vSU"/>
+          />
+        </div>
+        <!-- Dropdown conditionnel -->
+        @if (isDropdownOpen) {
+          <div class="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 rounded-lg shadow-lg">
+            <button (click)="logout()"
+                    class="w-full flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-red-50 dark:hover:bg-red-900/20">
+              <span class="material-symbols-outlined text-lg">logout</span>
+              Sign out
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</header>

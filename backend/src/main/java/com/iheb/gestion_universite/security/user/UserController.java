@@ -1,39 +1,111 @@
 package com.iheb.gestion_universite.security.user;
 
 
-import com.iheb.gestion_universite.security.user.dto.UserDTO;
+import com.iheb.gestion_universite.security.user.dto.BulkStatusRequest;
+import com.iheb.gestion_universite.security.user.dto.CreateUserRequest;
+import com.iheb.gestion_universite.security.user.dto.UpdateUserRequest;
+import com.iheb.gestion_universite.security.user.dto.UserDataResponse;
+import com.iheb.gestion_universite.security.user.dto.UserStatsResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequestMapping ("/api/v1/admin/users")
 @RequiredArgsConstructor
-@RequestMapping ("/api/v1/users/me")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
+
+    @PostMapping
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<Void> createUser (
+            @Valid @RequestBody CreateUserRequest request) {
+
+        userService.createUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
+    }
 
     @GetMapping
-    @Transactional (readOnly = true)
-    public ResponseEntity<UserDTO> getCurrentUser (org.springframework.security.core.Authentication authentication) {
+    @PreAuthorize ("hasRole('ADMIN')")
+    public Page<UserDataResponse> getAllUsers (Pageable pageable,
+                                               @RequestParam (required = false) String email,
+                                               @RequestParam (required = false, defaultValue = "") String role,
+                                               @RequestParam (required = false) Boolean status
+    ) {
 
-        UserEntity userEntity = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new org.springframework.security.core.userdetails.UsernameNotFoundException("user not found"));
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail(userEntity.getEmail());
-        userDTO.setId(userEntity.getId());
-        userDTO.setRoles(userEntity.getRole()
-                .stream()
-                .map(role -> role.getName())
-                .collect(Collectors.toSet()));
-        return ResponseEntity.ok(userDTO);
+        return userService.getAllUsers(pageable, email, role, status);
+    }
+
+    @GetMapping ("/{id}")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<UserDataResponse> getUserById (@PathVariable Long id) {
+
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @PutMapping ("/{id}")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<Void> updateUser (
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequest request) {
+
+        userService.updateUser(id, request);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @DeleteMapping ("/{id}")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteUser (@PathVariable Long id) {
+
+        userService.deleteUser(id);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @PatchMapping ("/{id}/status")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<Void> changeUserStatus (@PathVariable Long id, @RequestBody Map<String, Boolean> body) {
+
+        Boolean enabled = body.get("enabled");
+        userService.changeUserStatus(id, enabled);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @DeleteMapping("/bulk")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<Void> bulkDeleteUsers(@RequestBody List<Long> ids) {
+        userService.bulkDeleteUsers(ids);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/bulk/status")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<Void> bulkChangeStatus(@RequestBody BulkStatusRequest request) {
+        userService.bulkChangeStatus(request.ids(), request.enabled());
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping ("/stats")
+    @PreAuthorize ("hasRole('ADMIN')")
+    public ResponseEntity<UserStatsResponse> getUserStats () {
+
+        UserStatsResponse stats = userService.getUserStats();
+        return ResponseEntity.ok(stats);
     }
 
 
 }
+

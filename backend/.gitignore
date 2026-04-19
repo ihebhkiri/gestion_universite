@@ -37,3 +37,4 @@ build/
 .dockerignore
 data/
 Dockerfile-dev
+application-dev.yaml

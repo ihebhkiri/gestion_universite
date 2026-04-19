@@ -17,8 +17,8 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class LoginComponent {
   message = "Login successful";
-  showPassword : boolean = false;
-  toast = inject(ToastrService);
+  showPassword: boolean = false;
+  toastr = inject(ToastrService);
   fb = inject(FormBuilder);
   router = inject(Router);
   private authService = inject(AuthService);
@@ -39,18 +39,28 @@ export class LoginComponent {
 
     this.authService.login(request).subscribe({
 
-      next: () => {
+      next: (user) => {
 
-        this.toast.success(this.message );
-        this.router.navigate(['admin']) ;
+        this.toastr.success(this.message);
+        if (user.roles.includes("ROLE_ADMIN")) {
+          this.router.navigate(['/admins'])
+        }
+        if (user.roles.includes("ROLE_STUDENT")) {
+          this.router.navigate(['/students'])
+        }
+        if (user.roles.includes("ROLE_TEACHER")) {
+          this.router.navigate(['/teachers'])
+        }
+        ;
       },
       error: (err) => {
-        this.toast.error(err.error);
+        this.toastr.error(err.error);
       }
     });
 
   }
-  togglePassword(){
-    this.showPassword=!this.showPassword;
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

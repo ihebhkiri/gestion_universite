@@ -1,0 +1,19 @@
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+  <div class="bg-surface-container-lowest p-6 rounded-xl curator-shadow border-b-2 border-primary-container">
+    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Total Users</p>
+    <div class="flex items-baseline gap-2">
+      <span class="text-3xl font-bold font-headline">{{ statistics.totalUsers }}</span>
+    </div>
+  </div>
+  <div class="bg-surface-container-lowest p-6 rounded-xl curator-shadow">
+    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Active Users</p>
+    <span class="text-3xl font-bold font-headline text-primary-container">{{ statistics.activeUsers }}</span>
+  </div>
+  <div class="bg-surface-container-lowest p-6 rounded-xl curator-shadow">
+    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Inactive Users</p>
+    <span class="text-3xl font-bold font-headline text-primary-container">{{ statistics.inactiveUsers }}</span>
+  </div>
+
+</div>
+
+
