@@ -1,0 +1,25 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-on-surface-variant);
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  background: var(--color-surface-container-low);
+  border: 1px solid color-mix(in oklab, var(--color-outline-variant) 25%, transparent);
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  outline: none;
+}

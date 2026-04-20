@@ -61,6 +61,11 @@ public class AdminTeachersService {
         return teacherRepository.findAll();
     }
 
+    public void deleteTeacher(Long id) {
+        TeacherEntity teacher = checkTeacherExists(id);
+        teacherRepository.delete(teacher);
+    }
+
     public TeacherEntity checkTeacherExists(Long id) {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher not Found "));

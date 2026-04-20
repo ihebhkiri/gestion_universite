@@ -1,0 +1,11 @@
+.icon-btn {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #64748b;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: var(--color-primary);
+  background: var(--color-surface-container-high);
+}
