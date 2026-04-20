@@ -27,11 +27,11 @@ public class AdminTeacherController {
     public ResponseEntity<?> getAllTeachers() {
         return ResponseEntity.ok(adminTeachersService.findAllTeachers());
     }
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
-//        adminTeachersService.deleteTeacher(id);
-//        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
+        adminTeachersService.deleteTeacher(id);
+        return ResponseEntity.noContent().build();
+    }
 //    @GetMapping
 //    public ResponseEntity<List<TeacherEntity>> getTeachers(){
 //        return ResponseEntity.ok(adminTeachersService.findAllTeachers());

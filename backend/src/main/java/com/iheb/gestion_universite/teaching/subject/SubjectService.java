@@ -4,6 +4,8 @@ import com.iheb.gestion_universite.teaching.subject.dto.AddSubjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 
@@ -25,6 +27,10 @@ public class SubjectService {
         SubjectEntity existingSubject = getSubjectById(id);
         existingSubject.setSubjectName(request.subjectName());
         return subjectRepository.save(existingSubject);
+    }
+
+    public List<SubjectEntity> getAllSubjects() {
+        return subjectRepository.findAll();
     }
 
     public void deleteSubject(Long id) {

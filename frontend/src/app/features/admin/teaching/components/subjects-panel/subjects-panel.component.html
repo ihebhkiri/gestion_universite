@@ -1,0 +1,45 @@
+<div class="bg-surface-container-lowest rounded-xl curator-shadow border border-outline-variant/20">
+  <div class="px-6 py-4 border-b border-outline-variant/10">
+    <h4 class="text-lg font-semibold text-primary">Subjects</h4>
+    <p class="text-xs text-slate-500 mt-1">Manage subjects from the same backend source used by teachers and courses.</p>
+  </div>
+
+  <form class="p-6 flex flex-col md:flex-row gap-3" [formGroup]="form" (ngSubmit)="onCreate()">
+    <input class="flex-1 bg-surface-container-low border border-outline-variant/25 rounded-lg px-3 py-2.5 text-sm"
+           formControlName="subjectName"
+           placeholder="e.g. Data Structures"/>
+    <button class="px-4 py-2.5 rounded-lg bg-primary-container text-white font-medium" type="submit">Add subject</button>
+  </form>
+
+  <div class="px-6 pb-6 space-y-2">
+    @for (subject of subjects; track subject.id) {
+      <div class="rounded-lg border border-outline-variant/20 bg-surface-container-low p-3 flex items-center justify-between gap-3">
+        @if (editingId === subject.id) {
+          <div class="flex-1 flex items-center gap-2">
+            <input class="flex-1 bg-white rounded px-3 py-2 text-sm border border-outline-variant/20" [(ngModel)]="editingName" [ngModelOptions]="{standalone: true}"/>
+            <button class="icon-btn text-emerald-600" (click)="submitEdit(subject.id)">
+              <span class="material-symbols-outlined text-[19px]">check</span>
+            </button>
+            <button class="icon-btn" (click)="cancelEdit()">
+              <span class="material-symbols-outlined text-[19px]">close</span>
+            </button>
+          </div>
+        } @else {
+          <div class="flex items-center justify-between w-full">
+            <span class="text-sm font-medium text-primary">{{ subject.subjectName }}</span>
+            <div class="flex items-center gap-1">
+              <button class="icon-btn" (click)="startEdit(subject)">
+                <span class="material-symbols-outlined text-[19px]">edit</span>
+              </button>
+              <button class="icon-btn text-error" (click)="deleteSubject.emit(subject.id)">
+                <span class="material-symbols-outlined text-[19px]">delete</span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @empty {
+      <p class="text-sm text-slate-500">No subject found.</p>
+    }
+  </div>
+</div>

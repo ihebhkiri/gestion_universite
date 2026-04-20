@@ -1,0 +1,80 @@
+@if (open) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000e24]/65 backdrop-blur-sm">
+    <div class="w-full max-w-3xl bg-surface-container-lowest rounded-2xl shadow-[0px_24px_48px_rgba(2,36,72,0.12)] p-8 relative">
+      <button class="absolute top-5 right-5 text-slate-400 hover:text-primary" (click)="onClose()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <h3 class="text-2xl font-bold text-primary font-headline mb-2">
+        {{ teacherToEdit ? 'Update Teacher' : 'Add New Teacher' }}
+      </h3>
+      <p class="text-slate-500 mb-6">Keep the teaching module synchronized with backend entities and admin flow.</p>
+
+      <form class="grid grid-cols-1 md:grid-cols-2 gap-5" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label class="field">
+          <span>First name</span>
+          <input formControlName="firstName" type="text" placeholder="Ada"/>
+        </label>
+
+        <label class="field">
+          <span>Last name</span>
+          <input formControlName="lastName" type="text" placeholder="Lovelace"/>
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input formControlName="email" type="email" placeholder="teacher@academix.tn"/>
+        </label>
+
+        <label class="field">
+          <span>Password {{ teacherToEdit ? '(only for create)' : '' }}</span>
+          <input formControlName="password" type="password" placeholder="********"/>
+        </label>
+
+        <label class="field">
+          <span>CIN</span>
+          <input formControlName="cin" type="text" placeholder="12345678"/>
+        </label>
+
+        <label class="field">
+          <span>Phone</span>
+          <input formControlName="phone" type="text" placeholder="+216 00 000 000"/>
+        </label>
+
+        <label class="field">
+          <span>Gender</span>
+          <select formControlName="gender">
+            @for (gender of genders; track gender) {
+              <option [value]="gender">{{ gender }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Grade</span>
+          <select formControlName="grade">
+            @for (grade of grades; track grade) {
+              <option [value]="grade">{{ grade }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field md:col-span-2">
+          <span>Department</span>
+          <select formControlName="departmentId">
+            @for (department of departments; track department.id) {
+              <option [value]="department.id">{{ department.name }} ({{ department.code }})</option>
+            }
+          </select>
+        </label>
+
+        <div class="md:col-span-2 flex justify-end gap-3 pt-3">
+          <button type="button" class="px-5 py-2.5 rounded-lg bg-surface-container-high text-primary" (click)="onClose()">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary-container text-white font-semibold">
+            {{ teacherToEdit ? 'Save changes' : 'Create teacher' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
