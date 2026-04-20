@@ -52,11 +52,10 @@ class AuthControllerIntegrationTest {
         refreshTokenRepo.deleteAll();
         userRepository.deleteAll();
 
-        UserEntity user = UserEntity.builder()
-                .email("admin@example.com")
-                .password(passwordEncoder.encode("password123"))
-                .enabled(true)
-                .build();
+        UserEntity user = new UserEntity();
+        user.setEmail("admin@example.com");
+        user.setPassword(passwordEncoder.encode("password123"));
+        user.setEnabled(true);
         userRepository.save(user);
     }
 
