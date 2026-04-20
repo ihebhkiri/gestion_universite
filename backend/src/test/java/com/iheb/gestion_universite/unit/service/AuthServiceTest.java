@@ -1,5 +1,6 @@
 package com.iheb.gestion_universite.unit.service;
 
+import com.iheb.gestion_universite.security.role.RoleEntity;
 import com.iheb.gestion_universite.core.exceptions.*;
 import com.iheb.gestion_universite.security.CustomUserDetailService;
 import com.iheb.gestion_universite.security.JwtService;
@@ -31,6 +32,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.Set;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,9 +89,15 @@ class AuthServiceTest {
         Authentication authentication = mock(Authentication.class);
         UserDetails userDetails = mock(UserDetails.class);
 
+        UserEntity user = new UserEntity();
+        user.setEmail(email);
+        RoleEntity role = RoleEntity.builder().name("ROLE_USER").build();
+        user.setRoles(Set.of(role));
+
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn(userDetails);
-        when(userDetails.getAuthorities()).thenReturn(Collections.emptyList());
+        when(userDetails.getUsername()).thenReturn(email);
+        when(userRepository.findByEmailWithRoles(email)).thenReturn(Optional.of(user));
         when(jwtService.generateToken(argThat(map -> map.containsKey("roles")), eq(userDetails))).thenReturn("accessToken");
         when(refreshTokenService.generateRefreshToken(userDetails)).thenReturn("refreshToken");
 
@@ -173,6 +181,8 @@ class AuthServiceTest {
         String refreshTokenStr = "valid-refresh-token";
         UserEntity user = new UserEntity();
         user.setEmail(email);
+        RoleEntity role = RoleEntity.builder().name("ROLE_USER").build();
+        user.setRoles(Set.of(role));
         RefreshTokenEntity refreshToken = RefreshTokenEntity.builder()
                 .token(refreshTokenStr)
                 .user(user)
@@ -185,6 +195,8 @@ class AuthServiceTest {
         UserDetails userDetails = mock(UserDetails.class);
         when(refreshTokenRepo.findByToken(refreshTokenStr)).thenReturn(Optional.of(refreshToken));
         when(customUserDetailService.loadUserByUsername(email)).thenReturn(userDetails);
+        when(userDetails.getUsername()).thenReturn(email);
+        when(userRepository.findByEmailWithRoles(email)).thenReturn(Optional.of(user));
         when(jwtService.generateToken(anyMap(), eq(userDetails))).thenReturn("newAccessToken");
         when(refreshTokenService.generateRefreshToken(userDetails)).thenReturn("newRefreshToken");
 

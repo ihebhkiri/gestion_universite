@@ -1,7 +1,6 @@
 package com.iheb.gestion_universite.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iheb.gestion_universite.security.CustomUserDetailService;
 import com.iheb.gestion_universite.security.auth.dto.LoginRequest;
 import com.iheb.gestion_universite.security.auth.repositories.RefreshTokenRepo;
 import com.iheb.gestion_universite.security.user.UserEntity;
