@@ -1,0 +1,57 @@
+<!-- Add Program Modal -->
+@if (isVisible) {
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-background/80 backdrop-blur-sm transition-opacity" (click)="onClose()"></div>
+  <div class="relative bg-surface rounded-2xl shadow-[0_24px_48px_rgba(2,36,72,0.12)] border border-outline-variant/30 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+    <div class="px-6 py-4 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-lowest sticky top-0 z-10">
+      <div>
+        <h3 class="font-headline text-xl font-semibold text-primary-container">Create New Program</h3>
+        <p class="font-body text-sm text-on-surface-variant mt-0.5">Add an academic program and assign it to a department.</p>
+      </div>
+      <button (click)="onClose()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-colors group">
+        <span class="material-symbols-outlined text-lg group-hover:text-error transition-colors">close</span>
+      </button>
+    </div>
+    <div class="p-6 overflow-y-auto">
+      <form (ngSubmit)="onSubmit()" #progForm="ngForm" class="space-y-5">
+        <div>
+          <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Parent Department <span class="text-error">*</span></label>
+          <div class="relative">
+            <select [(ngModel)]="selectedDepartmentId" name="departmentId" required
+              class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg font-body text-sm text-on-surface appearance-none pr-10 transition-shadow">
+              <option [ngValue]="null" disabled selected>Select a department</option>
+              @for (dept of departments; track dept.id) {
+              <option [value]="dept.id">{{ dept.code }} — {{ dept.name }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[18px]">expand_more</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Program Code <span class="text-error">*</span></label>
+          <input [(ngModel)]="program.code" name="code" required maxlength="10"
+            class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg font-body text-sm text-on-surface transition-shadow uppercase"
+            placeholder="e.g. ING, LIC">
+          <p class="mt-1.5 text-xs text-on-surface-variant">Short code identifier. Auto-uppercased.</p>
+        </div>
+        <div>
+          <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Program Name <span class="text-error">*</span></label>
+          <input [(ngModel)]="program.name" name="name" required
+            class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg font-body text-sm text-on-surface transition-shadow"
+            placeholder="e.g. Engineering Cycle">
+        </div>
+      </form>
+    </div>
+    <div class="px-6 py-4 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-end gap-3 sticky bottom-0 z-10">
+      <button type="button" (click)="onClose()" class="px-5 py-2 text-on-surface font-label text-sm font-semibold rounded-lg hover:bg-surface-container-highest transition-colors">Cancel</button>
+      <button type="button" (click)="onSubmit()" [disabled]="!progForm.valid"
+        class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-lg shadow-[0_4px_12px_rgba(2,36,72,0.15)] hover:shadow-[0_6px_16px_rgba(2,36,72,0.2)] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm">add</span>
+        Create Program
+      </button>
+    </div>
+  </div>
+</div>
+}

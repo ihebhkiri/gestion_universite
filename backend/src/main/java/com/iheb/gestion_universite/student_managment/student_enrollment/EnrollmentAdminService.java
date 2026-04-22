@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +35,17 @@ public class EnrollmentAdminService {
         enrollmentRepo.save(enrollment);
     }
 
+    public void changeEnrollmentStatusBulk(List<Long> studentIds, String newStatus) {
+        EnrollmentStatus status = EnrollmentStatus.valueOf(newStatus.toUpperCase());
+        List<StudentEnrollmentEntity> activeEnrollments = enrollmentRepo.findByStudent_IdInAndStatus(studentIds, EnrollmentStatus.ACTIVE);
+        activeEnrollments.forEach(e -> e.setStatus(status));
+        enrollmentRepo.saveAll(activeEnrollments);
+    }
+
     private StudentEnrollmentEntity createEnrollment (Long studentId, Long groupId) {
 
         StudentEntity student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student) not found"));
+                .orElseThrow(() -> new RuntimeException("Student not found"));
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
         StudentEnrollmentEntity enrollment = new StudentEnrollmentEntity();

@@ -1,0 +1,97 @@
+<body class="bg-surface text-on-background font-body min-h-screen flex antialiased">
+  <app-sidebar></app-sidebar>
+  <main class="ml-64 flex-1 flex flex-col min-h-screen relative">
+    <app-header></app-header>
+
+    <div class="mt-16 p-8 lg:p-12 flex-1 max-w-7xl mx-auto w-full">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <h2 class="font-headline text-3xl font-semibold text-primary-container tracking-tight">Academic Year Management</h2>
+          <p class="font-body text-on-surface-variant mt-2">Create and maintain academic years. Only one year can be active at a time.</p>
+        </div>
+        <button (click)="showAddModal()" class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-semibold rounded-DEFAULT">
+          Add Academic Year
+        </button>
+      </div>
+
+      @if (stats) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20">
+            <h3 class="text-sm text-on-surface-variant">Total Academic Years</h3>
+            <p class="text-3xl font-bold mt-2">{{ stats.totalAcademicYears }}</p>
+          </div>
+          <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20">
+            <h3 class="text-sm text-on-surface-variant">Active Years</h3>
+            <p class="text-3xl font-bold mt-2">{{ stats.activeAcademicYears }}</p>
+          </div>
+        </div>
+      }
+
+      <div class="bg-surface-container-lowest rounded-lg p-4 mb-6">
+        <input
+          (input)="onSearch($event)"
+          [value]="keyword"
+          class="w-full md:w-80 pl-3 pr-3 py-2 bg-surface-container-low border-b border-outline-variant/20 text-sm rounded-t-DEFAULT"
+          placeholder="Search by label (e.g. 2025-2026)"
+          type="text"
+        />
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-surface-container-highest bg-surface-bright/50">
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Label</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Start</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">End</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Status</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (filteredYears.length === 0) {
+                <tr>
+                  <td colspan="5" class="py-6 px-4 text-center text-on-surface-variant">No academic years found.</td>
+                </tr>
+              } @else {
+                @for (year of filteredYears; track year.id) {
+                  <tr class="border-b border-surface-container-highest/50">
+                    <td class="py-3 px-4 font-medium">{{ year.label }}</td>
+                    <td class="py-3 px-4">{{ year.startDate }}</td>
+                    <td class="py-3 px-4">{{ year.endDate }}</td>
+                    <td class="py-3 px-4">
+                      @if (year.active) {
+                        <span class="inline-flex px-2 py-1 text-xs rounded-DEFAULT bg-[#ecfdf5] text-[#065f46]">ACTIVE</span>
+                      } @else {
+                        <span class="inline-flex px-2 py-1 text-xs rounded-DEFAULT bg-surface-container-highest text-on-surface-variant">INACTIVE</span>
+                      }
+                    </td>
+                    <td class="py-3 px-4 text-right">
+                      <button class="mr-2 text-primary-container" (click)="showUpdateModal(year)">Edit</button>
+                      <button class="text-red-600" (click)="onDeleteYear(year.id)">Delete</button>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <app-add-academic-year
+      [isVisible]="isAddModalVisible"
+      (close)="hideAddModal()"
+      (save)="onCreateYear($event)"
+    ></app-add-academic-year>
+
+    <app-update-academic-year
+      [isVisible]="isUpdateModalVisible"
+      [year]="selectedYear"
+      (close)="hideUpdateModal()"
+      (save)="onUpdateYear($event)"
+    ></app-update-academic-year>
+  </main>
+</body>
+

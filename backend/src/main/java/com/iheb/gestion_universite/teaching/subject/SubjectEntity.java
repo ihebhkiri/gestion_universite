@@ -15,7 +15,7 @@ public class SubjectEntity {
 
     private String subjectName;
 
-    private Double coefficient;
+
 
 
 }

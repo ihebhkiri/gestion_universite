@@ -1,0 +1,59 @@
+<!-- Update Department Modal -->
+@if (isVisible) {
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-background/80 backdrop-blur-sm transition-opacity" (click)="onClose()"></div>
+
+  <!-- Modal Panel -->
+  <div class="relative bg-surface rounded-2xl shadow-[0_24px_48px_rgba(2,36,72,0.12)] border border-outline-variant/30 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-lowest sticky top-0 z-10">
+      <div>
+        <h3 class="font-headline text-xl font-semibold text-primary-container">Edit Department</h3>
+        <p class="font-body text-sm text-on-surface-variant mt-0.5">Update department code and name.</p>
+      </div>
+      <button (click)="onClose()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-colors group">
+        <span class="material-symbols-outlined text-lg group-hover:text-error transition-colors">close</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 overflow-y-auto">
+      <form (ngSubmit)="onSubmit()" #updateForm="ngForm" class="space-y-5">
+
+        <!-- Department Code -->
+        <div>
+          <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Department Code <span class="text-error">*</span></label>
+          <input [(ngModel)]="updateRequest.code" name="code" required maxlength="10"
+            class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg font-body text-sm text-on-surface transition-shadow uppercase"
+            placeholder="e.g. INFO">
+        </div>
+
+        <!-- Department Name -->
+        <div>
+          <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Department Name <span class="text-error">*</span></label>
+          <input [(ngModel)]="updateRequest.name" name="name" required
+            class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg font-body text-sm text-on-surface transition-shadow"
+            placeholder="e.g. Computer Science">
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="px-6 py-4 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-end gap-3 sticky bottom-0 z-10">
+      <button type="button" (click)="onClose()"
+        class="px-5 py-2 text-on-surface font-label text-sm font-semibold rounded-lg hover:bg-surface-container-highest transition-colors">
+        Cancel
+      </button>
+      <button type="button" (click)="onSubmit()" [disabled]="!updateForm.valid"
+        class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-lg shadow-[0_4px_12px_rgba(2,36,72,0.15)] hover:shadow-[0_6px_16px_rgba(2,36,72,0.2)] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm">save</span>
+        Save Changes
+      </button>
+    </div>
+
+  </div>
+</div>
+}

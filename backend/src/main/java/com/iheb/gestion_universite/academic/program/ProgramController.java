@@ -1,41 +1,55 @@
 package com.iheb.gestion_universite.academic.program;
 
+import com.iheb.gestion_universite.academic.program.dto.AddProgramRequest;
+import com.iheb.gestion_universite.academic.program.dto.ProgramDataResponse;
+import com.iheb.gestion_universite.academic.program.dto.ProgramStatsResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1/admin/programs")
 public class ProgramController {
 
     private final ProgramService programService;
 
-    @PostMapping("/departments/{departmentId}/programs")
-    public ResponseEntity<ProgramEntity> create(@PathVariable Long departmentId, @RequestBody ProgramEntity request) {
-        return ResponseEntity.ok(programService.create(departmentId, request));
+    @GetMapping
+    public List<ProgramDataResponse> getAllPrograms() {
+        return programService.getAllPrograms();
     }
 
-    @GetMapping("/programs")
-    public ResponseEntity<List<ProgramEntity>> getAll() {
-        return ResponseEntity.ok(programService.getAll());
+    @GetMapping("/stats")
+    public ProgramStatsResponse getStats() {
+        return programService.getStats();
     }
 
-    @GetMapping("/programs/{id}")
-    public ResponseEntity<ProgramEntity> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(programService.getById(id));
+    @GetMapping("/{id}")
+    public ProgramEntity getById(@PathVariable Long id) {
+        return programService.getById(id);
     }
 
-    @PutMapping("/programs/{id}")
-    public ResponseEntity<ProgramEntity> update(@PathVariable Long id, @RequestBody ProgramEntity request) {
-        return ResponseEntity.ok(programService.update(id, request));
+    @PostMapping("/department/{departmentId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProgramEntity create(@PathVariable Long departmentId, @RequestBody AddProgramRequest request) {
+        return programService.create(departmentId, request);
     }
 
-    @DeleteMapping("/programs/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @PutMapping("/{id}")
+    public ProgramEntity update(@PathVariable Long id, @RequestBody AddProgramRequest request) {
+        return programService.update(id, request);
+    }
+
+    @PutMapping("/{programId}/department/{departmentId}")
+    public void updateProgramDepartment(@PathVariable Long programId, @PathVariable Long departmentId) {
+        programService.updateProgramDepartment(programId, departmentId);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         programService.delete(id);
-        return ResponseEntity.ok().build();
     }
 }

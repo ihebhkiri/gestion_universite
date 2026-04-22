@@ -6,4 +6,6 @@ public interface ClassRepository extends JpaRepository<AcademicClassEntity, Long
     boolean existsByCode(String code);
     boolean existsByLevelAndSessionAndProgramIdAndSpecialityIdAndAcademicYearId(
             int level, Session session, Long programId, Long specialityId, Long academicYearId);
+    boolean existsByLevelAndSessionAndProgramIdAndSpecialityIdAndAcademicYearIdAndIdNot(
+            int level, Session session, Long programId, Long specialityId, Long academicYearId, Long id);
 }

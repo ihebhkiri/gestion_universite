@@ -1,0 +1,98 @@
+<body class="bg-surface text-on-background font-body min-h-screen flex antialiased">
+  <app-sidebar></app-sidebar>
+  <main class="ml-64 flex-1 flex flex-col min-h-screen relative">
+    <app-header></app-header>
+
+    <div class="mt-16 p-8 lg:p-12 flex-1 max-w-7xl mx-auto w-full">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <h2 class="font-headline text-3xl font-semibold text-primary-container tracking-tight">Group Management</h2>
+          <p class="font-body text-on-surface-variant mt-2">Create, update, and monitor student groups by class.</p>
+        </div>
+        <button (click)="showAddModal()" class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-semibold rounded-DEFAULT">
+          Add Group
+        </button>
+      </div>
+
+      @if (stats) {
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20">
+            <h3 class="text-sm text-on-surface-variant">Total Groups</h3>
+            <p class="text-3xl font-bold mt-2">{{ stats.totalGroups }}</p>
+          </div>
+          <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20">
+            <h3 class="text-sm text-on-surface-variant">Total Capacity</h3>
+            <p class="text-3xl font-bold mt-2">{{ stats.totalCapacity }}</p>
+          </div>
+          <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20">
+            <h3 class="text-sm text-on-surface-variant">Active Enrollments</h3>
+            <p class="text-3xl font-bold mt-2">{{ stats.activeEnrollments }}</p>
+          </div>
+        </div>
+      }
+
+      <div class="bg-surface-container-lowest rounded-lg p-4 mb-6">
+        <input
+          (input)="onSearch($event)"
+          [value]="keyword"
+          class="w-full md:w-80 pl-3 pr-3 py-2 bg-surface-container-low border-b border-outline-variant/20 text-sm rounded-t-DEFAULT"
+          placeholder="Search by group or class code"
+          type="text"
+        />
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-surface-container-highest bg-surface-bright/50">
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Group</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Class</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Capacity</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Enrolled</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant">Available</th>
+                <th class="py-3 px-4 text-xs uppercase text-on-surface-variant text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (filteredGroups.length === 0) {
+                <tr>
+                  <td colspan="6" class="py-6 px-4 text-center text-on-surface-variant">No groups found.</td>
+                </tr>
+              } @else {
+                @for (group of filteredGroups; track group.id) {
+                  <tr class="border-b border-surface-container-highest/50">
+                    <td class="py-3 px-4 font-medium">{{ group.name }}</td>
+                    <td class="py-3 px-4">{{ group.classCode }}</td>
+                    <td class="py-3 px-4">{{ group.capacity }}</td>
+                    <td class="py-3 px-4">{{ group.enrolledStudents }}</td>
+                    <td class="py-3 px-4">{{ group.availableSeats }}</td>
+                    <td class="py-3 px-4 text-right">
+                      <button class="mr-2 text-primary-container" (click)="showUpdateModal(group)">Edit</button>
+                      <button class="text-red-600" (click)="onDeleteGroup(group.id)">Delete</button>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <app-add-group
+      [isVisible]="isAddModalVisible"
+      [classes]="classes"
+      (close)="hideAddModal()"
+      (save)="onCreateGroup($event)"
+    ></app-add-group>
+
+    <app-update-group
+      [isVisible]="isUpdateModalVisible"
+      [group]="selectedGroup"
+      [classes]="classes"
+      (close)="hideUpdateModal()"
+      (save)="onUpdateGroup($event)"
+    ></app-update-group>
+  </main>
+</body>

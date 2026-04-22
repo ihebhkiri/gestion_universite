@@ -1,9 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {UserService} from '../service/user.service';
-import {HeaderComponent} from '../../../../shared/components/admin/header/header.component';
-import {AddUserComponent} from '../components/add-user/add-user.component';
-import {StatisticsComponent} from '../components/statistics/statistics.component';
-import {UsersDataComponent} from '../components/users-data/users-data.component';
+import {UserService} from '../../service/user.service';
+import {HeaderComponent} from '../../../../../shared/components/admin/header/header.component';
+import {AddUserComponent} from '../../components/add-user/add-user.component';
+import {StatisticsComponent} from '../../components/statistics/statistics.component';
+import {UsersDataComponent} from '../../components/users-data/users-data.component';
 import {ToastrService} from 'ngx-toastr';
 import {
   BulkStatusChangeRequest,
@@ -12,11 +12,11 @@ import {
   UpdateUserRequset,
   User,
   UserStats
-} from '../model/user.model';
-import {SidebarComponent} from '../../../../shared/components/admin/sidebar/sidebar.component';
-import {RoleService} from '../service/role.service';
-import {CreateRoleRequest, Role} from '../model/role.model';
-import {ManageRolesComponent} from '../components/manage-roles/manage-roles.component';
+} from '../../model/user.model';
+import {SidebarComponent} from '../../../../../shared/components/admin/sidebar/sidebar.component';
+import {RoleService} from '../../service/role.service';
+import {CreateRoleRequest, Role} from '../../model/role.model';
+import {ManageRolesComponent} from '../../components/manage-roles/manage-roles.component';
 
 @Component({
   selector: 'app-user',

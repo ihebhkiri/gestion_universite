@@ -36,6 +36,8 @@ public class StudentEntity extends BaseEntity {
 
     private String phone;
 
+    private String profileImage;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private UserEntity user;

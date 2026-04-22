@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
 
                 .addFilterBefore(
@@ -111,7 +111,6 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
 }

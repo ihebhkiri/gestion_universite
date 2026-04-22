@@ -1,0 +1,54 @@
+@if (isVisible && group) {
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">Update Group</h3>
+        <button type="button" class="text-slate-500 hover:text-slate-700" (click)="onClose()">X</button>
+      </div>
+
+      <form class="space-y-4" (ngSubmit)="onSubmit()">
+        <div>
+          <label class="block text-sm mb-1">Group Name</label>
+          <input
+            type="text"
+            [(ngModel)]="form.name"
+            name="name"
+            class="w-full border rounded-lg px-3 py-2"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1">Capacity</label>
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="form.capacity"
+            name="capacity"
+            class="w-full border rounded-lg px-3 py-2"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1">Class</label>
+          <select
+            [(ngModel)]="form.classId"
+            name="classId"
+            class="w-full border rounded-lg px-3 py-2"
+            required
+          >
+            @for (item of classes; track item.id) {
+              <option [ngValue]="item.id">{{ item.code }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" class="px-4 py-2 border rounded-lg" (click)="onClose()">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-primary-container text-white rounded-lg">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -6,13 +6,6 @@ public record UpdateStudentRequest(
         String firstName,
         String lastName,
         String gender,
-
-        String group,
-        String department,
-        String speciality,
-        String level,
-
         String phone
 
-) {
-}
+) {}
