@@ -1,0 +1,13 @@
+<section class="kpi-grid">
+  @for (card of cards; track card.label) {
+    <article class="kpi-card" [class]="'kpi-card kpi-card--' + card.tone">
+      <div class="kpi-card__top">
+        <span class="kpi-card__icon material-symbols-outlined">{{ card.icon }}</span>
+        <span class="kpi-card__label">{{ card.label }}</span>
+      </div>
+
+      <div class="kpi-card__value">{{ card.value }}</div>
+      <p class="kpi-card__hint">{{ card.hint }}</p>
+    </article>
+  }
+</section>

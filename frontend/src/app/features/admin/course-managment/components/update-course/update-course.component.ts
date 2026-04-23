@@ -23,7 +23,8 @@ export class UpdateCourseComponent implements OnChanges {
     title: '',
     credits: 0,
     hours: 0,
-    subjectId: null
+    subjectId: null ,
+    coefficient : 0
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -33,7 +34,8 @@ export class UpdateCourseComponent implements OnChanges {
         title: this.course.title,
         credits: this.course.credits ?? 0,
         hours: this.course.hours ?? 0,
-        subjectId: this.course.subjectId ?? null
+        subjectId: this.course.subjectId ?? null ,
+        coefficient : this.course.coefficient ?? 0
       };
     }
   }

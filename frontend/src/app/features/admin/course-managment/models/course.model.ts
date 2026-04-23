@@ -6,6 +6,7 @@ export interface CourseResponse {
   hours: number;
   subjectId: number;
   subjectName: string;
+  coefficient : number ;
 }
 
 export interface AddCourseRequest {
@@ -14,6 +15,7 @@ export interface AddCourseRequest {
   credits: number;
   hours: number;
   subjectId: number | null;
+  coefficient : number ;
 }
 
 export interface CourseStatsResponse {

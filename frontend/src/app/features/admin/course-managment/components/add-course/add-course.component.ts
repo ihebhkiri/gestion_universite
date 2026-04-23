@@ -22,7 +22,8 @@ export class AddCourseComponent {
     title: '',
     credits: 0,
     hours: 0,
-    subjectId: null
+    subjectId: null ,
+    coefficient : 0
   };
 
   onSubmit(): void {
@@ -37,7 +38,7 @@ export class AddCourseComponent {
   }
 
   private reset(): void {
-    this.form = { code: '', title: '', credits: 0, hours: 0, subjectId: null };
+    this.form = { code: '', title: '', credits: 0, hours: 0, subjectId: null , coefficient : 0 };
   }
 }
 

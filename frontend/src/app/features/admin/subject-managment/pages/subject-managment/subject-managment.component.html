@@ -21,15 +21,15 @@
         </button>
       </div>
 
-      @if (stats) {
+      @if (true) {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20 shadow-sm">
           <h3 class="font-label text-sm text-on-surface-variant uppercase font-semibold">Total Subjects</h3>
-          <p class="font-headline text-3xl font-bold text-on-surface mt-3">{{ stats.totalSubjects }}</p>
+          <p class="font-headline text-3xl font-bold text-on-surface mt-3">test</p>
         </div>
         <div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20 shadow-sm">
           <h3 class="font-label text-sm text-on-surface-variant uppercase font-semibold">Average Coefficient</h3>
-          <p class="font-headline text-3xl font-bold text-on-surface mt-3">{{ stats.averageCoefficient.toFixed(2) }}</p>
+          <p class="font-headline text-3xl font-bold text-on-surface mt-3">test</p>
         </div>
       </div>
       }
@@ -60,11 +60,7 @@
             @for (item of filteredSubjects; track item.id) {
             <tr class="hover:bg-surface-container-low/50 transition-colors group">
               <td class="py-4 px-6 font-medium text-on-surface">{{ item.subjectName }}</td>
-              <td class="py-4 px-6">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-primary-container/10 text-primary-container">
-                  {{ item.coefficient }}
-                </span>
-              </td>
+
               <td class="py-4 px-6 text-right">
                 <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button (click)="showUpdateModal(item)" class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-lg transition-colors" title="Edit">

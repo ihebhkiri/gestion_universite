@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
-import { AddSubjectRequest, SubjectResponse, SubjectStatsResponse } from '../models/subject.model';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../../../environments/environment';
+import {AddSubjectRequest, SubjectResponse} from '../models/subject.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,6 @@ export class SubjectService {
     return this.http.get<SubjectResponse[]>(this.apiUrl);
   }
 
-  getStats(): Observable<SubjectStatsResponse> {
-    return this.http.get<SubjectStatsResponse>(`${this.apiUrl}/stats`);
-  }
 
   createSubject(request: AddSubjectRequest): Observable<void> {
     return this.http.post<void>(this.apiUrl, request);

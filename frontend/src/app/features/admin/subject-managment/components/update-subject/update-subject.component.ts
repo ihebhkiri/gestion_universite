@@ -18,20 +18,18 @@ export class UpdateSubjectComponent implements OnChanges {
 
   form: AddSubjectRequest = {
     subjectName: '',
-    coefficient: 1
   };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['subject'] && this.subject) {
       this.form = {
         subjectName: this.subject.subjectName,
-        coefficient: this.subject.coefficient
       };
     }
   }
 
   onSubmit(): void {
-    if (!this.subject || !this.form.subjectName || this.form.coefficient <= 0) {
+    if (!this.subject || !this.form.subjectName ) {
       return;
     }
     this.save.emit({ id: this.subject.id, request: { ...this.form } });

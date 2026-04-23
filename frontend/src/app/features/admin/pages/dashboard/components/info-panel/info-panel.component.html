@@ -1,0 +1,39 @@
+<section class="panel-card">
+  <div class="panel-card__header">
+    <div class="panel-card__heading">
+      <span class="panel-card__icon material-symbols-outlined">{{ icon }}</span>
+      <div>
+        <h2>{{ title }}</h2>
+        <p>{{ subtitle }}</p>
+      </div>
+    </div>
+  </div>
+
+  @if (items.length === 0) {
+    <div class="panel-card__empty">
+      <span class="material-symbols-outlined">inbox</span>
+      <p>{{ emptyText }}</p>
+    </div>
+  } @else {
+    <div class="panel-list">
+      @for (item of items; track item.title + item.subtitle) {
+        <article class="panel-item">
+          <div class="panel-item__content">
+            <div class="panel-item__top">
+              <strong>{{ item.title }}</strong>
+              @if (item.badge) {
+                <span [class]="getBadgeClass(item.badgeTone)">{{ item.badge }}</span>
+              }
+            </div>
+
+            <p>{{ item.subtitle }}</p>
+
+            @if (item.meta) {
+              <small>{{ item.meta }}</small>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

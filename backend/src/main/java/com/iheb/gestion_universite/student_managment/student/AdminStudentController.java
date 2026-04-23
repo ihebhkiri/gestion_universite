@@ -23,65 +23,81 @@ import java.nio.file.Path;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/admin/students")
+@RequestMapping ("/api/v1/admin/students")
 @RequiredArgsConstructor
 public class AdminStudentController {
+
     private final AdminStudentsService adminStudentsService;
+
     private final FileStorageService fileStorageService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> addStudent(
-            @RequestPart("student") @Valid AddStudentRequest request,
-            @RequestPart(value = "image", required = false) MultipartFile image) {
+    @PostMapping (consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> addStudent (
+            @RequestPart ("student") @Valid AddStudentRequest request,
+            @RequestPart (value = "image", required = false) MultipartFile image) {
+
         String imageFilename = fileStorageService.store(image);
         adminStudentsService.addStudent(request, imageFilename);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateStudent(@PathVariable Long id, @Valid @RequestBody UpdateStudentRequest request) {
+    @PutMapping ("/{id}")
+    public ResponseEntity<Void> updateStudent (@PathVariable Long id, @Valid @RequestBody UpdateStudentRequest request) {
+
         adminStudentsService.updateStudent(id, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .build();
     }
 
-    @PostMapping("/{id}/image")
-    public ResponseEntity<Void> uploadImage(@PathVariable Long id, @RequestParam("image") MultipartFile image) {
+    @PostMapping ("/{id}/image")
+    public ResponseEntity<Void> uploadImage (@PathVariable Long id, @RequestParam ("image") MultipartFile image) {
+
         String filename = fileStorageService.store(image);
         adminStudentsService.updateProfileImage(id, filename);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<Void> deleteStudent (@PathVariable Long id) {
+
         adminStudentsService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .build();
     }
 
-    @PostMapping("/bulk-delete")
-    public ResponseEntity<Void> bulkDelete(@Valid @RequestBody BulkDeleteStudentsRequest request) {
+    @PostMapping ("/bulk-delete")
+    public ResponseEntity<Void> bulkDelete (@Valid @RequestBody BulkDeleteStudentsRequest request) {
+
         adminStudentsService.deleteStudentsBulk(request.studentIds());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .build();
     }
 
     @GetMapping
-    public Page<StudentDataResponse> getStudents(
-            @RequestParam(required = false, defaultValue = "") String keyword,
+    public Page<StudentDataResponse> getStudents (
+            @RequestParam (required = false, defaultValue = "") String keyword,
             Pageable pageable) {
+
         return adminStudentsService.findAllStudents(keyword, pageable);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentDataResponse> getStudent(@PathVariable Long id) {
+    @GetMapping ("/{id}")
+    public ResponseEntity<StudentDataResponse> getStudent (@PathVariable Long id) {
+
         return ResponseEntity.ok(adminStudentsService.getStudentById(id));
     }
 
-    @GetMapping("/stats")
-    public ResponseEntity<StudentStatsResponse> getStudentStats() {
+    @GetMapping ("/stats")
+    public ResponseEntity<StudentStatsResponse> getStudentStats () {
+
         return ResponseEntity.ok(adminStudentsService.getStudentStats());
     }
 
-    @GetMapping("/images/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
+    @GetMapping ("/images/{filename}")
+    public ResponseEntity<Resource> getImage (@PathVariable String filename) {
+
         try {
             Path file = fileStorageService.load(filename);
             Resource resource = new UrlResource(file.toUri());
@@ -90,9 +106,11 @@ public class AdminStudentController {
                         .contentType(MediaType.IMAGE_JPEG)
                         .body(resource);
             }
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound()
+                    .build();
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound()
+                    .build();
         }
     }
 }

@@ -1,0 +1,35 @@
+<section class="activity-card">
+  <div class="activity-card__header">
+    <div>
+      <p class="activity-card__eyebrow">Activity Feed</p>
+      <h2>Latest admin movements</h2>
+      <p>Recent enrollment, staffing, and exam publishing actions.</p>
+    </div>
+  </div>
+
+  @if (items.length === 0) {
+    <div class="activity-card__empty">
+      <span class="material-symbols-outlined">hourglass_empty</span>
+      <p>No operational activity yet.</p>
+    </div>
+  } @else {
+    <div class="activity-list">
+      @for (item of items; track item.title + item.occurredAt) {
+        <article class="activity-item">
+          <div class="activity-item__icon">
+            <span class="material-symbols-outlined">{{ getIcon(item.type) }}</span>
+          </div>
+
+          <div class="activity-item__content">
+            <div class="activity-item__head">
+              <strong>{{ item.title }}</strong>
+              <span>{{ item.occurredAt | date:'dd MMM, HH:mm' }}</span>
+            </div>
+
+            <p>{{ item.description }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

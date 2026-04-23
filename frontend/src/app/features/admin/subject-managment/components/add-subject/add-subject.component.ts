@@ -17,11 +17,10 @@ export class AddSubjectComponent {
 
   form: AddSubjectRequest = {
     subjectName: '',
-    coefficient: 1
   };
 
   onSubmit(): void {
-    if (!this.form.subjectName || this.form.coefficient <= 0) {
+    if (!this.form.subjectName ) {
       return;
     }
     this.save.emit({ ...this.form });
@@ -34,6 +33,6 @@ export class AddSubjectComponent {
   }
 
   private reset(): void {
-    this.form = { subjectName: '', coefficient: 1 };
+    this.form = { subjectName: '' };
   }
 }

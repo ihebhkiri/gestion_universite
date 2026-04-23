@@ -1,4 +1,87 @@
-<main class="flex-1 ml-68 min-h-screen flex flex-col">
-<app-header></app-header>
 <app-sidebar></app-sidebar>
+
+<main class="dashboard-shell">
+  <app-header></app-header>
+
+  <section class="dashboard-content">
+    <div class="dashboard-hero">
+      <div>
+        <p class="dashboard-eyebrow">Admin overview</p>
+        <h1>University command center</h1>
+        <p class="dashboard-subtitle">
+          Follow enrollment momentum, department coverage, exam windows, and the operational signals that still need attention.
+        </p>
+      </div>
+
+      <button class="refresh-button" type="button" (click)="loadDashboard()">
+        <span class="material-symbols-outlined">refresh</span>
+        Refresh
+      </button>
+    </div>
+
+    @if (loading) {
+      <section class="state-card">
+        <span class="material-symbols-outlined animate-spin">progress_activity</span>
+        <div>
+          <h2>Loading dashboard</h2>
+          <p>We are assembling the latest admin insights.</p>
+        </div>
+      </section>
+    } @else if (errorMessage) {
+      <section class="state-card state-card--error">
+        <span class="material-symbols-outlined">error</span>
+        <div>
+          <h2>Dashboard unavailable</h2>
+          <p>{{ errorMessage }}</p>
+        </div>
+      </section>
+    } @else if (dashboard) {
+      <app-kpi-cards [cards]="metricCards"></app-kpi-cards>
+
+      <section class="dashboard-grid dashboard-grid--top">
+        <app-enrollment-chart
+          [points]="dashboard.enrollmentChart"
+          [departments]="dashboard.departmentStats">
+        </app-enrollment-chart>
+
+        <app-activity-feed [items]="dashboard.activityFeed"></app-activity-feed>
+      </section>
+
+      <section class="dashboard-grid dashboard-grid--middle">
+        <app-info-panel
+          title="Recent Enrollments"
+          subtitle="Fresh admissions and class assignments"
+          icon="how_to_reg"
+          emptyText="No enrollment activity yet."
+          [items]="recentEnrollmentItems">
+        </app-info-panel>
+
+        <app-info-panel
+          title="Upcoming Exams"
+          subtitle="Exam windows sourced from semester scheduling"
+          icon="quiz"
+          emptyText="No upcoming exam windows configured."
+          [items]="upcomingExamItems">
+        </app-info-panel>
+      </section>
+
+      <section class="dashboard-grid dashboard-grid--bottom">
+        <app-info-panel
+          title="Upcoming Events"
+          subtitle="Academic milestones on the horizon"
+          icon="event_upcoming"
+          emptyText="No future academic events found."
+          [items]="upcomingEventItems">
+        </app-info-panel>
+
+        <app-info-panel
+          title="Alerts"
+          subtitle="Signals that need admin follow-up"
+          icon="warning"
+          emptyText="No alerts right now."
+          [items]="alertItems">
+        </app-info-panel>
+      </section>
+    }
+  </section>
 </main>

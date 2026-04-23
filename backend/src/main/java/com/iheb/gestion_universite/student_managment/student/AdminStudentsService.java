@@ -14,6 +14,7 @@ import com.iheb.gestion_universite.student_managment.student.dto.StudentStatsRes
 import com.iheb.gestion_universite.student_managment.student.dto.UpdateStudentRequest;
 import com.iheb.gestion_universite.security.user.UserEntity;
 import com.iheb.gestion_universite.security.user.UserRepository;
+import com.iheb.gestion_universite.student_managment.student_group.GroupRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,7 @@ public class AdminStudentsService {
 
     private final StudentRepository studentRepository;
 
-    private final com.iheb.gestion_universite.student_managment.student_group.GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
 
     private final PasswordEncoder passwordEncoder;
 

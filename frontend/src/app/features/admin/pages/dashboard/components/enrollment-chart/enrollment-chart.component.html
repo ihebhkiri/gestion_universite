@@ -1,0 +1,52 @@
+<section class="chart-card">
+  <div class="chart-card__header">
+    <div>
+      <p class="chart-card__eyebrow">Charts</p>
+      <h2>Enrollment trend</h2>
+      <p>Monthly intake across the latest six enrollment periods.</p>
+    </div>
+  </div>
+
+  <div class="chart-card__canvas">
+    @for (point of points; track point.label) {
+      <div class="chart-bar">
+        <div class="chart-bar__track">
+          <div
+            class="chart-bar__fill"
+            [style.height.%]="(point.value / maxValue) * 100">
+          </div>
+        </div>
+        <strong>{{ point.value }}</strong>
+        <span>{{ point.label }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="chart-card__footer">
+    <div>
+      <p class="chart-card__eyebrow">Department Stats</p>
+      <h3>Teaching coverage by department</h3>
+    </div>
+
+    <div class="department-list">
+      @for (department of topDepartments; track department.id) {
+        <div class="department-row">
+          <div class="department-row__content">
+            <div class="department-row__head">
+              <strong>{{ department.name }}</strong>
+              <span>{{ department.code }}</span>
+            </div>
+
+            <div class="department-row__meta">
+              {{ department.teachers }} teachers · {{ department.programs }} programs
+            </div>
+          </div>
+
+          <div class="department-row__bar">
+            <div class="department-row__progress" [style.width.%]="getDepartmentWidth(department)"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

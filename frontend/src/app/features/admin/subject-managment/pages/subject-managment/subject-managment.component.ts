@@ -5,7 +5,7 @@ import { forkJoin } from 'rxjs';
 import { SidebarComponent } from '../../../../../shared/components/admin/sidebar/sidebar.component';
 import { HeaderComponent } from '../../../../../shared/components/admin/header/header.component';
 import { SubjectService } from '../../services/subject.service';
-import { AddSubjectRequest, SubjectResponse, SubjectStatsResponse } from '../../models/subject.model';
+import { AddSubjectRequest, SubjectResponse} from '../../models/subject.model';
 import { AddSubjectComponent } from '../../components/add-subject/add-subject.component';
 import { UpdateSubjectComponent } from '../../components/update-subject/update-subject.component';
 
@@ -26,7 +26,6 @@ import { UpdateSubjectComponent } from '../../components/update-subject/update-s
 export class SubjectManagmentComponent implements OnInit {
   subjects: SubjectResponse[] = [];
   filteredSubjects: SubjectResponse[] = [];
-  stats: SubjectStatsResponse | null = null;
   keyword = '';
 
   isAddModalVisible = false;
@@ -42,11 +41,9 @@ export class SubjectManagmentComponent implements OnInit {
   loadAll(): void {
     forkJoin({
       subjects: this.subjectService.getSubjects(),
-      stats: this.subjectService.getStats()
     }).subscribe({
       next: (res) => {
         this.subjects = res.subjects;
-        this.stats = res.stats;
         this.applyFilter();
       },
       error: (err) => console.error('Failed to load subjects', err)
