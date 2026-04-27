@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,9 +38,20 @@ public class EnrollmentAdminService {
 
     public void changeEnrollmentStatusBulk(List<Long> studentIds, String newStatus) {
         EnrollmentStatus status = EnrollmentStatus.valueOf(newStatus.toUpperCase());
-        List<StudentEnrollmentEntity> activeEnrollments = enrollmentRepo.findByStudent_IdInAndStatus(studentIds, EnrollmentStatus.ACTIVE);
-        activeEnrollments.forEach(e -> e.setStatus(status));
-        enrollmentRepo.saveAll(activeEnrollments);
+        List<StudentEntity> students = studentRepository.findAllById(studentIds);
+        List<StudentEnrollmentEntity> enrollmentsToUpdate = new ArrayList<>();
+        
+        for (StudentEntity student : students) {
+            if (student.getEnrollments() != null && !student.getEnrollments().isEmpty()) {
+                StudentEnrollmentEntity latest = student.getEnrollments().stream()
+                        .reduce((first, second) -> second).orElse(null);
+                if (latest != null) {
+                    latest.setStatus(status);
+                    enrollmentsToUpdate.add(latest);
+                }
+            }
+        }
+        enrollmentRepo.saveAll(enrollmentsToUpdate);
     }
 
     private StudentEnrollmentEntity createEnrollment (Long studentId, Long groupId) {
@@ -58,7 +70,7 @@ public class EnrollmentAdminService {
 
     }
     private void ensureNoActiveEnrollment(Long studentId) {
-        if (enrollmentRepo.existsByStudent_IdAndStatus(studentId, EnrollmentStatus.ACTIVE)) {
+        if (enrollmentRepo.existsByStudent_IdAndStatus(studentId, EnrollmentStatus.CONFIRMED)) {
             throw new IllegalStateException("Student already has an ACTIVE enrollment");
         }
     }

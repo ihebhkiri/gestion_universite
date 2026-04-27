@@ -29,8 +29,7 @@ public class StudentEnrollmentEntity extends BaseEntity {
     private StudentGroupEntity group;
 
     @Enumerated(EnumType.STRING)
-    private EnrollmentStatus status = EnrollmentStatus.ACTIVE;
-
+    private EnrollmentStatus status = EnrollmentStatus.CONFIRMED ;
     private LocalDate enrollmentDate;
 
 }

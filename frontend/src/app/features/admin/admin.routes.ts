@@ -17,7 +17,7 @@ export const routes: Routes = [
     loadComponent: () => import('./student-managment/pages/students-managment/students-managment.component').then(m => m.StudentsManagmentComponent)
   }, {
     path: 'enrollments',
-    loadComponent: () => import('./student-managment/pages/enrollment-management/enrollment-management.component').then(m => m.EnrollmentManagementComponent)
+    loadComponent: () => import('./enrollment-management/enrollment-management.component').then(m => m.EnrollmentManagementComponent)
   }, {
     path: 'groups',
     loadComponent: () => import('./student-managment/pages/group-management/group-management.component').then(m => m.GroupManagementComponent)

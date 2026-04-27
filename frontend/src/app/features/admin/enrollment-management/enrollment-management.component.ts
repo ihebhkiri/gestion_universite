@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../../../../shared/components/admin/sidebar/sidebar.component';
-import { HeaderComponent } from '../../../../../shared/components/admin/header/header.component';
-import { StudentService } from '../../services/student.service';
-import { GroupService } from '../../services/group.service';
-import { EnrollmentService } from '../../services/enrollment.service';
-import { StudentResponse } from '../../models/student.model';
-import { GroupResponse } from '../../models/group.model';
-import { EnrollStudentRequest } from '../../models/enrollment.model';
+import { SidebarComponent } from '../../../shared/components/admin/sidebar/sidebar.component';
+import { HeaderComponent } from '../../../shared/components/admin/header/header.component';
+import { StudentService } from '../student-managment/services/student.service';
+import { GroupService } from '../student-managment/services/group.service';
+import { EnrollmentService } from '../student-managment/services/enrollment.service';
+import { StudentResponse } from '../student-managment/models/student.model';
+import { GroupResponse } from '../student-managment/models/group.model';
+import { EnrollStudentRequest } from '../student-managment/models/enrollment.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -21,7 +21,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class EnrollmentManagementComponent implements OnInit {
   students: StudentResponse[] = [];
   groups: GroupResponse[] = [];
-  
+
   selectedStudentId: number | null = null;
   selectedGroupId: number | null = null;
   loadingData = false;
@@ -51,9 +51,9 @@ export class EnrollmentManagementComponent implements OnInit {
 
   loadData(): void {
     this.loadingData = true;
-    
+
     // Using simple approach instead of forkJoin to keep it straightforward and avoid extra imports
-    this.studentService.getStudents('', 0, 1000).subscribe({
+    this.studentService.getStudents(0, 1000).subscribe({
       next: (res) => {
         this.students = res.content;
         this.groupService.getGroups().subscribe({
@@ -78,7 +78,7 @@ export class EnrollmentManagementComponent implements OnInit {
     if (this.selectedStudentId && this.selectedGroupId) {
       this.submitting = true;
       const request: EnrollStudentRequest = { studentId: this.selectedStudentId };
-      
+
       this.enrollmentService.enrollStudentToGroup(this.selectedGroupId, request).subscribe({
         next: () => {
           this.submitting = false;

@@ -8,6 +8,7 @@ import { SemesterService } from '../../services/semester.service';
 import { AcademicYearOption, AddSemesterRequest, SemesterResponse, SemesterStatsResponse } from '../../models/semester.model';
 import { AddSemesterComponent } from '../../components/add-semester/add-semester.component';
 import { UpdateSemesterComponent } from '../../components/update-semester/update-semester.component';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-semester-managment',
@@ -34,7 +35,7 @@ export class SemesterManagmentComponent implements OnInit {
   isUpdateModalVisible = false;
   selectedSemester: SemesterResponse | null = null;
 
-  constructor(private semesterService: SemesterService) {}
+  constructor(private semesterService: SemesterService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.loadAll();
@@ -52,7 +53,7 @@ export class SemesterManagmentComponent implements OnInit {
         this.academicYears = res.academicYears;
         this.applyFilter();
       },
-      error: (err) => console.error('Failed to load semesters', err)
+      error: (err) => this.toastr.error('Failed to load semesters', err)
     });
   }
 
@@ -84,7 +85,7 @@ export class SemesterManagmentComponent implements OnInit {
         this.hideAddModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to create semester', err)
+      error: (err) => this.toastr.error('Failed to create semester', err)
     });
   }
 
@@ -104,7 +105,7 @@ export class SemesterManagmentComponent implements OnInit {
         this.hideUpdateModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to update semester', err)
+      error: (err) => this.toastr.error('Failed to update semester', err)
     });
   }
 
@@ -114,7 +115,7 @@ export class SemesterManagmentComponent implements OnInit {
     }
     this.semesterService.delete(id).subscribe({
       next: () => this.loadAll(),
-      error: (err) => console.error('Failed to delete semester', err)
+      error: (err) => this.toastr.error('Failed to delete semester', err)
     });
   }
 }

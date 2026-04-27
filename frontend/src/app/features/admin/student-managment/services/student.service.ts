@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {environment} from '../../../../../environments/environment';
 import {
+  AddStudentRequest,
+  PageableResponse,
   StudentResponse,
   StudentStatsResponse,
-  AddStudentRequest,
-  UpdateStudentRequest,
-  PageableResponse
+  UpdateStudentRequest
 } from '../models/student.model';
 
 export interface BulkDeleteStudentsRequest {
@@ -20,18 +21,28 @@ export interface BulkDeleteStudentsRequest {
 export class StudentService {
   private apiUrl = `${environment.apiUrl}admin/students`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  getStudents(keyword: string = '', page: number = 0, size: number = 10): Observable<PageableResponse<StudentResponse>> {
+  processFilterChanges(filterChanges: Observable<any>): Observable<any> {
+    return filterChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+    );
+  }
+
+  getStudents(page: number = 0, size: number = 10, filters: any = {}, sort: string = 'id,desc'): Observable<PageableResponse<StudentResponse>> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('sort', sort);
 
-    if (keyword) {
-      params = params.set('keyword', keyword);
-    }
+    if (filters?.search) params = params.set('search', filters.search);
+    if (filters?.academicYear) params = params.set('academicYear', filters.academicYear);
+    if (filters?.program) params = params.set('program', filters.program);
+    if (filters?.status) params = params.set('status', filters.status);
 
-    return this.http.get<PageableResponse<StudentResponse>>(this.apiUrl, { params });
+    return this.http.get<PageableResponse<StudentResponse>>(this.apiUrl, {params});
   }
 
   getStudentStats(): Observable<StudentStatsResponse> {
@@ -44,7 +55,7 @@ export class StudentService {
 
   addStudent(student: AddStudentRequest, image?: File): Observable<any> {
     const formData = new FormData();
-    formData.append('student', new Blob([JSON.stringify(student)], { type: 'application/json' }));
+    formData.append('student', new Blob([JSON.stringify(student)], {type: 'application/json'}));
 
     if (image) {
       formData.append('image', image);
@@ -65,9 +76,5 @@ export class StudentService {
     return this.http.post<void>(`${this.apiUrl}/bulk-delete`, request);
   }
 
-  uploadImage(id: number, image: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('image', image);
-    return this.http.post(`${this.apiUrl}/${id}/image`, formData);
-  }
+
 }

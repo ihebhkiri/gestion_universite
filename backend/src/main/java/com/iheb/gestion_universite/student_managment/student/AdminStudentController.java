@@ -77,10 +77,13 @@ public class AdminStudentController {
 
     @GetMapping
     public Page<StudentDataResponse> getStudents (
-            @RequestParam (required = false, defaultValue = "") String keyword,
+            @RequestParam (required = false, defaultValue = "") String search,
+            @RequestParam (required = false) Long academicYear,
+            @RequestParam (required = false) Long program,
+            @RequestParam (required = false) String status,
             Pageable pageable) {
 
-        return adminStudentsService.findAllStudents(keyword, pageable);
+        return adminStudentsService.findAllStudents(search, academicYear, program, status, pageable);
     }
 
     @GetMapping ("/{id}")

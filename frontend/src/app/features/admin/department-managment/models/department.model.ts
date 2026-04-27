@@ -15,3 +15,7 @@ export interface AddDepartmentRequest {
   code: string;
   name: string;
 }
+export interface UpdateDepartmentRequest {
+  id : number
+  data : {code: string , name: string}
+}

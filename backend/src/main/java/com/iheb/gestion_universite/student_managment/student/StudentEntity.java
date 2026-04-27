@@ -44,6 +44,7 @@ public class StudentEntity extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "student", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OrderBy("enrollmentDate ASC")
     private List<StudentEnrollmentEntity> enrollments = new ArrayList<>();
 
     private LocalDate enrollmentDate; // date elli 3mal feha etudiant inscrit fel fac

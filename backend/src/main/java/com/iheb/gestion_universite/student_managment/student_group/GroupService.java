@@ -70,7 +70,7 @@ public class GroupService {
     private GroupResponse mapToResponse(StudentGroupEntity group) {
         Long classId = group.getAcademicClass() != null ? group.getAcademicClass().getId() : null;
         String classCode = group.getAcademicClass() != null ? group.getAcademicClass().getCode() : null;
-        long enrolledStudents = enrollmentRepo.countByGroupIdAndStatus(group.getId(), EnrollmentStatus.ACTIVE);
+        long enrolledStudents = enrollmentRepo.countByGroupIdAndStatus(group.getId(), EnrollmentStatus.CONFIRMED);
         long availableSeats = Math.max(0, group.getCapacity() - enrolledStudents);
         return new GroupResponse(
                 group.getId(),
@@ -89,7 +89,7 @@ public class GroupService {
                 .stream()
                 .mapToLong(StudentGroupEntity::getCapacity)
                 .sum();
-        long activeEnrollments = enrollmentRepo.countByStatus(EnrollmentStatus.ACTIVE);
+        long activeEnrollments = enrollmentRepo.countByStatus(EnrollmentStatus.CONFIRMED);
         return new GroupStatsResponse(totalGroups, totalCapacity, activeEnrollments);
     }
 

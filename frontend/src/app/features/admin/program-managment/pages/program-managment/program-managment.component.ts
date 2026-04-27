@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../../../../shared/components/admin/sidebar/sidebar.component';
-import { HeaderComponent } from '../../../../../shared/components/admin/header/header.component';
-import { ProgramService } from '../../services/program.service';
-import { ProgramResponse, ProgramStatsResponse, AddProgramRequest, DepartmentOption } from '../../models/program.model';
-import { AddProgramComponent } from '../../components/add-program/add-program.component';
-import { UpdateProgramComponent } from '../../components/update-program/update-program.component';
-import { forkJoin } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {SidebarComponent} from '../../../../../shared/components/admin/sidebar/sidebar.component';
+import {HeaderComponent} from '../../../../../shared/components/admin/header/header.component';
+import {ProgramService} from '../../services/program.service';
+import {ProgramResponse, ProgramStatsResponse, AddProgramRequest, DepartmentOption} from '../../models/program.model';
+import {AddProgramComponent} from '../../components/add-program/add-program.component';
+import {UpdateProgramComponent} from '../../components/update-program/update-program.component';
+import {forkJoin} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-program-managment',
@@ -34,7 +35,8 @@ export class ProgramManagmentComponent implements OnInit {
   isUpdateModalVisible = false;
   selectedProgram: ProgramResponse | null = null;
 
-  constructor(private programService: ProgramService) {}
+  constructor(private programService: ProgramService, private toastr: ToastrService) {
+  }
 
   ngOnInit(): void {
     this.loadAll();
@@ -52,7 +54,7 @@ export class ProgramManagmentComponent implements OnInit {
         this.departments = res.departments;
         this.applyFilter();
       },
-      error: (err) => console.error('Failed to load data', err)
+      error: (err) => this.toastr.error('Failed to load data', err)
     });
   }
 
@@ -84,7 +86,7 @@ export class ProgramManagmentComponent implements OnInit {
         this.hideAddModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to create program', err)
+      error: (err) => this.toastr.error('Failed to create program', err.error)
     });
   }
 
@@ -107,14 +109,14 @@ export class ProgramManagmentComponent implements OnInit {
               this.hideUpdateModal();
               this.loadAll();
             },
-            error: (err) => console.error('Failed to update department assignment', err)
+            error: (err) => this.toastr.error('Failed to update department assignment', err)
           });
         } else {
           this.hideUpdateModal();
           this.loadAll();
         }
       },
-      error: (err) => console.error('Failed to update program', err)
+      error: (err) => this.toastr.error('Failed to update program', err)
     });
   }
 
@@ -122,7 +124,7 @@ export class ProgramManagmentComponent implements OnInit {
     if (confirm('Are you sure you want to delete this program? This action cannot be undone.')) {
       this.programService.deleteProgram(id).subscribe({
         next: () => this.loadAll(),
-        error: (err) => console.error('Failed to delete program', err)
+        error: (err) => this.toastr.error('Failed to delete program', err)
       });
     }
   }

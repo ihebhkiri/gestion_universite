@@ -8,6 +8,7 @@ import { SpecialityResponse, SpecialityStatsResponse, AddSpecialityRequest, Prog
 import { AddSpecialityComponent } from '../../components/add-speciality/add-speciality.component';
 import { UpdateSpecialityComponent } from '../../components/update-speciality/update-speciality.component';
 import { forkJoin } from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-speciality-managment',
@@ -35,7 +36,7 @@ export class SpecialityManagmentComponent implements OnInit {
   isUpdateModalVisible = false;
   selectedSpeciality: SpecialityResponse | null = null;
 
-  constructor(private specialityService: SpecialityService) {}
+  constructor(private specialityService: SpecialityService , private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.loadAll();
@@ -53,7 +54,7 @@ export class SpecialityManagmentComponent implements OnInit {
         this.programs = res.programs;
         this.applyFilter();
       },
-      error: (err) => console.error('Failed to load data', err)
+      error: (err) => this.toastr.error('Failed to load data', err)
     });
   }
 
@@ -86,7 +87,7 @@ export class SpecialityManagmentComponent implements OnInit {
         this.hideAddModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to create speciality', err)
+      error: (err) => this.toastr.error('Failed to create speciality', err)
     });
   }
 
@@ -110,14 +111,14 @@ export class SpecialityManagmentComponent implements OnInit {
               this.hideUpdateModal();
               this.loadAll();
             },
-            error: (err) => console.error('Failed to update program assignment', err)
+            error: (err) => this.toastr.error('Failed to update program assignment', err)
           });
         } else {
           this.hideUpdateModal();
           this.loadAll();
         }
       },
-      error: (err) => console.error('Failed to update speciality', err)
+      error: (err) => this.toastr.error('Failed to update speciality', err)
     });
   }
 
@@ -126,7 +127,7 @@ export class SpecialityManagmentComponent implements OnInit {
     if (confirm('Are you sure you want to delete this speciality? This action cannot be undone.')) {
       this.specialityService.deleteSpeciality(id).subscribe({
         next: () => this.loadAll(),
-        error: (err) => console.error('Failed to delete speciality', err)
+        error: (err) => this.toastr.error('Failed to delete speciality', err)
       });
     }
   }

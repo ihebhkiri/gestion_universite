@@ -72,7 +72,9 @@ export interface DashboardMetricCard {
   value: string;
   hint: string;
   icon: string;
-  tone: 'blue' | 'green' | 'amber' | 'slate';
+  cardClass: string;
+  iconClass: string;
+  chipClass: string;
 }
 
 export interface DashboardPanelItem {
@@ -80,5 +82,51 @@ export interface DashboardPanelItem {
   subtitle: string;
   meta?: string;
   badge?: string;
-  badgeTone?: 'blue' | 'green' | 'amber' | 'red' | 'slate';
+  badgeClass?: string;
+}
+
+export interface DashboardChartBar {
+  label: string;
+  value: number;
+  height: number;
+  fillClass: string;
+}
+
+export interface DashboardDepartmentStatView {
+  id: number;
+  code: string;
+  name: string;
+  teachersLabel: string;
+  programsLabel: string;
+  width: number;
+  progressClass: string;
+}
+
+export interface DashboardActivityItemView {
+  title: string;
+  description: string;
+  occurredAtLabel: string;
+  icon: string;
+  iconClass: string;
+  surfaceClass: string;
+}
+
+export interface DashboardRecentEnrollmentRow {
+  id: number;
+  studentName: string;
+  matricule: string;
+  groupName: string;
+  status: string;
+  statusClass: string;
+  enrollmentDateLabel: string;
+}
+
+export interface DashboardAttendanceWidget {
+  value: string;
+  headline: string;
+  description: string;
+  trendLabel: string;
+  trendClass: string;
+  progressBackground: string;
+  footnote: string;
 }

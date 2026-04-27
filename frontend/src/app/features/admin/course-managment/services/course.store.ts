@@ -1,13 +1,14 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { CourseService } from './course.service';
-import { SubjectService } from '../../subject-managment/services/subject.service';
-import { CourseResponse, CourseStatsResponse, AddCourseRequest } from '../models/course.model';
-import { SubjectResponse } from '../../subject-managment/models/subject.model';
+import {Injectable, computed, signal} from '@angular/core';
+import {CourseService} from './course.service';
+import {SubjectService} from '../../subject-managment/services/subject.service';
+import {CourseResponse, CourseStatsResponse, AddCourseRequest} from '../models/course.model';
+import {SubjectResponse} from '../../subject-managment/models/subject.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseStore {
+
   private readonly _courses = signal<CourseResponse[]>([]);
   private readonly _subjects = signal<SubjectResponse[]>([]);
   private readonly _stats = signal<CourseStatsResponse | null>(null);
@@ -40,7 +41,8 @@ export class CourseStore {
   constructor(
     private courseService: CourseService,
     private subjectService: SubjectService
-  ) {}
+  ) {
+  }
 
   init(): void {
     this.loadAll();
@@ -64,6 +66,7 @@ export class CourseStore {
       next: (stats) => this._stats.set(stats),
       error: () => this._stats.set(null)
     });
+
   }
 
   loadSubjects(): void {
@@ -75,14 +78,14 @@ export class CourseStore {
 
   create(request: AddCourseRequest): void {
     if (!request.subjectId) return;
-    this.courseService.create({ ...request, subjectId: request.subjectId }).subscribe({
+    this.courseService.create({...request, subjectId: request.subjectId}).subscribe({
       next: () => this.loadAll()
     });
   }
 
   update(id: number, request: AddCourseRequest): void {
     if (!request.subjectId) return;
-    this.courseService.update(id, { ...request, subjectId: request.subjectId }).subscribe({
+    this.courseService.update(id, {...request, subjectId: request.subjectId}).subscribe({
       next: () => this.loadAll()
     });
   }
@@ -96,7 +99,7 @@ export class CourseStore {
   bulkDeleteSelected(): void {
     const ids = Array.from(this._selectedIds());
     if (ids.length === 0) return;
-    this.courseService.bulkDelete({ courseIds: ids }).subscribe({
+    this.courseService.bulkDelete({courseIds: ids}).subscribe({
       next: () => {
         this.clearSelection();
         this.loadAll();
@@ -108,20 +111,25 @@ export class CourseStore {
     return this._selectedIds().has(id);
   }
 
-  toggleOne(id: number, checked: boolean): void {
+  toggleOne(id: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
     const next = new Set(this._selectedIds());
     if (checked) next.add(id);
     else next.delete(id);
     this._selectedIds.set(next);
   }
 
-  toggleSelectAllOnList(checked: boolean, ids: number[]): void {
+  toggleSelectAllOnList(event: Event, ids: number[]): void {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
     if (!checked) {
       const next = new Set(this._selectedIds());
       ids.forEach(id => next.delete(id));
       this._selectedIds.set(next);
       return;
     }
+
     const next = new Set(this._selectedIds());
     ids.forEach(id => next.add(id));
     this._selectedIds.set(next);

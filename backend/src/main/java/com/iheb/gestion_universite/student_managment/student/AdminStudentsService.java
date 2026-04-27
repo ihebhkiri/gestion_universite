@@ -77,8 +77,8 @@ public class AdminStudentsService {
         studentRepository.deleteAllByIdInBatch(studentIds);
     }
 
-    public Page<StudentDataResponse> findAllStudents(String keyword, Pageable pageable) {
-        return studentRepository.searchStudents(keyword, pageable)
+    public Page<StudentDataResponse> findAllStudents(String keyword, Long academicYearId, Long programId, String status, Pageable pageable) {
+        return studentRepository.findAll(StudentSpecification.withFilters(keyword, academicYearId, programId, status), pageable)
                 .map(this::mapToResponse);
     }
 
@@ -89,7 +89,7 @@ public class AdminStudentsService {
 
     public StudentStatsResponse getStudentStats() {
         long totalStudents = studentRepository.count();
-        long activeEnrollments = enrollmentRepo.countByStatus(EnrollmentStatus.ACTIVE);
+        long activeEnrollments = enrollmentRepo.countByStatus(EnrollmentStatus.CONFIRMED);
         long newThisMonth = enrollmentRepo.countByEnrollmentDateAfter(LocalDate.now().withDayOfMonth(1).minusDays(1));
         long totalGroups = groupRepository.count();
         return new StudentStatsResponse(totalStudents, activeEnrollments, newThisMonth, totalGroups);

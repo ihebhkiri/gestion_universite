@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../../../../shared/components/admin/sidebar/sidebar.component';
-import { HeaderComponent } from '../../../../../shared/components/admin/header/header.component';
-import { CourseStore } from '../../services/course.store';
-import { AddCourseRequest, CourseResponse } from '../../models/course.model';
-import { AddCourseComponent } from '../../components/add-course/add-course.component';
-import { UpdateCourseComponent } from '../../components/update-course/update-course.component';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {SidebarComponent} from '../../../../../shared/components/admin/sidebar/sidebar.component';
+import {HeaderComponent} from '../../../../../shared/components/admin/header/header.component';
+import {CourseStore} from '../../services/course.store';
+import {AddCourseRequest, CourseResponse} from '../../models/course.model';
+import {AddCourseComponent} from '../../components/add-course/add-course.component';
+import {UpdateCourseComponent} from '../../components/update-course/update-course.component';
 
 @Component({
   selector: 'app-course-management',

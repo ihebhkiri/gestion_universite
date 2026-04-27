@@ -15,6 +15,7 @@ import {
 } from '../../models/academic-class.model';
 import { AddClassComponent } from '../../components/add-class/add-class.component';
 import { UpdateClassComponent } from '../../components/update-class/update-class.component';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-academic-class-management',
@@ -43,7 +44,7 @@ export class AcademicClassManagementComponent implements OnInit {
   isUpdateModalVisible = false;
   selectedClass: AcademicClassResponse | null = null;
 
-  constructor(private academicClassService: AcademicClassService) {}
+  constructor(private academicClassService: AcademicClassService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.loadAll();
@@ -65,7 +66,7 @@ export class AcademicClassManagementComponent implements OnInit {
         this.academicYears = res.academicYears;
         this.applyFilter();
       },
-      error: (err) => console.error('Failed to load classes data', err)
+      error: (err) => this.toastr.error('Failed to load classes data', err)
     });
   }
 
@@ -98,7 +99,7 @@ export class AcademicClassManagementComponent implements OnInit {
         this.hideAddModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to create class', err)
+      error: (err) => this.toastr.error('Failed to create class', err)
     });
   }
 
@@ -118,7 +119,7 @@ export class AcademicClassManagementComponent implements OnInit {
         this.hideUpdateModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to update class', err)
+      error: (err) => this.toastr.error('Failed to update class', err)
     });
   }
 
@@ -128,7 +129,7 @@ export class AcademicClassManagementComponent implements OnInit {
     }
     this.academicClassService.deleteClass(id).subscribe({
       next: () => this.loadAll(),
-      error: (err) => console.error('Failed to delete class', err)
+      error: (err) => this.toastr.error('Failed to delete class', err)
     });
   }
 }

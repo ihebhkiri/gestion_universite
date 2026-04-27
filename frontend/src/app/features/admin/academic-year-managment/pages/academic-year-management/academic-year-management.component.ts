@@ -8,6 +8,7 @@ import { AcademicYearService } from '../../services/academic-year.service';
 import { AcademicYearResponse, AcademicYearStatsResponse, AddAcademicYearRequest } from '../../models/academic-year.model';
 import { AddAcademicYearComponent } from '../../components/add-academic-year/add-academic-year.component';
 import { UpdateAcademicYearComponent } from '../../components/update-academic-year/update-academic-year.component';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-academic-year-management',
@@ -33,7 +34,7 @@ export class AcademicYearManagementComponent implements OnInit {
   isUpdateModalVisible = false;
   selectedYear: AcademicYearResponse | null = null;
 
-  constructor(private academicYearService: AcademicYearService) {}
+  constructor(private academicYearService: AcademicYearService,private toastr:ToastrService) {}
 
   ngOnInit(): void {
     this.loadAll();
@@ -49,7 +50,7 @@ export class AcademicYearManagementComponent implements OnInit {
         this.stats = res.stats;
         this.applyFilter();
       },
-      error: (err) => console.error('Failed to load academic years', err)
+      error: (err) => this.toastr.error('Failed to load academic years', err)
     });
   }
 
@@ -77,7 +78,7 @@ export class AcademicYearManagementComponent implements OnInit {
         this.hideAddModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to create academic year', err)
+      error: (err) => this.toastr.error('Failed to create academic year', err)
     });
   }
 
@@ -97,7 +98,7 @@ export class AcademicYearManagementComponent implements OnInit {
         this.hideUpdateModal();
         this.loadAll();
       },
-      error: (err) => console.error('Failed to update academic year', err)
+      error: (err) => this.toastr.error('Failed to update academic year', err)
     });
   }
 
@@ -107,7 +108,7 @@ export class AcademicYearManagementComponent implements OnInit {
     }
     this.academicYearService.delete(id).subscribe({
       next: () => this.loadAll(),
-      error: (err) => console.error('Failed to delete academic year', err)
+      error: (err) => this.toastr.error('Failed to delete academic year', err)
     });
   }
 }

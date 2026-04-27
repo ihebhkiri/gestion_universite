@@ -1,12 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../../../../shared/components/admin/sidebar/sidebar.component';
-import { HeaderComponent } from '../../../../../shared/components/admin/header/header.component';
-import { DepartmentService } from '../../services/department.service';
-import { DepartmentResponse, DepartmentStatsResponse, AddDepartmentRequest } from '../../models/department.model';
-import { AddDepartmentComponent } from '../../components/add-department/add-department.component';
-import { UpdateDepartmentComponent } from '../../components/update-department/update-department.component';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {SidebarComponent} from '../../../../../shared/components/admin/sidebar/sidebar.component';
+import {HeaderComponent} from '../../../../../shared/components/admin/header/header.component';
+import {DepartmentService} from '../../services/department.service';
+import {
+  DepartmentResponse,
+  DepartmentStatsResponse,
+  AddDepartmentRequest,
+  UpdateDepartmentRequest
+} from '../../models/department.model';
+import {AddDepartmentComponent} from '../../components/add-department/add-department.component';
+import {UpdateDepartmentComponent} from '../../components/update-department/update-department.component';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-department-managment',
@@ -28,12 +34,12 @@ export class DepartmentManagmentComponent implements OnInit {
   stats: DepartmentStatsResponse | null = null;
   keyword = '';
 
-  // Modal state
   isAddModalVisible = false;
   isUpdateModalVisible = false;
   selectedDepartment: DepartmentResponse | null = null;
 
-  constructor(private departmentService: DepartmentService) {}
+  constructor(private departmentService: DepartmentService,private toastr: ToastrService) {
+  }
 
   ngOnInit(): void {
     this.loadStats();
@@ -43,7 +49,7 @@ export class DepartmentManagmentComponent implements OnInit {
   loadStats(): void {
     this.departmentService.getStats().subscribe({
       next: (res) => this.stats = res,
-      error: (err) => console.error('Failed to load stats', err)
+      error: (err) => this.toastr.error('Failed to load stats', err)
     });
   }
 
@@ -53,7 +59,7 @@ export class DepartmentManagmentComponent implements OnInit {
         this.departments = res;
         this.applyFilter();
       },
-      error: (err) => console.error('Failed to load departments', err)
+      error: (err) => this.toastr.error('Failed to load departments', err)
     });
   }
 
@@ -69,7 +75,6 @@ export class DepartmentManagmentComponent implements OnInit {
     );
   }
 
-  // --- Add Modal ---
   showAddModal(): void {
     this.isAddModalVisible = true;
   }
@@ -85,11 +90,10 @@ export class DepartmentManagmentComponent implements OnInit {
         this.loadDepartments();
         this.loadStats();
       },
-      error: (err) => console.error('Failed to create department', err)
+      error: (err) => this.toastr.error('Failed to create department', err)
     });
   }
 
-  // --- Update Modal ---
   showUpdateModal(dept: DepartmentResponse): void {
     this.selectedDepartment = dept;
     this.isUpdateModalVisible = true;
@@ -100,18 +104,17 @@ export class DepartmentManagmentComponent implements OnInit {
     this.selectedDepartment = null;
   }
 
-  onUpdateDepartment(event: { id: number, data: AddDepartmentRequest }): void {
+  onUpdateDepartment(event: UpdateDepartmentRequest): void {
     this.departmentService.updateDepartment(event.id, event.data).subscribe({
       next: () => {
         this.hideUpdateModal();
         this.loadDepartments();
         this.loadStats();
       },
-      error: (err) => console.error('Failed to update department', err)
+      error: (err) => this.toastr.error('Failed to update department', err)
     });
   }
 
-  // --- Delete ---
   onDeleteDepartment(id: number): void {
     if (confirm('Are you sure you want to delete this department? This action cannot be undone.')) {
       this.departmentService.deleteDepartment(id).subscribe({
@@ -119,7 +122,7 @@ export class DepartmentManagmentComponent implements OnInit {
           this.loadDepartments();
           this.loadStats();
         },
-        error: (err) => console.error('Failed to delete department', err)
+        error: (err) => this.toastr.error('Failed to delete department', err)
       });
     }
   }

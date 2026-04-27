@@ -1,3 +1,5 @@
+import {FormControl} from '@angular/forms';
+
 export interface StudentResponse {
   id: number;
   matricule: string;
@@ -53,4 +55,10 @@ export interface PageableResponse<T> {
   first: boolean;
   numberOfElements: number;
   empty: boolean;
+}
+export interface StudentFilterForm {
+  search: FormControl<string>;
+  academicYear: FormControl<string>;
+  program: FormControl<string>;
+  status: FormControl<string>;
 }

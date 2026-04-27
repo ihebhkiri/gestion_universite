@@ -13,119 +13,157 @@
   <nav class="flex-1 overflow-y-auto pb-6 custom-scrollbar">
     <div class="mb-4">
       <p class="px-8 text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Core</p>
-      <!-- Dashboard (Active) -->
-      <a aria-current="page" class="bg-white dark:bg-[#022448] text-[#022448] dark:text-white rounded-xl shadow-sm font-bold mx-4 px-4 py-3 mb-1 flex items-center gap-3 translate-x-1 duration-200" routerLink="/admins">
-        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+      <!-- Dashboard -->
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/dashboard"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link"
+         [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
         Dashboard
       </a>
-      <a class="text-slate-600  dark:text-slate-400 mx-4  px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/students">
-        <span class="material-symbols-outlined text-[20px] " >school</span>
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/students"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
+        <span class="material-symbols-outlined text-[20px]">school</span>
         Students
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/groups">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/groups"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">groups</span>
         Groups
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
-        <span class="material-symbols-outlined text-[20px]" >person</span>
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
+        <span class="material-symbols-outlined text-[20px]">person</span>
         Teachers
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/departments">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/departments"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">account_balance</span>
         Departments
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/programs">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/programs"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">auto_stories</span>
         Programs
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/specialities">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/specialities"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">science</span>
         Specialities
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/subjects">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/subjects"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">book_4</span>
         Subjects
       </a>
     </div>
     <div class="mb-4">
       <p class="px-8 text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Academic</p>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/academic-years">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/academic-years"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">calendar_month</span>
         Academic Years
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/semesters">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/semesters"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">event_repeat</span>
         Semesters
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/classes">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/classes"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">groups</span>
         Classes
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/courses">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/courses"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">menu_book</span>
         Courses
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">schedule</span>
         Timetable
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">quiz</span>
         Exams
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">grade</span>
         Grades
       </a>
     </div>
     <div class="mb-4">
       <p class="px-8 text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Operations</p>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">fact_check</span>
         Attendance
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">assignment</span>
         Assignments
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">insights</span>
         Results
       </a>
     </div>
     <div class="mb-4">
       <p class="px-8 text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Admin</p>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" routerLink="/admins/users">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         routerLink="/admins/users"
+         routerLinkActive="!bg-white dark:!bg-[#022448] !text-[#022448] dark:!text-white !shadow-sm !font-bold active-link">
         <span class="material-symbols-outlined text-[20px]">group_add</span>
         Users
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">security</span>
         Roles
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">settings</span>
         Settings
       </a>
     </div>
     <div class="mb-4">
       <p class="px-8 text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Finance</p>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">payments</span>
         Fees
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">receipt_long</span>
         Payments
       </a>
     </div>
     <div class="mb-4">
       <p class="px-8 text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Communication</p>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">mail</span>
         Messages
       </a>
-      <a class="text-slate-600 dark:text-slate-400 mx-4 px-4 py-3 mb-1 flex items-center gap-3 hover:bg-white/40 dark:hover:bg-white/10 rounded-xl transition-colors translate-x-1 duration-200" href="#">
+      <a class="mx-4 px-4 py-3 mb-1 flex items-center gap-3 rounded-xl transition-colors translate-x-1 duration-200 text-slate-600 dark:text-slate-400 hover:bg-white/40 dark:hover:bg-white/10"
+         href="#">
         <span class="material-symbols-outlined text-[20px]">campaign</span>
         Announcements
       </a>

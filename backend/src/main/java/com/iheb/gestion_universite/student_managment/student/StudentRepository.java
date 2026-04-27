@@ -8,13 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface StudentRepository extends JpaRepository<StudentEntity, Long>, JpaSpecificationExecutor<StudentEntity> {
     Optional<StudentEntity> findById(Long id);
 
-    @Query("SELECT s FROM StudentEntity s WHERE " +
-            "(:keyword IS NULL OR :keyword = '' OR " +
-            "LOWER(s.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(s.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(s.cin) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-    Page<StudentEntity> searchStudents(@Param("keyword") String keyword, Pageable pageable);
+
 }
