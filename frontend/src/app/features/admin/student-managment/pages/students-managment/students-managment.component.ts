@@ -12,10 +12,10 @@ import {
   UpdateStudentRequest
 } from '../../models/student.model';
 import {Router} from '@angular/router';
-import { AcademicYearService } from '../../../academic-year-managment/services/academic-year.service';
-import { ProgramService } from '../../../program-managment/services/program.service';
-import { AcademicYearResponse } from '../../../academic-year-managment/models/academic-year.model';
-import { ProgramResponse } from '../../../program-managment/models/program.model';
+import {AcademicYearService} from '../../../academic-year-managment/services/academic-year.service';
+import {ProgramService} from '../../../program-managment/services/program.service';
+import {AcademicYearResponse} from '../../../academic-year-managment/models/academic-year.model';
+import {ProgramResponse} from '../../../program-managment/models/program.model';
 
 import {UpdateStudentComponent} from '../../components/update-student/update-student.component';
 import {AddStudentComponent} from '../../components/add-student/add-student.component';
@@ -99,7 +99,6 @@ export class StudentsManagmentComponent implements OnInit {
         this.loadStudents();
       });
   }
-
 
 
   loadFilterOptions(): void {
@@ -217,7 +216,7 @@ export class StudentsManagmentComponent implements OnInit {
     return this.selectedIds.has(id);
   }
 
-  toggleSelectAllOnPage(event : Event): void {
+  toggleSelectAllOnPage(event: Event): void {
     const input = event.target as HTMLInputElement;
     const checked = input.checked;
     if (checked) {
@@ -227,7 +226,7 @@ export class StudentsManagmentComponent implements OnInit {
     }
   }
 
-  toggleOne(id: number, event : Event): void {
+  toggleOne(id: number, event: Event): void {
     const input = event.target as HTMLInputElement;
     const checked = input.checked;
     if (checked) this.selectedIds.add(id);
@@ -242,7 +241,7 @@ export class StudentsManagmentComponent implements OnInit {
   bulkDelete(): void {
     if (this.selectedIds.size === 0) return;
     if (!confirm(`Delete ${this.selectedIds.size} student(s)?`)) return;
-    this.studentService.bulkDelete({ studentIds: Array.from(this.selectedIds) }).subscribe({
+    this.studentService.bulkDelete({studentIds: Array.from(this.selectedIds)}).subscribe({
       next: () => {
         this.clearSelection();
         this.loadStudents();
@@ -261,7 +260,6 @@ export class StudentsManagmentComponent implements OnInit {
     this.isLoading = true;
     this.enrollmentService.bulkChangeEnrollmentStatus(Array.from(this.selectedIds), this.bulkStatus).subscribe({
       next: () => {
-        this.toastr.success('Enrollment status updated successfully');
         this.clearSelection();
         this.bulkStatus = '';
         this.loadStudents();
@@ -279,6 +277,7 @@ export class StudentsManagmentComponent implements OnInit {
     const extras = studentId ? `?studentId=${studentId}&returnUrl=${encodeURIComponent(returnUrl)}` : `?returnUrl=${encodeURIComponent(returnUrl)}`;
     this.router.navigateByUrl(`/admins/enrollments${extras}`);
   }
+
   // status
   statusConfig: Record<string, any> = {
     CONFIRMED: {
@@ -298,7 +297,24 @@ export class StudentsManagmentComponent implements OnInit {
       class: 'bg-tertiary-fixed text-on-primary-fixed-variant'
     }
   };
+
   getStatusConfig(status: string) {
     return this.statusConfig[status] || this.statusConfig['DEFAULT'];
+  }
+
+  getDisplayAverage(student: StudentResponse): string {
+    if (student.semester1Passed && student.semester2Passed) {
+      return student.yearAverage !== undefined && student.yearAverage !== null ? student.yearAverage.toFixed(2) : 'N/A';
+    }
+    return student.selectedSemesterAverage !== undefined && student.selectedSemesterAverage !== null ? student.selectedSemesterAverage.toFixed(2) : 'N/A';
+  }
+
+  getAverageColor(student: StudentResponse): string {
+    const val = (student.semester1Passed && student.semester2Passed) ? student.yearAverage : student.selectedSemesterAverage;
+    if (val === undefined || val === null) return 'text-on-surface-variant';
+    if (val >= 16) return 'text-green-600';
+    if (val >= 14) return 'text-blue-600';
+    if (val >= 10) return 'text-orange-500';
+    return 'text-red-600';
   }
 }

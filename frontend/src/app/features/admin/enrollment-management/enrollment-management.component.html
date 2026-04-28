@@ -25,7 +25,7 @@
                 <option [ngValue]="null" disabled selected>Choose a student from the directory</option>
                 @for (student of students; track student.id) {
                 <option [value]="student.id">
-                  {{ student.firstName }} {{ student.lastName }} ({{ student.matricule }})
+                  {{ student.firstName }} {{ student.lastName }}
                   - Current: {{ student.activeGroup || 'Not assigned' }}
                 </option>
                 }

@@ -28,4 +28,7 @@ export class SubjectService {
   deleteSubject(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  countSubjects(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count`);
+  }
 }

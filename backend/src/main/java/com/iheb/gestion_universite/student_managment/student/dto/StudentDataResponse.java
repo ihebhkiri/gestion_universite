@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public record StudentDataResponse(
         Long id,
-        String matricule,
         String firstName,
         String lastName,
         String gender,
@@ -16,5 +15,8 @@ public record StudentDataResponse(
         String status,
         LocalDate enrollmentDate,
         java.time.Instant createdAt,
-        java.time.Instant updatedAt
+        java.time.Instant updatedAt,
+        String programName,
+        String academicYear,
+        String classCode
 ) {}

@@ -2,7 +2,6 @@ import {FormControl} from '@angular/forms';
 
 export interface StudentResponse {
   id: number;
-  matricule: string;
   firstName: string;
   lastName: string;
   gender: string;
@@ -15,6 +14,13 @@ export interface StudentResponse {
   enrollmentDate: string;
   createdAt: string;
   updatedAt: string;
+  programName?: string;
+  academicYear?: string;
+  classCode?: string;
+  yearAverage?: number;
+  semester1Passed?: boolean;
+  semester2Passed?: boolean;
+  selectedSemesterAverage?: number;
 }
 
 export interface StudentStatsResponse {

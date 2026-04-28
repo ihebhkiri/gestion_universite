@@ -27,6 +27,7 @@ export class SubjectManagmentComponent implements OnInit {
   subjects: SubjectResponse[] = [];
   filteredSubjects: SubjectResponse[] = [];
   keyword = '';
+  statsSubjects = 0;
 
   isAddModalVisible = false;
   isUpdateModalVisible = false;
@@ -41,9 +42,11 @@ export class SubjectManagmentComponent implements OnInit {
   loadAll(): void {
     forkJoin({
       subjects: this.subjectService.getSubjects(),
+      stats: this.subjectService.countSubjects()
     }).subscribe({
       next: (res) => {
         this.subjects = res.subjects;
+        this.statsSubjects = res.stats
         this.applyFilter();
       },
       error: (err) => console.error('Failed to load subjects', err)

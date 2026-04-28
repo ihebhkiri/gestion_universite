@@ -143,6 +143,9 @@ public class AdminStudentsService {
         // Find the latest active enrollment to get group name and status
         String groupName = null;
         String enrollmentStatus = null;
+        String programName = null;
+        String academicYear = null;
+        String classCode = null;
 
         if (student.getEnrollments() != null && !student.getEnrollments().isEmpty()) {
             // Get the most recent enrollment
@@ -155,6 +158,15 @@ public class AdminStudentsService {
                 enrollmentStatus = latestEnrollment.getStatus().name();
                 if (latestEnrollment.getGroup() != null) {
                     groupName = latestEnrollment.getGroup().getName();
+                    if (latestEnrollment.getGroup().getAcademicClass() != null) {
+                        classCode = latestEnrollment.getGroup().getAcademicClass().getCode();
+                        if (latestEnrollment.getGroup().getAcademicClass().getProgram() != null) {
+                            programName = latestEnrollment.getGroup().getAcademicClass().getProgram().getName();
+                        }
+                        if (latestEnrollment.getGroup().getAcademicClass().getAcademicYear() != null) {
+                            academicYear = latestEnrollment.getGroup().getAcademicClass().getAcademicYear().getLabel();
+                        }
+                    }
                 }
             }
         }
@@ -163,7 +175,6 @@ public class AdminStudentsService {
 
         return new StudentDataResponse(
                 student.getId(),
-                student.getMatricule(),
                 student.getFirstName(),
                 student.getLastName(),
                 student.getGender(),
@@ -175,7 +186,10 @@ public class AdminStudentsService {
                 enrollmentStatus,
                 student.getEnrollmentDate(),
                 student.getCreatedAt(),
-                student.getUpdatedAt()
+                student.getUpdatedAt(),
+                programName,
+                academicYear,
+                classCode
         );
     }
 }

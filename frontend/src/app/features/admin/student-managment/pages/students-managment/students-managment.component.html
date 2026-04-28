@@ -130,7 +130,7 @@
         <div class="flex flex-wrap gap-2 items-center">
           <select [(ngModel)]="bulkStatus"
                   class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
-            <option value="" >Set STATUS</option>
+            <option value="">Set STATUS</option>
             <option value="CONFIRMED">CONFIRMED</option>
             <option value="CANCELLED">CANCELLED</option>
             <option value="COMPLETED">COMPLETED</option>
@@ -163,12 +163,11 @@
                 class="cursor-pointer hover:bg-surface-container-low py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">
               Student <span *ngIf="sortField === 'firstName'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
             </th>
-            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">ID / Program</th>
-            <th (click)="changeSort('cin')"
-                class="cursor-pointer hover:bg-surface-container-low py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">
-              Academic metrics <span *ngIf="sortField === 'cin'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
-            </th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Program</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Academic Year</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Group</th>
             <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Status</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Year Average</th>
             <th class="py-4 px-6 text-right font-label text-xs text-on-surface-variant uppercase tracking-wider">
               Actions
             </th>
@@ -179,7 +178,7 @@
           <!-- Loading State -->
             @if (isLoading) {
               <tr>
-                <td colspan="6" class="py-8 text-center text-on-surface-variant">
+                <td colspan="8" class="py-8 text-center text-on-surface-variant">
                   <span
                     class="animate-spin inline-block w-6 h-6 border-2 border-primary-container border-t-transparent rounded-full mr-2 align-middle"></span>
                   Loading students...
@@ -190,7 +189,7 @@
           <!-- Empty State -->
             @if (!isLoading && students.length === 0) {
               <tr>
-                <td colspan="6" class="py-12 text-center text-on-surface-variant">
+                <td colspan="8" class="py-12 text-center text-on-surface-variant">
                   <span class="material-symbols-outlined text-4xl mb-2 opacity-50">person_off</span>
                   <p class="font-body text-sm">No students found matching your filters.</p>
                 </td>
@@ -211,7 +210,7 @@
                   <td class="py-4 px-4">
                     <div class="flex items-center gap-3">
                       <div
-                        class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-surface-variant">
+                        class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-surface-variant shrink-0">
                         @if (student.profileImage) {
                           <img
                             [src]="'https://ui-avatars.com/api/?name='+student.firstName+' '+student.lastName +'&background=random'"
@@ -223,37 +222,34 @@
                       </div>
                       <div>
                         <div
-                          class="font-body font-medium text-on-surface">{{ student.firstName }} {{ student.lastName }}
+                          class="font-body font-medium text-on-surface flex items-center gap-2">
+                          {{ student.firstName }} {{ student.lastName }}
                         </div>
-                        <div class="font-body text-xs text-on-surface-variant">{{ student.email }}</div>
+                        <div class="font-body text-xs text-on-surface-variant">{{ student.email || 'No email provided' }}</div>
                       </div>
                     </div>
                   </td>
                   <td class="py-4 px-4">
-                    <div class="font-headline text-sm font-semibold text-primary-container">{{ student.matricule }}
-                    </div>
-                    <div
-                      class="font-body text-xs text-on-surface-variant mt-0.5">{{ student.activeGroup || 'No Active Group' }}
-                    </div>
+                    <div class="font-body text-sm font-medium text-on-surface">{{ student.programName || 'N/A' }}</div>
                   </td>
                   <td class="py-4 px-4">
-                    <div class="flex items-center gap-4">
-                      <div>
-                        <div class="font-label text-[10px] text-on-surface-variant uppercase">CIN</div>
-                        <div class="font-headline font-semibold text-sm">{{ student.cin }}</div>
-                      </div>
-                      <div>
-                        <div class="font-label text-[10px] text-on-surface-variant uppercase">PHONE</div>
-                        <div class="font-headline font-semibold text-sm">{{ student.phone }}</div>
-                      </div>
-                    </div>
+                    <div class="font-body text-sm text-on-surface-variant">{{ student.academicYear || 'N/A' }}</div>
                   </td>
                   <td class="py-4 px-4">
-               <span
-                 class="inline-flex items-center px-2 py-1 rounded-DEFAULT text-xs font-medium"
-                 [ngClass]="getStatusConfig(student.status).class">
-                  {{ getStatusConfig(student.status).label }}
-                </span>
+                    <div class="font-headline text-sm font-semibold text-primary-container">{{ student.activeGroup || 'Not Assigned' }}</div>
+                    <div class="font-body text-xs text-on-surface-variant mt-0.5">{{ student.classCode || 'No Class' }}</div>
+                  </td>
+                  <td class="py-4 px-4">
+                   <span
+                     class="inline-flex items-center px-2 py-1 rounded-DEFAULT text-xs font-medium"
+                     [ngClass]="getStatusConfig(student.status).class">
+                      {{ getStatusConfig(student.status).label }}
+                    </span>
+                  </td>
+                  <td class="py-4 px-4">
+                    <div class="font-headline font-bold text-sm" [ngClass]="getAverageColor(student)">
+                      {{ getDisplayAverage(student) }}
+                    </div>
                   </td>
                   <td class="py-4 px-6 text-right">
                     <div
@@ -261,16 +257,16 @@
                       <button
                         class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
                         title="View Profile">
-                        <span class="material-symbols-outlined text-sm">visibility</span>
+                        <span class="material-symbols-outlined text-sm">person</span>
                       </button>
                       <button (click)="goToEnrollment(student.id)"
                               class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
-                              title="Enroll">
+                              title="Edit Enrollment">
                         <span class="material-symbols-outlined text-sm">how_to_reg</span>
                       </button>
                       <button (click)="showUpdateModal(student)"
                               class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
-                              title="Edit">
+                              title="Edit Student">
                         <span class="material-symbols-outlined text-sm">edit</span>
                       </button>
                     </div>
