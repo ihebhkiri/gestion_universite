@@ -1,6 +1,10 @@
 package com.iheb.gestion_universite.academic.department;
 
 import com.iheb.gestion_universite.academic.department.dto.AddDepartmentRequest;
+import com.iheb.gestion_universite.academic.department.dto.DepartmentDataResponse;
+import com.iheb.gestion_universite.academic.department.dto.DepartmentStatsResponse;
+import com.iheb.gestion_universite.academic.program.ProgramRepository;
+import com.iheb.gestion_universite.academic.speciality.SpecialityRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,8 @@ import java.util.List;
 public class DepartmentService {
 
     private final DepartmentRepo departmentRepository;
+    private final ProgramRepository programRepository;
+    private final SpecialityRepository specialityRepository;
 
     @Transactional
     public DepartmentEntity createDepartment(AddDepartmentRequest department) {
@@ -30,8 +36,15 @@ public class DepartmentService {
                 .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
     }
 
-    public List<DepartmentEntity> getAllDepartments() {
-        return departmentRepository.findAll();
+    public List<DepartmentDataResponse> getAllDepartments() {
+        return departmentRepository.findAll().stream()
+                .map(d -> new DepartmentDataResponse(
+                        d.getId(),
+                        d.getCode(),
+                        d.getName(),
+                        d.getPrograms() != null ? d.getPrograms().size() : 0
+                ))
+                .toList();
     }
 
     @Transactional
@@ -45,6 +58,13 @@ public class DepartmentService {
     public void deleteDepartment(Long id) {
         DepartmentEntity existingDepartment = getDepartmentById(id);
         departmentRepository.delete(existingDepartment);
+    }
+
+    public DepartmentStatsResponse getStats() {
+        long totalDepartments = departmentRepository.count();
+        long totalPrograms = programRepository.count();
+        long totalSpecialities = specialityRepository.count();
+        return new DepartmentStatsResponse(totalDepartments, totalPrograms, totalSpecialities);
     }
 
     private void checkIfDepartmentNameExists(String name) {

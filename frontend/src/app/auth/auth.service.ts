@@ -33,4 +33,8 @@ export class AuthService {
   resetPassword(request: ResetPasswordRequest) {
     return this.http.post<void>(`${environment.apiUrl}auth/reset-password`, request);
   }
+
+  refresh() {
+    return this.http.post<void>(`${environment.apiUrl}auth/refresh`, {});
+  }
 }

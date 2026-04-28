@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +36,28 @@ public class EnrollmentAdminService {
         enrollmentRepo.save(enrollment);
     }
 
+    public void changeEnrollmentStatusBulk(List<Long> studentIds, String newStatus) {
+        EnrollmentStatus status = EnrollmentStatus.valueOf(newStatus.toUpperCase());
+        List<StudentEntity> students = studentRepository.findAllById(studentIds);
+        List<StudentEnrollmentEntity> enrollmentsToUpdate = new ArrayList<>();
+        
+        for (StudentEntity student : students) {
+            if (student.getEnrollments() != null && !student.getEnrollments().isEmpty()) {
+                StudentEnrollmentEntity latest = student.getEnrollments().stream()
+                        .reduce((first, second) -> second).orElse(null);
+                if (latest != null) {
+                    latest.setStatus(status);
+                    enrollmentsToUpdate.add(latest);
+                }
+            }
+        }
+        enrollmentRepo.saveAll(enrollmentsToUpdate);
+    }
+
     private StudentEnrollmentEntity createEnrollment (Long studentId, Long groupId) {
 
         StudentEntity student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student) not found"));
+                .orElseThrow(() -> new RuntimeException("Student not found"));
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
         StudentEnrollmentEntity enrollment = new StudentEnrollmentEntity();
@@ -50,7 +70,7 @@ public class EnrollmentAdminService {
 
     }
     private void ensureNoActiveEnrollment(Long studentId) {
-        if (enrollmentRepo.existsByStudent_IdAndStatus(studentId, EnrollmentStatus.ACTIVE)) {
+        if (enrollmentRepo.existsByStudent_IdAndStatus(studentId, EnrollmentStatus.CONFIRMED)) {
             throw new IllegalStateException("Student already has an ACTIVE enrollment");
         }
     }

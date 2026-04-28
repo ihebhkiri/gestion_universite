@@ -11,8 +11,8 @@ export const routes: Routes = [
   {
     path: "admins",
     loadChildren: () => import('./features/admin/admin.routes').then(m => m.routes),
-    canMatch: [adminCanMatch],
-    canActivate: [adminCanActivate]
+    // canMatch: [adminCanMatch],
+    // canActivate: [adminCanActivate]
   },
   { path: "test", component: TestComponent }
 

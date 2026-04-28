@@ -1,0 +1,46 @@
+<section class="rounded-[28px] border border-slate-200/70 bg-white/90 p-6 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+  <div class="flex items-start justify-between gap-4">
+    <div class="flex items-center gap-4">
+      <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(14,165,233,0.12),rgba(37,99,235,0.18))] text-[24px] text-blue-700">
+        <span class="material-symbols-outlined">{{ icon }}</span>
+      </span>
+      <div>
+        <h2 class="font-['Space_Grotesk'] text-2xl font-semibold text-slate-950">{{ title }}</h2>
+        <p class="mt-1 text-sm text-slate-500">{{ subtitle }}</p>
+      </div>
+    </div>
+    <div class="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">Widget</div>
+  </div>
+
+  @if (items.length === 0) {
+    <div class="grid min-h-56 place-items-center text-center text-slate-400">
+      <div>
+        <span class="material-symbols-outlined text-4xl">inbox</span>
+        <p class="mt-3 text-sm">{{ emptyText }}</p>
+      </div>
+    </div>
+  } @else {
+    <div class="mt-6 grid gap-3">
+      @for (item of items; track item.title + item.subtitle) {
+        <article class="rounded-[22px] border border-slate-200/70 bg-slate-50/80 p-4 transition-colors hover:border-sky-200 hover:bg-sky-50/70">
+          <div class="min-w-0">
+            <div class="flex items-start justify-between gap-4">
+              <strong class="text-base font-semibold text-slate-950">{{ item.title }}</strong>
+              @if (item.badge) {
+                <span class="inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]" [ngClass]="item.badgeClass">
+                  {{ item.badge }}
+                </span>
+              }
+            </div>
+
+            <p class="mt-2 text-sm leading-6 text-slate-600">{{ item.subtitle }}</p>
+
+            @if (item.meta) {
+              <small class="mt-3 block text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">{{ item.meta }}</small>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

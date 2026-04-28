@@ -20,7 +20,7 @@ public class ProgramEntity {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String code;            // ING
+    private String code;            // ING wela prepa
 
     @Column(nullable = false)
     private String name;

@@ -15,7 +15,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler ({UserNotFoundException.class, TeacherNotFoundException.class, RefreshTokenNotFoundException.class, ExamNotFoundException.class, StudentNotFoundException.class, RoleNotFoundException.class})
-    public ResponseEntity<?> handleNotFound (UserNotFoundException ex) {
+    public ResponseEntity<?> handleNotFound (RuntimeException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class})
-    public ResponseEntity<?> handleAlreadyExists (ExamAlreadyExistsException ex) {
+    public ResponseEntity<?> handleAlreadyExists (RuntimeException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)

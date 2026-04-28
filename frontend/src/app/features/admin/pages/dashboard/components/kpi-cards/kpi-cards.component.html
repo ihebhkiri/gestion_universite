@@ -1,0 +1,25 @@
+<section class="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+  @for (card of cards; track card.label) {
+    <article
+      class="group relative overflow-hidden rounded-[26px] border px-5 py-5 shadow-[0_22px_60px_rgba(15,23,42,0.08)] transition-transform duration-300 hover:-translate-y-1"
+      [ngClass]="card.cardClass">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{{ card.label }}</p>
+          <div class="mt-4 font-['Space_Grotesk'] text-4xl font-semibold text-slate-950">{{ card.value }}</div>
+        </div>
+
+        <span class="flex h-14 w-14 items-center justify-center rounded-2xl text-[26px] shadow-sm" [ngClass]="card.iconClass">
+          <span class="material-symbols-outlined">{{ card.icon }}</span>
+        </span>
+      </div>
+
+      <div class="mt-6 flex items-center justify-between gap-3">
+        <p class="max-w-[16rem] text-sm leading-6 text-slate-600">{{ card.hint }}</p>
+        <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold" [ngClass]="card.chipClass">KPI</span>
+      </div>
+
+      <div class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-white/70 to-white/10 blur-2xl"></div>
+    </article>
+  }
+</section>

@@ -4,7 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6a4115-deed-4655-9030-a9c7cea7a577" name="Changes" comment="" />
+    <list default="true" id="9a6a4115-deed-4655-9030-a9c7cea7a577" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/core/exceptions/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/core/exceptions/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/AdminStudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/AdminStudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/AdminStudentsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/AdminStudentsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/StudentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/StudentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/StudentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/StudentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/dto/AddStudentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/dto/AddStudentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/dto/UpdateStudentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student/dto/UpdateStudentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_enrollment/EnrollmentAdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_enrollment/EnrollmentAdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_enrollment/EnrollmentAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_enrollment/EnrollmentAdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_enrollment/EnrollmentRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_enrollment/EnrollmentRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_group/GroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_group/GroupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_group/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/student_managment/student_group/GroupService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose-prod.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/admin/admin.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/admin/admin.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/admin/pages/dashboard/dashboard.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/admin/pages/dashboard/dashboard.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/admin/pages/dashboard/dashboard.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/admin/pages/dashboard/dashboard.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/admin/user_managment/user/user.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/admin/user_managment/pages/user/user.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/admin/user_managment/user/user.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/admin/user_managment/pages/user/user.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/admin/user_managment/user/user.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/admin/user_managment/pages/user/user.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/admin/sidebar/sidebar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/admin/sidebar/sidebar.component.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,37 +112,40 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.AuthControllerIntegrationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthControllerIntegrationTest.shouldLoginAndReturnCookies.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthControllerIntegrationTest.shouldLogoutAndClearCookies.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthControllerIntegrationTest.shouldReturnUnauthorizedForInvalidCredentials.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthServiceTest.shouldLoginSuccessfully.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthServiceTest.shouldRefreshTokenSuccessfully.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GestionUniversiteApplicationTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.JwtServiceTest.shouldCheckTokenExpiration.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;Spring Boot.GestionUniversiteApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.AuthControllerIntegrationTest.executor": "Run",
+    "JUnit.AuthControllerIntegrationTest.shouldLoginAndReturnCookies.executor": "Run",
+    "JUnit.AuthControllerIntegrationTest.shouldLogoutAndClearCookies.executor": "Run",
+    "JUnit.AuthControllerIntegrationTest.shouldReturnUnauthorizedForInvalidCredentials.executor": "Run",
+    "JUnit.AuthServiceTest.executor": "Run",
+    "JUnit.AuthServiceTest.shouldLoginSuccessfully.executor": "Run",
+    "JUnit.AuthServiceTest.shouldRefreshTokenSuccessfully.executor": "Run",
+    "JUnit.GestionUniversiteApplicationTests.executor": "Run",
+    "JUnit.JwtServiceTest.executor": "Run",
+    "JUnit.JwtServiceTest.shouldCheckTokenExpiration.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.GestionUniversiteApplication.executor": "Run",
+    "git-widget-placeholder": "feature/students-managment",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/spring boot/gestion_universitaire",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -129,7 +156,7 @@
       <recent name="com.iheb.gestion_universite.auth.dto" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AuthControllerIntegrationTest.shouldLoginAndReturnCookies">
+  <component name="RunManager">
     <configuration name="AuthControllerIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_universite" />
       <extension name="coverage">
@@ -215,21 +242,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.AuthControllerIntegrationTest.shouldLoginAndReturnCookies" />
-        <item itemvalue="JUnit.GestionUniversiteApplicationTests" />
-        <item itemvalue="JUnit.AuthControllerIntegrationTest" />
-        <item itemvalue="JUnit.AuthControllerIntegrationTest.shouldLogoutAndClearCookies" />
-        <item itemvalue="JUnit.AuthControllerIntegrationTest.shouldReturnUnauthorizedForInvalidCredentials" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
-        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.29346.143" />
       </set>
     </attachedChunks>
   </component>
@@ -285,22 +302,12 @@
       <workItem from="1775567414089" duration="8214000" />
       <workItem from="1775642530831" duration="3226000" />
       <workItem from="1775731770889" duration="169000" />
+      <workItem from="1776710727210" duration="40000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend/src/main/java/com/iheb/gestion_universite/teaching/teacher/AdminTeacherController.java</url>
-          <line>17</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/gestion_universitaire$AuthControllerIntegrationTest_shouldLoginAndReturnCookies.ic" NAME="AuthControllerIntegrationTest.shouldLoginAndReturnCookies Coverage Results" MODIFIED="1774970126303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

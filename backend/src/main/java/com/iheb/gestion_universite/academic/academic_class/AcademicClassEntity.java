@@ -2,9 +2,9 @@ package com.iheb.gestion_universite.academic.academic_class;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iheb.gestion_universite.academic.academic_year.AcademicYearEntity;
-import com.iheb.gestion_universite.student_managment.student_group.StudentGroupEntity;
 import com.iheb.gestion_universite.academic.program.ProgramEntity;
 import com.iheb.gestion_universite.academic.speciality.SpecialityEntity;
+import com.iheb.gestion_universite.student_managment.student_group.StudentGroupEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

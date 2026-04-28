@@ -7,29 +7,29 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "courses")
+@Table (name = "courses")
 @Getter
 @Setter
 public class CourseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column (unique = true)
     private String code;
 
     private String title;
 
     private Integer credits;
 
+    private Double coefficient;
+
     private Integer hours;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
+    @JoinColumn (name = "subject_id")
     private SubjectEntity subject;
-
-
 
 
 }

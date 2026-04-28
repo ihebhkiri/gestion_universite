@@ -1,0 +1,337 @@
+<body class="bg-surface text-on-background font-body min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<app-sidebar></app-sidebar>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 flex flex-col min-h-screen relative">
+  <!-- TopNavBar -->
+  <app-header></app-header>
+  <!-- Page Content -->
+  <div class="mt-16 p-8 lg:p-12 flex-1 max-w-7xl mx-auto w-full">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <h2 class="font-headline text-3xl font-semibold text-primary-container tracking-tight -ml-0.5">Student
+          Registry</h2>
+        <p class="font-body text-on-surface-variant mt-2 max-w-2xl leading-relaxed">Manage active enrollments, track
+          academic progress, and perform administrative actions for the current academic year.</p>
+      </div>
+      <div class="flex gap-3">
+        <button (click)="goToEnrollment()"
+                class="px-4 py-2 bg-surface-container-highest text-on-surface font-label text-sm font-semibold rounded-DEFAULT hover:bg-surface-container-high transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">how_to_reg</span>
+          Enrollments
+        </button>
+        <button
+          class="px-4 py-2 bg-surface-container-highest text-on-surface font-label text-sm font-semibold rounded-DEFAULT hover:bg-surface-container-high transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">download</span>
+          Export
+        </button>
+        <button (click)="showAddModal()"
+                class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-DEFAULT shadow-[0_4px_12px_rgba(2,36,72,0.15)] hover:shadow-[0_6px_16px_rgba(2,36,72,0.2)] transition-shadow flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">add</span>
+          Admit Student
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    @if (stats) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div
+          class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20 hover:border-primary/30 transition-colors shadow-sm">
+          <div class="flex justify-between items-start">
+            <h3 class="font-label text-sm text-on-surface-variant uppercase tracking-wider font-semibold">Total
+              Students</h3>
+            <span class="material-symbols-outlined text-primary-container bg-primary-container/10 p-1.5 rounded-md">groups</span>
+          </div>
+          <p class="font-headline text-3xl font-bold text-on-surface mt-3">{{ stats.totalStudents }}</p>
+        </div>
+
+        <div
+          class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20 hover:border-primary/30 transition-colors shadow-sm">
+          <div class="flex justify-between items-start">
+            <h3 class="font-label text-sm text-on-surface-variant uppercase tracking-wider font-semibold">Active
+              Enrollments</h3>
+            <span class="material-symbols-outlined text-green-600 bg-green-50 p-1.5 rounded-md">check_circle</span>
+          </div>
+          <p class="font-headline text-3xl font-bold text-on-surface mt-3">{{ stats.activeEnrollments }}</p>
+        </div>
+
+        <div
+          class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20 hover:border-primary/30 transition-colors shadow-sm">
+          <div class="flex justify-between items-start">
+            <h3 class="font-label text-sm text-on-surface-variant uppercase tracking-wider font-semibold">New this
+              Month</h3>
+            <span class="material-symbols-outlined text-blue-600 bg-blue-50 p-1.5 rounded-md">person_add</span>
+          </div>
+          <p class="font-headline text-3xl font-bold text-on-surface mt-3">{{ stats.newThisMonth }}</p>
+        </div>
+
+        <div
+          class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant/20 hover:border-primary/30 transition-colors shadow-sm">
+          <div class="flex justify-between items-start">
+            <h3 class="font-label text-sm text-on-surface-variant uppercase tracking-wider font-semibold">Total
+              Groups</h3>
+            <span class="material-symbols-outlined text-orange-600 bg-orange-50 p-1.5 rounded-md">class</span>
+          </div>
+          <p class="font-headline text-3xl font-bold text-on-surface mt-3">{{ stats.totalGroups }}</p>
+        </div>
+      </div>
+    }
+    <!-- Filters & Search Toolbar -->
+    <div
+      class="bg-surface-container-lowest rounded-lg p-4 mb-6 shadow-[0px_8px_24px_rgba(2,36,72,0.03)] flex flex-wrap gap-4 items-center justify-between">
+      <form [formGroup]="filterForm" class="flex flex-wrap gap-3 items-center w-full lg:w-auto">
+        <div class="relative w-full md:w-64">
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+          <input formControlName="search"
+                 class="w-full pl-9 pr-4 py-2 bg-surface-container-low border-b border-outline-variant/20 focus:border-primary-container focus:bg-surface-container-lowest focus:ring-0 text-sm font-body transition-colors rounded-t-DEFAULT"
+                 placeholder="Search by Cin or Name" type="text"/>
+        </div>
+        <div class="h-6 w-px bg-outline-variant/30 hidden lg:block mx-2"></div>
+        <select formControlName="academicYear"
+                class="bg-surface-container-low border-b border-outline-variant/20 focus:border-primary-container focus:bg-surface-container-lowest focus:ring-0 text-sm font-body py-2 pl-3 pr-8 rounded-t-DEFAULT text-on-surface-variant">
+          <option value="">All Years</option>
+          @for (year of academicYears; track year.id) {
+            <option [value]="year.id">{{ year.label }}</option>
+          }
+        </select>
+        <select formControlName="program"
+                class="bg-surface-container-low border-b border-outline-variant/20 focus:border-primary-container focus:bg-surface-container-lowest focus:ring-0 text-sm font-body py-2 pl-3 pr-8 rounded-t-DEFAULT text-on-surface-variant">
+          <option value="">All Programs</option>
+          @for (prog of programs; track prog.id) {
+            <option [value]="prog.id">{{ prog.code }} - {{ prog.name }}</option>
+          }
+        </select>
+        <select formControlName="status"
+                class="bg-surface-container-low border-b border-outline-variant/20 focus:border-primary-container focus:bg-surface-container-lowest focus:ring-0 text-sm font-body py-2 pl-3 pr-8 rounded-t-DEFAULT text-on-surface-variant">
+          <option value="">All Statuses</option>
+          <option value="CONFIRMED">Confirmed</option>
+          <option value="CANCELLED"> Cancelled</option>
+          <option value="COMPLETED">Completed</option>
+        </select>
+      </form>
+      <button
+        class="text-primary-container hover:bg-secondary-container px-3 py-2 rounded-DEFAULT transition-colors font-label text-sm flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">filter_list</span>
+        More Filters
+      </button>
+    </div>
+    @if (selectedCount > 0) {
+      <div
+        class="bg-secondary-container rounded-lg p-3 mb-6 flex flex-wrap gap-3 items-center justify-between border border-primary-fixed-dim/30">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary-container">info</span>
+          <span class="font-body text-sm font-medium text-primary-container">{{ selectedCount }}
+            student(s) selected</span>
+          <button (click)="clearSelection()" class="text-primary-container underline text-sm">Clear</button>
+        </div>
+        <div class="flex flex-wrap gap-2 items-center">
+          <select [(ngModel)]="bulkStatus"
+                  class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
+            <option value="">Set STATUS</option>
+            <option value="CONFIRMED">CONFIRMED</option>
+            <option value="CANCELLED">CANCELLED</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
+          <button (click)="bulkChangeStatus()"
+                  class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
+            Change Status
+          </button>
+          <button (click)="bulkDelete()"
+                  class="px-3 py-1.5 bg-error-container text-on-error-container font-label text-xs font-semibold rounded-DEFAULT hover:bg-[#ffcdc9] transition-colors">
+            Delete
+          </button>
+        </div>
+      </div>
+    }
+    <!-- Data Table -->
+    <div class="bg-surface-container-lowest rounded-lg shadow-[0px_12px_32px_rgba(2,36,72,0.04)] overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+          <tr class="border-b border-surface-container-highest bg-surface-bright/50">
+            <th class="py-4 pl-6 pr-3 w-12">
+              <input
+                class="rounded border-outline-variant text-primary-container focus:ring-primary-container bg-surface-container-lowest"
+                type="checkbox"
+                (change)="toggleSelectAllOnPage($event)"
+              />
+            </th>
+            <th (click)="changeSort('firstName')"
+                class="cursor-pointer hover:bg-surface-container-low py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">
+              Student <span *ngIf="sortField === 'firstName'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Program</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Academic Year</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Group</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Status</th>
+            <th class="py-4 px-4 font-label text-xs text-on-surface-variant uppercase tracking-wider">Year Average</th>
+            <th class="py-4 px-6 text-right font-label text-xs text-on-surface-variant uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-container-highest/50">
+
+          <!-- Loading State -->
+            @if (isLoading) {
+              <tr>
+                <td colspan="8" class="py-8 text-center text-on-surface-variant">
+                  <span
+                    class="animate-spin inline-block w-6 h-6 border-2 border-primary-container border-t-transparent rounded-full mr-2 align-middle"></span>
+                  Loading students...
+                </td>
+              </tr>
+            }
+
+          <!-- Empty State -->
+            @if (!isLoading && students.length === 0) {
+              <tr>
+                <td colspan="8" class="py-12 text-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-4xl mb-2 opacity-50">person_off</span>
+                  <p class="font-body text-sm">No students found matching your filters.</p>
+                </td>
+              </tr>
+            }
+
+            @if (!isLoading) {
+              @for (student of students; track student.id) {
+                <tr class="hover:bg-surface-container-low/50 transition-colors group">
+                  <td class="py-4 pl-6 pr-3">
+                    <input
+                      class="rounded border-outline-variant text-primary-container focus:ring-primary-container bg-surface-container-lowest"
+                      type="checkbox"
+                      [checked]="isSelected(student.id)"
+                      (change)="toggleOne(student.id, $event)"
+                    />
+                  </td>
+                  <td class="py-4 px-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-surface-variant shrink-0">
+                        @if (student.profileImage) {
+                          <img
+                            [src]="'https://ui-avatars.com/api/?name='+student.firstName+' '+student.lastName +'&background=random'"
+                            class="w-full h-full object-cover"/>
+                        } @else {
+                          <span
+                            class="text-primary-container font-headline font-bold text-sm">{{ student.firstName[0] }}{{ student.lastName[0] }}</span>
+                        }
+                      </div>
+                      <div>
+                        <div
+                          class="font-body font-medium text-on-surface flex items-center gap-2">
+                          {{ student.firstName }} {{ student.lastName }}
+                        </div>
+                        <div class="font-body text-xs text-on-surface-variant">{{ student.email || 'No email provided' }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-4">
+                    <div class="font-body text-sm font-medium text-on-surface">{{ student.programName || 'N/A' }}</div>
+                  </td>
+                  <td class="py-4 px-4">
+                    <div class="font-body text-sm text-on-surface-variant">{{ student.academicYear || 'N/A' }}</div>
+                  </td>
+                  <td class="py-4 px-4">
+                    <div class="font-headline text-sm font-semibold text-primary-container">{{ student.activeGroup || 'Not Assigned' }}</div>
+                    <div class="font-body text-xs text-on-surface-variant mt-0.5">{{ student.classCode || 'No Class' }}</div>
+                  </td>
+                  <td class="py-4 px-4">
+                   <span
+                     class="inline-flex items-center px-2 py-1 rounded-DEFAULT text-xs font-medium"
+                     [ngClass]="getStatusConfig(student.status).class">
+                      {{ getStatusConfig(student.status).label }}
+                    </span>
+                  </td>
+                  <td class="py-4 px-4">
+                    <div class="font-headline font-bold text-sm" [ngClass]="getAverageColor(student)">
+                      {{ getDisplayAverage(student) }}
+                    </div>
+                  </td>
+                  <td class="py-4 px-6 text-right">
+                    <div
+                      class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
+                        title="View Profile">
+                        <span class="material-symbols-outlined text-sm">person</span>
+                      </button>
+                      <button (click)="goToEnrollment(student.id)"
+                              class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
+                              title="Edit Enrollment">
+                        <span class="material-symbols-outlined text-sm">how_to_reg</span>
+                      </button>
+                      <button (click)="showUpdateModal(student)"
+                              class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
+                              title="Edit Student">
+                        <span class="material-symbols-outlined text-sm">edit</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div
+        class="px-6 py-4 border-t border-surface-container-highest bg-surface-bright flex items-center justify-between">
+        <div class="font-body text-sm text-on-surface-variant flex items-center gap-4">
+          <div>
+            Showing <span
+            class="font-medium text-on-surface">{{ totalElements === 0 ? 0 : currentPage * pageSize + 1 }}</span> to
+            <span class="font-medium text-on-surface">{{ Math.min((currentPage + 1) * pageSize, totalElements) }}</span>
+            of
+            <span class="font-medium text-on-surface">{{ totalElements }}</span> results
+          </div>
+          <select (change)="changePageSize($event)"
+                  class="bg-surface-container-lowest border border-outline-variant/20 rounded text-sm py-1 pl-2 pr-6 focus:ring-0">
+            <option value="5" [selected]="pageSize === 5">5 per page</option>
+            <option value="10" [selected]="pageSize === 10">10 per page</option>
+            <option value="20" [selected]="pageSize === 20">20 per page</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0"
+                  class="p-1.5 text-outline hover:text-on-surface hover:bg-surface-container rounded-DEFAULT transition-colors disabled:opacity-50">
+            <span class="material-symbols-outlined text-sm">chevron_left</span>
+          </button>
+
+          @for (page of pagesArray; track page) {
+            <button (click)="changePage(page)" [class.bg-primary-container]="currentPage === page"
+                    [class.text-on-primary]="currentPage === page"
+                    [class.text-on-surface-variant]="currentPage !== page"
+                    [class.hover:bg-surface-container]="currentPage !== page"
+                    class="w-8 h-8 flex items-center justify-center font-label text-sm font-semibold rounded-DEFAULT transition-colors">
+              {{ page + 1 }}
+            </button>
+          }
+
+          <button (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1"
+                  class="p-1.5 text-outline hover:text-on-surface hover:bg-surface-container rounded-DEFAULT transition-colors disabled:opacity-50">
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-add-student
+    [isVisible]="isAddModalVisible"
+    (close)="hideAddModal()"
+    (save)="onSaveStudent($event)">
+  </app-add-student>
+
+  <app-update-student
+    [isVisible]="isUpdateModalVisible"
+    [student]="selectedStudent"
+    (close)="hideUpdateModal()"
+    (save)="onUpdateStudent($event)">
+  </app-update-student>
+
+</main>
+</body>

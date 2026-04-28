@@ -28,7 +28,8 @@ public class SemesterEntity {
     private LocalDate endDate;
 
 
-    private SemesterStatus status;
+    @Enumerated(EnumType.STRING)
+    private SemesterStatus status = SemesterStatus.PLANNED;
 
     private LocalDate examStartDate;
 

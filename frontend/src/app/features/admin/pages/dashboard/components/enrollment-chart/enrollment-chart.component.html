@@ -1,0 +1,58 @@
+<section class="overflow-hidden rounded-[28px] border border-slate-200/70 bg-white/90 p-6 shadow-[0_22px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-blue-700">Enrollment Chart</p>
+      <h2 class="mt-1 font-['Space_Grotesk'] text-2xl font-semibold text-slate-950">Enrollment momentum</h2>
+      <p class="mt-1 text-sm text-slate-500">Monthly intake across the latest six enrollment periods.</p>
+    </div>
+
+    <div class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">Analytics</div>
+  </div>
+
+  <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(260px,0.85fr)]">
+    <div class="rounded-[24px] bg-slate-950 p-5 text-white">
+      <div class="grid h-80 grid-cols-6 items-end gap-4">
+        @for (bar of bars; track bar.label) {
+          <div class="flex h-full flex-col items-center justify-end gap-3">
+            <span class="font-['Space_Grotesk'] text-lg font-semibold text-white">{{ bar.value }}</span>
+            <div class="flex h-56 w-full items-end rounded-full bg-white/10 p-1">
+              <div class="w-full rounded-full shadow-[0_12px_30px_rgba(255,255,255,0.12)]" [ngClass]="bar.fillClass" [style.height.%]="bar.height"></div>
+            </div>
+            <span class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">{{ bar.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="rounded-[24px] bg-slate-50 p-5">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-emerald-700">Department Statistics</p>
+          <h3 class="mt-1 font-['Space_Grotesk'] text-xl font-semibold text-slate-950">Teaching coverage</h3>
+        </div>
+        <div class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Top units</div>
+      </div>
+
+      <div class="mt-5 grid gap-4">
+        @for (department of departments; track department.id) {
+          <div class="rounded-2xl border border-white bg-white p-4 shadow-sm">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="font-semibold text-slate-950">{{ department.name }}</p>
+                <p class="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">{{ department.code }}</p>
+              </div>
+              <div class="text-right text-xs text-slate-500">
+                <p>{{ department.teachersLabel }}</p>
+                <p class="mt-1">{{ department.programsLabel }}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 h-2.5 rounded-full bg-slate-100">
+              <div class="h-full rounded-full" [ngClass]="department.progressClass" [style.width.%]="department.width"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

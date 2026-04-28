@@ -1,0 +1,67 @@
+@if (isVisible) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-background/80 backdrop-blur-sm" (click)="onClose()"></div>
+    <div class="relative bg-surface rounded-2xl shadow-[0_24px_48px_rgba(2,36,72,0.12)] border border-outline-variant/30 w-full max-w-xl overflow-hidden">
+      <div class="px-6 py-4 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-lowest">
+        <div>
+          <h3 class="font-headline text-xl font-semibold text-primary-container">Update Course</h3>
+          <p class="font-body text-sm text-on-surface-variant mt-0.5">Edit the course details.</p>
+        </div>
+        <button (click)="onClose()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container-highest text-on-surface-variant">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="p-6">
+        <form (ngSubmit)="onSubmit()" #courseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-1">
+            <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Code <span class="text-error">*</span></label>
+            <input [(ngModel)]="form.code" name="code" required
+                   class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-sm" />
+          </div>
+
+          <div class="md:col-span-1">
+            <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Credits <span class="text-error">*</span></label>
+            <input type="number" min="0" step="1" [(ngModel)]="form.credits" name="credits" required
+                   class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-sm" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Title <span class="text-error">*</span></label>
+            <input [(ngModel)]="form.title" name="title" required
+                   class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-sm" />
+          </div>
+
+          <div class="md:col-span-1">
+            <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Hours <span class="text-error">*</span></label>
+            <input type="number" min="0" step="1" [(ngModel)]="form.hours" name="hours" required
+                   class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-sm" />
+          </div>
+
+          <div class="md:col-span-1">
+            <label class="block font-label text-sm font-semibold text-on-surface mb-1.5">Subject <span class="text-error">*</span></label>
+            <select [(ngModel)]="form.subjectId" name="subjectId" required
+                    class="w-full px-3 py-2.5 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-sm">
+              <option [ngValue]="null">Select a subject...</option>
+              @for (s of subjects; track s.id) {
+                <option [ngValue]="s.id">{{ s.subjectName }}</option>
+              }
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="px-6 py-4 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-end gap-3">
+        <button type="button" (click)="onClose()"
+                class="px-5 py-2 text-on-surface font-label text-sm font-semibold rounded-lg hover:bg-surface-container-highest transition-colors">
+          Cancel
+        </button>
+        <button type="button" (click)="onSubmit()" [disabled]="!courseForm.valid"
+                class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+          Update Course
+        </button>
+      </div>
+    </div>
+  </div>
+}
+

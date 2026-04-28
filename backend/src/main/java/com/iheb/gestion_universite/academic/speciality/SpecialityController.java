@@ -1,32 +1,50 @@
 package com.iheb.gestion_universite.academic.speciality;
 
 import com.iheb.gestion_universite.academic.speciality.dto.AddSpecialityRequest;
+import com.iheb.gestion_universite.academic.speciality.dto.SpecialityDataResponse;
+import com.iheb.gestion_universite.academic.speciality.dto.SpecialityStatsResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/admin/")
+@RequestMapping("/api/v1/admin/specialities")
 @RequiredArgsConstructor
 public class SpecialityController {
 
     private final SpecialityService specialityService;
 
-    @PostMapping("/programs/{programId}/specialities")
-    public ResponseEntity<?> addSpeciality(@PathVariable Long programId, @RequestBody AddSpecialityRequest request) {
-        specialityService.addSpeciality(programId, request);
-        return ResponseEntity.ok().build();
+    @GetMapping
+    public List<SpecialityDataResponse> getAllSpecialities() {
+        return specialityService.getAllSpecialities();
     }
 
-    @PutMapping("/specialities/{specialityId}")
-    public ResponseEntity<?> updateSpeciality(@PathVariable Long specialityId, @RequestBody AddSpecialityRequest request) {
-        specialityService.updateSpeciality(specialityId, request);
-        return ResponseEntity.ok().build();
+    @GetMapping("/stats")
+    public SpecialityStatsResponse getStats() {
+        return specialityService.getStats();
     }
 
-    @PutMapping("/specialities/{specialityId}/program/{programId}")
-    public ResponseEntity<?> updateSpecialityProgram(@PathVariable Long specialityId, @PathVariable Long programId) {
+    @PostMapping("/program/{programId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public SpecialityEntity addSpeciality(@PathVariable Long programId, @RequestBody AddSpecialityRequest request) {
+        return specialityService.addSpeciality(programId, request);
+    }
+
+    @PutMapping("/{specialityId}")
+    public SpecialityEntity updateSpeciality(@PathVariable Long specialityId, @RequestBody AddSpecialityRequest request) {
+        return specialityService.updateSpeciality(specialityId, request);
+    }
+
+    @PutMapping("/{specialityId}/program/{programId}")
+    public void updateSpecialityProgram(@PathVariable Long specialityId, @PathVariable Long programId) {
         specialityService.updateSpecialityProgram(specialityId, programId);
-        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSpeciality(@PathVariable Long id) {
+        specialityService.deleteSpeciality(id);
     }
 }
