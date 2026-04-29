@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { SKIP_GLOBAL_LOADER } from '../../../../core/constant/loader-context';
 import {
   AcademicClassResponse,
   AcademicClassStatsResponse,
@@ -19,11 +20,14 @@ export class AcademicClassService {
   private programsUrl = `${environment.apiUrl}admin/programs`;
   private specialitiesUrl = `${environment.apiUrl}admin/specialities`;
   private academicYearsUrl = `${environment.apiUrl}admin/academic-years`;
+  private readonly localLoaderContext = new HttpContext().set(SKIP_GLOBAL_LOADER, true);
 
   constructor(private http: HttpClient) {}
 
-  getClasses(): Observable<AcademicClassResponse[]> {
-    return this.http.get<AcademicClassResponse[]>(this.apiUrl);
+  getClasses(skipGlobalLoader = false): Observable<AcademicClassResponse[]> {
+    return this.http.get<AcademicClassResponse[]>(this.apiUrl, {
+      context: skipGlobalLoader ? this.localLoaderContext : undefined
+    });
   }
 
   getStats(): Observable<AcademicClassStatsResponse> {

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { SKIP_GLOBAL_LOADER } from '../../../../core/constant/loader-context';
 import {
   AddCourseRequest,
   BulkDeleteCoursesRequest,
@@ -14,11 +15,14 @@ import {
 })
 export class CourseService {
   private apiUrl = `${environment.apiUrl}admin/courses`;
+  private readonly localLoaderContext = new HttpContext().set(SKIP_GLOBAL_LOADER, true);
 
   constructor(private http: HttpClient) {}
 
-  getCourses(): Observable<CourseResponse[]> {
-    return this.http.get<CourseResponse[]>(this.apiUrl);
+  getCourses(skipGlobalLoader = false): Observable<CourseResponse[]> {
+    return this.http.get<CourseResponse[]>(this.apiUrl, {
+      context: skipGlobalLoader ? this.localLoaderContext : undefined
+    });
   }
 
   getStats(): Observable<CourseStatsResponse> {

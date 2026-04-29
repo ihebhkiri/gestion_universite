@@ -17,6 +17,8 @@ public record UpdateTeacherRequest(Long id,
 
                                    Long departmentId,
 
-                                   Long specialityId) {
+                                   Long specialityId,
+
+                                   String status) {
 
 }

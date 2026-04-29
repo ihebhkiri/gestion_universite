@@ -1,4 +1,4 @@
-import {ApplicationConfig, provideBrowserGlobalErrorListeners} from '@angular/core';
+import {ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners} from '@angular/core';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -7,12 +7,15 @@ import {authInterceptorInterceptor} from './core/interceptors/auth-interceptor-i
 import {loaderInterceptor} from './core/interceptors/loader.interceptor';
 import {provideToastr} from 'ngx-toastr';
 import {provideAnimations} from '@angular/platform-browser/animations';
+import {GlobalErrorHandler} from './core/errors/global-error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([authInterceptorInterceptor, loaderInterceptor])),
-    provideToastr(),provideAnimations()
+    provideToastr(),
+    provideAnimations(),
+    {provide: ErrorHandler, useClass: GlobalErrorHandler}
   ]
 };

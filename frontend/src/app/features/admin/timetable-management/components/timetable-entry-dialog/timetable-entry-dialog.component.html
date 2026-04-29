@@ -1,0 +1,108 @@
+@if (facade.dialogOpen$ | async) {
+  <div class="dialog-backdrop" @dialogIn>
+    <form class="dialog-panel" [formGroup]="facade.entryForm" @panelIn (ngSubmit)="facade.saveEntry()">
+      <div class="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-semibold uppercase text-on-surface-variant">Schedule slot</p>
+          <h2 class="font-['Space_Grotesk'] text-xl font-bold text-primary">
+            {{ facade.entryForm.controls.id.value ? 'Edit entry' : 'New entry' }}
+          </h2>
+        </div>
+        <button type="button" class="icon-button" (click)="facade.closeDialog()">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <label class="field md:col-span-2">
+          <span>Course</span>
+          <select formControlName="courseId">
+            <option value="">Select course</option>
+            @for (course of facade.courses$ | async; track course.id) {
+              <option [value]="course.id">{{ course.code }} - {{ course.title }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Teacher</span>
+          <select formControlName="teacherId">
+            <option value="">Select teacher</option>
+            @for (teacher of facade.teachers$ | async; track teacher.id) {
+              <option [value]="teacher.id">{{ teacher.fullName || teacher.matricule }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Room</span>
+          <select formControlName="roomId">
+            <option value="">Select room</option>
+            @for (room of facade.rooms$ | async; track room.id) {
+              <option [value]="room.id">{{ room.code }} - {{ room.name }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Class</span>
+          <select formControlName="academicClassId">
+            <option value="">Select class</option>
+            @for (academicClass of facade.classes$ | async; track academicClass.id) {
+              <option [value]="academicClass.id">{{ academicClass.code }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Semester</span>
+          <select formControlName="semesterId">
+            <option value="">Select semester</option>
+            @for (semester of facade.semesters$ | async; track semester.id) {
+              <option [value]="semester.id">{{ semester.name }} - {{ semester.academicYearLabel }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Day</span>
+          <select formControlName="dayOfWeek">
+            @for (day of facade.days; track day.value) {
+              <option [value]="day.value">{{ day.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Type</span>
+          <select formControlName="sessionType">
+            @for (type of facade.sessionTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Start</span>
+          <input type="time" formControlName="startTime" />
+        </label>
+
+        <label class="field">
+          <span>End</span>
+          <input type="time" formControlName="endTime" />
+        </label>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-2">
+        <button type="button" class="secondary-button" (click)="facade.closeDialog()">Cancel</button>
+        <button type="submit" class="primary-button" [disabled]="facade.saving$ | async">
+          @if (facade.saving$ | async) {
+            Saving
+          } @else {
+            Save slot
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+}

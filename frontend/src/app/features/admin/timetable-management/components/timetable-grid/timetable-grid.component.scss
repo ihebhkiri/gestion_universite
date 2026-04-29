@@ -1,0 +1,139 @@
+.timetable-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 4.75rem repeat(6, minmax(9.5rem, 1fr));
+  grid-template-rows: 3rem repeat(20, 2.5rem);
+  min-width: 62rem;
+  position: relative;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-surface-container-lowest);
+}
+
+.corner-cell,
+.day-header,
+.time-cell {
+  display: flex;
+  align-items: center;
+  border-color: var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.corner-cell {
+  grid-column: 1;
+  grid-row: 1;
+  border-right: 1px solid var(--color-outline-variant);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.day-header {
+  justify-content: center;
+  border-bottom: 1px solid var(--color-outline-variant);
+  border-left: 1px solid var(--color-outline-variant);
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.time-cell {
+  grid-column: 1;
+  justify-content: center;
+  border-right: 1px solid var(--color-outline-variant);
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.slot-cell {
+  min-width: 0;
+  border: 0;
+  border-left: 1px solid color-mix(in srgb, var(--color-outline-variant) 72%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 45%, transparent);
+  background: transparent;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.slot-cell:hover {
+  background: color-mix(in srgb, var(--color-primary-fixed) 42%, transparent);
+}
+
+.course-card {
+  z-index: 2;
+  display: flex;
+  min-height: 4.75rem;
+  flex-direction: column;
+  margin: 0.25rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 16%, transparent);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 82%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-primary) 10%, transparent);
+  backdrop-filter: blur(14px);
+  padding: 0.65rem;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.course-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+.timetable-badge {
+  display: inline-flex;
+  min-width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  padding: 0.15rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.timetable-badge-cm {
+  background: var(--color-primary-fixed);
+  color: var(--color-on-primary-fixed);
+}
+
+.timetable-badge-td {
+  background: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed);
+}
+
+.timetable-badge-tp {
+  background: var(--color-tertiary-fixed);
+  color: var(--color-on-tertiary-fixed);
+}
+
+.card-action {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  color: var(--color-on-surface-variant);
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.card-action:hover {
+  background: var(--color-surface-container-high);
+  color: var(--color-primary);
+}
+
+.card-action.danger:hover {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+@media (max-width: 768px) {
+  .timetable-grid {
+    min-width: 58rem;
+  }
+}
