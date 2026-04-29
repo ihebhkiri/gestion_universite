@@ -1,6 +1,7 @@
 package com.iheb.gestion_universite.core.exceptions;
 
 
+import com.iheb.gestion_universite.teaching.timetable.TimetableConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -86,7 +87,7 @@ public class GlobalExceptionHandler {
                 .body("Password expired");
     }
 
-    @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class})
+    @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class, TimetableConflictException.class})
     public ResponseEntity<?> handleAlreadyExists (RuntimeException ex) {
 
         return ResponseEntity
@@ -96,6 +97,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler (PasswordMismatchException.class)
     public ResponseEntity<?> handlePasswordMismatch (PasswordMismatchException ex) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler (IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgument (IllegalArgumentException ex) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());

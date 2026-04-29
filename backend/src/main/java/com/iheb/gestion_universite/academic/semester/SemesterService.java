@@ -48,6 +48,10 @@ public class SemesterService {
         return mapToResponse(getById(id));
     }
 
+    public SemesterEntity getEntityById(Long id) {
+        return getById(id);
+    }
+
     public void update(Long id, AddSemesterRequest request) {
         SemesterEntity existing = getById(id);
         AcademicYearEntity year = getAcademicYear(request.academicYearId());

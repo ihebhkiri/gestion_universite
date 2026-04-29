@@ -48,6 +48,9 @@ export const routes: Routes = [
   }, {
     path: 'semesters',
     loadComponent: () => import('./semester-managment/pages/semester-managment/semester-managment.component').then(m => m.SemesterManagmentComponent)
+  }, {
+    path: 'timetable',
+    loadComponent: () => import('./timetable-management/pages/timetable-container/timetable-container.component').then(m => m.TimetableContainerComponent)
   }
 
 ]

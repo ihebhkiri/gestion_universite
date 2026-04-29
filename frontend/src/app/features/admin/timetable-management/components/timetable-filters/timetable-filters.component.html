@@ -1,0 +1,38 @@
+<form
+  class="mb-5 grid gap-3 rounded-lg border border-outline-variant bg-surface-container-lowest/85 p-4 shadow-sm backdrop-blur md:grid-cols-[1fr_1fr_auto]"
+  [formGroup]="facade.filtersForm">
+  <label class="space-y-1">
+    <span class="text-xs font-semibold text-on-surface-variant">Class</span>
+    <select class="filter-control" formControlName="classId">
+      <option value="">All classes</option>
+      @for (academicClass of facade.classes$ | async; track academicClass.id) {
+        <option [value]="academicClass.id">{{ academicClass.code }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="space-y-1">
+    <span class="text-xs font-semibold text-on-surface-variant">Semester</span>
+    <select class="filter-control" formControlName="semesterId">
+      <option value="">All semesters</option>
+      @for (semester of facade.semesters$ | async; track semester.id) {
+        <option [value]="semester.id">{{ semester.name }} - {{ semester.academicYearLabel }}</option>
+      }
+    </select>
+  </label>
+
+  <div class="flex items-end gap-2">
+    <button
+      type="button"
+      class="inline-flex h-10 items-center justify-center rounded-lg border border-outline-variant bg-surface-container px-3 text-sm font-semibold text-on-surface transition hover:bg-surface-container-high"
+      (click)="facade.resetFilters()">
+      <span class="material-symbols-outlined text-[18px]">filter_alt_off</span>
+    </button>
+    <button
+      type="button"
+      class="inline-flex h-10 items-center justify-center rounded-lg border border-outline-variant bg-surface-container px-3 text-sm font-semibold text-on-surface transition hover:bg-surface-container-high"
+      (click)="facade.refresh()">
+      <span class="material-symbols-outlined text-[18px]">refresh</span>
+    </button>
+  </div>
+</form>

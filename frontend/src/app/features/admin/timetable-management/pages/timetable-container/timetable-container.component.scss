@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+.timetable-local-loader {
+  position: absolute;
+  inset: 0.75rem;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 62%, transparent);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.loader-panel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 92%, transparent);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--color-primary) 14%, transparent);
+  padding: 0.85rem 1rem;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.loader-ring {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 3px solid var(--color-outline-variant);
+  border-top-color: var(--color-primary);
+  border-radius: 999px;
+  animation: timetable-spin 780ms linear infinite;
+}
+
+@keyframes timetable-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

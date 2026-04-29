@@ -65,6 +65,10 @@ public class CourseService {
         return toResponse(getById(id));
     }
 
+    public CourseEntity getEntityById(Long id) {
+        return getById(id);
+    }
+
     public CourseStatsResponse getStats() {
         List<CourseEntity> courses = courseRepository.findAll();
         double avgCredits = courses.stream()

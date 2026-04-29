@@ -48,6 +48,10 @@ export class TeacherService {
     return this.http.get<TeacherResponse>(`${this.apiUrl}/${id}`, {context: this.localLoaderContext});
   }
 
+  getAllTeachers(): Observable<TeacherResponse[]> {
+    return this.http.get<TeacherResponse[]>(`${this.apiUrl}/all`, {context: this.localLoaderContext});
+  }
+
   createTeacher(request: AddTeacherRequest): Observable<void> {
     return this.http.post<void>(this.apiUrl, request, {context: this.localLoaderContext});
   }
