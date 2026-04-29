@@ -25,4 +25,5 @@ public abstract class BaseEntity {
     public void onUpdate() {
         this.updatedAt = Instant.now();
     }
+
 }

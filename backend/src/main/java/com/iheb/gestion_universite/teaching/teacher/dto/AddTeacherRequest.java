@@ -14,6 +14,7 @@ public record AddTeacherRequest(
 
             Long  departmentId,
             String grade,
-            Long  specialityId
+            Long  specialityId,
+            String status
     )
 {}

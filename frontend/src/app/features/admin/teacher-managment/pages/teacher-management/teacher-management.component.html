@@ -1,0 +1,380 @@
+<div class="bg-surface text-on-background font-body min-h-screen flex antialiased">
+  <app-sidebar></app-sidebar>
+
+  <main class="md:ml-72 flex-1 flex flex-col min-h-screen relative">
+    <app-header></app-header>
+
+    <div class="mt-16 p-5 sm:p-8 lg:p-10 flex-1 max-w-[1500px] mx-auto w-full">
+      <section class="flex flex-col xl:flex-row xl:items-end justify-between gap-5 mb-6">
+        <div>
+          <h2 class="font-headline text-3xl font-semibold text-primary-container tracking-tight">Teacher Management</h2>
+          <p class="font-body text-on-surface-variant mt-2 max-w-2xl leading-relaxed">
+            Manage teachers, department ownership, specialities, and class assignments.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <button type="button"
+                  (click)="facade.refresh()"
+                  class="px-4 py-2 bg-surface-container-highest text-on-surface font-label text-sm font-semibold rounded-DEFAULT hover:bg-surface-container-high transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">refresh</span>
+            Refresh
+          </button>
+          <button type="button"
+                  (click)="facade.openCreate()"
+                  class="px-5 py-2 bg-gradient-to-t from-primary to-primary-container text-on-primary font-label text-sm font-semibold rounded-DEFAULT shadow-[0_4px_12px_rgba(2,36,72,0.15)] hover:shadow-[0_6px_16px_rgba(2,36,72,0.2)] transition-shadow flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">add</span>
+            New Teacher
+          </button>
+        </div>
+      </section>
+
+      <section class="bg-surface-container-lowest rounded-lg p-4 mb-5 shadow-sm border border-outline-variant/10">
+        <form [formGroup]="facade.filtersForm" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-7 gap-3">
+          <label class="relative md:col-span-2 xl:col-span-2">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+            <input formControlName="search"
+                   class="w-full pl-9 pr-4 py-2.5 bg-surface-container-low border-b border-outline-variant/30 focus:border-primary-container focus:bg-surface-container-lowest focus:ring-0 text-sm font-body transition-colors rounded-t-DEFAULT"
+                   placeholder="Search name, email, CIN..."
+                   type="text">
+          </label>
+
+          <select formControlName="department" class="filter-control">
+            <option value="">All departments</option>
+            @for (department of facade.departments$ | async; track department.id) {
+              <option [value]="department.id">{{ department.name }}</option>
+            }
+          </select>
+
+          <select formControlName="status" class="filter-control">
+            <option value="">All statuses</option>
+            @for (status of facade.statuses; track status) {
+              <option [value]="status">{{ facade.statusLabel(status) }}</option>
+            }
+          </select>
+
+          <select formControlName="subject" class="filter-control">
+            <option value="">All subjects</option>
+            @for (subject of facade.subjects$ | async; track subject.id) {
+              <option [value]="subject.id">{{ subject.subjectName }}</option>
+            }
+          </select>
+
+          <select formControlName="speciality" class="filter-control">
+            <option value="">All specialities</option>
+            @for (speciality of facade.specialities$ | async; track speciality.id) {
+              <option [value]="speciality.id">{{ speciality.name }}</option>
+            }
+          </select>
+
+          <div class="grid grid-cols-2 gap-2 xl:col-span-1">
+            <input formControlName="hiredFrom" class="filter-control" type="date" title="Hire date from">
+            <input formControlName="hiredTo" class="filter-control" type="date" title="Hire date to">
+          </div>
+        </form>
+
+        <div class="mt-3 flex items-center justify-between gap-3 text-sm text-on-surface-variant">
+          <button type="button" (click)="facade.resetFilters()" class="font-label text-primary-container hover:underline">
+            Reset filters
+          </button>
+          @if (facade.totalElements$ | async; as total) {
+            <span><strong class="text-on-surface">{{ total }}</strong> teacher(s)</span>
+          }
+        </div>
+      </section>
+
+      @if (facade.selectedCount$ | async; as selectedCount) {
+        @if (selectedCount > 0) {
+          <section class="bg-secondary-container rounded-lg p-3 mb-5 flex flex-wrap gap-3 items-center justify-between border border-primary-fixed-dim/30">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary-container">checklist</span>
+              <span class="font-body text-sm font-medium text-primary-container">{{ selectedCount }} teacher(s) selected</span>
+              <button type="button" (click)="facade.clearSelection()" class="text-primary-container underline text-sm">Clear</button>
+            </div>
+            <button type="button"
+                    (click)="facade.bulkDeleteSelected()"
+                    class="px-3 py-1.5 bg-error-container text-on-error-container font-label text-xs font-semibold rounded-DEFAULT hover:bg-[#ffcdc9] transition-colors flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">delete</span>
+              Delete selected
+            </button>
+          </section>
+        }
+      }
+
+      <section class="bg-surface-container-lowest rounded-lg shadow-sm overflow-hidden border border-outline-variant/10">
+        @if (facade.page$ | async; as page) {
+          <div class="overflow-x-auto max-h-[66vh]">
+            <table class="w-full min-w-[1120px] text-left border-collapse">
+              <thead class="sticky top-0 z-10">
+              <tr class="border-b border-surface-container-highest bg-surface-bright">
+                <th class="py-4 pl-6 pr-3 w-12">
+                  <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container bg-surface-container-lowest"
+                         type="checkbox"
+                         [checked]="(facade.allVisibleSelected$ | async) ?? false"
+                         [indeterminate]="((facade.someVisibleSelected$ | async) ?? false) && !((facade.allVisibleSelected$ | async) ?? false)"
+                         (change)="facade.toggleVisible(page.content, checked($event))">
+                </th>
+                <th class="table-heading">
+                  <button type="button" (click)="facade.sortBy('lastName')" class="sort-button">Teacher name <span class="material-symbols-outlined text-sm">swap_vert</span></button>
+                </th>
+                <th class="table-heading">Email</th>
+                <th class="table-heading">
+                  <button type="button" (click)="facade.sortBy('department.name')" class="sort-button">Department <span class="material-symbols-outlined text-sm">swap_vert</span></button>
+                </th>
+                <th class="table-heading">Subject / Speciality</th>
+                <th class="table-heading">
+                  <button type="button" (click)="facade.sortBy('status')" class="sort-button">Status <span class="material-symbols-outlined text-sm">swap_vert</span></button>
+                </th>
+                <th class="table-heading">Classes</th>
+                <th class="py-4 px-6 text-right font-label text-xs text-on-surface-variant uppercase tracking-wider">Actions</th>
+              </tr>
+              </thead>
+
+              <tbody class="divide-y divide-surface-container-highest/50">
+                @if (facade.loading$ | async) {
+                  @for (row of [1, 2, 3, 4, 5, 6, 7]; track row) {
+                    <tr>
+                      <td colspan="8" class="px-6 py-4">
+                        <div class="skeleton-row"></div>
+                      </td>
+                    </tr>
+                  }
+                } @else if (facade.error$ | async; as error) {
+                  <tr>
+                    <td colspan="8" class="py-16 text-center">
+                      <div class="flex flex-col items-center gap-3">
+                        <span class="material-symbols-outlined text-4xl text-error">error</span>
+                        <p class="font-body text-sm text-on-surface-variant">{{ error }}</p>
+                        <button type="button" (click)="facade.refresh()" class="px-4 py-2 bg-primary text-on-primary rounded-DEFAULT text-sm font-semibold">Retry</button>
+                      </div>
+                    </td>
+                  </tr>
+                } @else {
+                  @for (teacher of page.content; track trackTeacher($index, teacher)) {
+                    <tr class="transition-colors group"
+                        [class.bg-surface-container-low]="facade.isSelected(teacher.id)"
+                        [class.hover:bg-surface-container-low]="!facade.isSelected(teacher.id)">
+                      <td class="py-4 pl-6 pr-3">
+                        <input class="rounded border-outline-variant text-primary-container focus:ring-primary-container bg-surface-container-lowest"
+                               type="checkbox"
+                               [checked]="facade.isSelected(teacher.id)"
+                               (change)="facade.toggleOne(teacher.id, checked($event))">
+                      </td>
+                      <td class="py-4 px-4">
+                        <button type="button" (click)="facade.openProfile(teacher)" class="text-left">
+                          <span class="block font-headline text-sm font-semibold text-primary-container">{{ teacher.fullName || 'Unnamed teacher' }}</span>
+                          <span class="block text-xs text-on-surface-variant mt-0.5">{{ teacher.matricule }}</span>
+                        </button>
+                      </td>
+                      <td class="py-4 px-4 font-body text-sm text-on-surface">{{ teacher.email || 'N/A' }}</td>
+                      <td class="py-4 px-4 font-body text-sm text-on-surface">{{ teacher.departmentName || 'Unassigned' }}</td>
+                      <td class="py-4 px-4">
+                        <div class="flex flex-col gap-1">
+                          <span class="text-sm text-on-surface">{{ teacher.subjects.length ? teacher.subjects.join(', ') : 'No subject yet' }}</span>
+                          <span class="text-xs text-on-surface-variant">{{ teacher.specialityName || 'No speciality' }}</span>
+                        </div>
+                      </td>
+                      <td class="py-4 px-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold" [class]="facade.statusClass(teacher.status)">
+                          {{ facade.statusLabel(teacher.status) }}
+                        </span>
+                      </td>
+                      <td class="py-4 px-4 font-headline text-sm font-semibold text-on-surface">{{ teacher.assignedClassesCount }}</td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                          <button type="button" (click)="facade.openProfile(teacher)" class="icon-action" title="View profile">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
+                          </button>
+                          <button type="button" (click)="facade.openEdit(teacher)" class="icon-action" title="Edit teacher">
+                            <span class="material-symbols-outlined text-sm">edit</span>
+                          </button>
+                          <button type="button" (click)="facade.openAssignment(teacher)" class="icon-action" title="Assign teacher">
+                            <span class="material-symbols-outlined text-sm">assignment_ind</span>
+                          </button>
+                          <button type="button" (click)="facade.deleteTeacher(teacher)" class="icon-action-danger" title="Delete teacher">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="8" class="py-16 text-center">
+                        <div class="flex flex-col items-center gap-3">
+                          <span class="material-symbols-outlined text-4xl text-on-surface-variant/40">person_search</span>
+                          <p class="font-body text-sm text-on-surface-variant">No teachers match the current filters.</p>
+                          <button type="button" (click)="facade.resetFilters()" class="text-primary-container text-sm font-semibold hover:underline">Clear filters</button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 border-t border-outline-variant/10">
+            <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+              <span>Rows</span>
+              <select class="filter-control !py-1.5 !w-20" [value]="page.size" (change)="facade.changePageSize(value($event))">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <span>{{ page.numberOfElements }} of {{ page.totalElements }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button type="button" class="page-button" [disabled]="page.first" (click)="facade.changePage(page.number - 1, page.totalPages)">
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+              </button>
+              @for (pageNumber of facade.pageNumbers$ | async; track pageNumber) {
+                @if (pageNumber < 2 || pageNumber > page.totalPages - 3 || Math.abs(pageNumber - page.number) <= 1) {
+                  <button type="button"
+                          class="page-button"
+                          [class.page-button-active]="pageNumber === page.number"
+                          (click)="facade.changePage(pageNumber, page.totalPages)">
+                    {{ pageNumber + 1 }}
+                  </button>
+                }
+              }
+              <button type="button" class="page-button" [disabled]="page.last" (click)="facade.changePage(page.number + 1, page.totalPages)">
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        }
+      </section>
+    </div>
+  </main>
+</div>
+
+@if (facade.isEditorOpen$ | async) {
+  <div class="modal-backdrop">
+    <section class="modal-panel">
+      <div class="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <h3 class="font-headline text-xl font-semibold text-primary-container">
+            {{ facade.teacherForm.controls.id.value ? 'Edit Teacher' : 'New Teacher' }}
+          </h3>
+          <p class="text-sm text-on-surface-variant mt-1">Keep identity, department, and speciality information current.</p>
+        </div>
+        <button type="button" class="icon-action" (click)="facade.closeEditor()">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="facade.teacherForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        @if (!facade.teacherForm.controls.id.value) {
+          <input formControlName="email" class="filter-control" placeholder="Email" type="email">
+          <input formControlName="password" class="filter-control" placeholder="Temporary password" type="password">
+        }
+        <input formControlName="firstName" class="filter-control" placeholder="First name">
+        <input formControlName="lastName" class="filter-control" placeholder="Last name">
+        <input formControlName="cin" class="filter-control" placeholder="CIN">
+        <input formControlName="phone" class="filter-control" placeholder="Phone">
+<!--        <input formControlName="gender" class="filter-control" placeholder="Gender">-->
+        <select  formControlName="gender" class="filter-control">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <input formControlName="grade" class="filter-control" placeholder="Grade">
+        <select formControlName="departmentId" class="filter-control">
+          <option value="">Department</option>
+          @for (department of facade.departments$ | async; track department.id) {
+            <option [value]="department.id">{{ department.name }}</option>
+          }
+        </select>
+        <select formControlName="specialityId" class="filter-control">
+          <option value="">Speciality</option>
+          @for (speciality of facade.specialities$ | async; track speciality.id) {
+            <option [value]="speciality.id">{{ speciality.name }}</option>
+          }
+        </select>
+        <select formControlName="status" class="filter-control md:col-span-2">
+          @for (status of facade.statuses; track status) {
+            <option [value]="status">{{ facade.statusLabel(status) }}</option>
+          }
+        </select>
+      </form>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button type="button" class="secondary-button" (click)="facade.closeEditor()">Cancel</button>
+        <button type="button" class="primary-button" (click)="facade.saveTeacher()" [disabled]="(facade.saving$ | async) ?? false">
+          Save
+        </button>
+      </div>
+    </section>
+  </div>
+}
+
+@if (facade.profileTeacher$ | async; as teacher) {
+  <div class="modal-backdrop">
+    <section class="modal-panel max-w-xl">
+      <div class="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <h3 class="font-headline text-xl font-semibold text-primary-container">{{ teacher.fullName }}</h3>
+          <p class="text-sm text-on-surface-variant mt-1">{{ teacher.email || 'No email' }}</p>
+        </div>
+        <button type="button" class="icon-action" (click)="facade.closeProfile()">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        <div class="detail-item"><dt>Matricule</dt><dd>{{ teacher.matricule }}</dd></div>
+        <div class="detail-item"><dt>Status</dt><dd>{{ facade.statusLabel(teacher.status) }}</dd></div>
+        <div class="detail-item"><dt>Department</dt><dd>{{ teacher.departmentName || 'Unassigned' }}</dd></div>
+        <div class="detail-item"><dt>Speciality</dt><dd>{{ teacher.specialityName || 'None' }}</dd></div>
+        <div class="detail-item"><dt>Phone</dt><dd>{{ teacher.phone || 'N/A' }}</dd></div>
+        <div class="detail-item"><dt>Hire date</dt><dd>{{ teacher.hireDate || 'N/A' }}</dd></div>
+        <div class="detail-item sm:col-span-2"><dt>Subjects</dt><dd>{{ teacher.subjects.length ? teacher.subjects.join(', ') : 'No assigned subjects' }}</dd></div>
+      </dl>
+    </section>
+  </div>
+}
+
+@if (facade.assigningTeacher$ | async; as teacher) {
+  <div class="modal-backdrop">
+    <section class="modal-panel max-w-xl">
+      <div class="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <h3 class="font-headline text-xl font-semibold text-primary-container">Assign Teacher</h3>
+          <p class="text-sm text-on-surface-variant mt-1">{{ teacher.fullName }}</p>
+        </div>
+        <button type="button" class="icon-action" (click)="facade.closeAssignment()">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="facade.assignmentForm" class="grid grid-cols-1 gap-3">
+        <select formControlName="courseId" class="filter-control">
+          <option value="">Course</option>
+          @for (course of facade.courses$ | async; track course.id) {
+            <option [value]="course.id">{{ course.code }} - {{ course.title }}</option>
+          }
+        </select>
+        <select formControlName="semesterId" class="filter-control">
+          <option value="">Semester</option>
+          @for (semester of facade.semesters$ | async; track semester.id) {
+            <option [value]="semester.id">{{ semester.name }} - {{ semester.academicYearLabel }}</option>
+          }
+        </select>
+        <select formControlName="classId" class="filter-control">
+          <option value="">Class</option>
+          @for (academicClass of facade.classes$ | async; track academicClass.id) {
+            <option [value]="academicClass.id">{{ academicClass.code }}</option>
+          }
+        </select>
+      </form>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button type="button" class="secondary-button" (click)="facade.closeAssignment()">Cancel</button>
+        <button type="button" class="primary-button" (click)="facade.assignTeacher()" [disabled]="(facade.saving$ | async) ?? false">
+          Assign
+        </button>
+      </div>
+    </section>
+  </div>
+}

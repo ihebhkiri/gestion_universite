@@ -22,6 +22,9 @@ export const routes: Routes = [
     path: 'groups',
     loadComponent: () => import('./student-managment/pages/group-management/group-management.component').then(m => m.GroupManagementComponent)
   }, {
+    path: 'teachers',
+    loadComponent: () => import('./teacher-managment/pages/teacher-management/teacher-management.component').then(m => m.TeacherManagementComponent)
+  }, {
     path: 'departments',
     loadComponent: () => import('./department-managment/pages/department-managment/department-managment.component').then(m => m.DepartmentManagmentComponent)
   }, {
