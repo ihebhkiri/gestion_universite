@@ -1,0 +1,22 @@
+<article class="student-card" [ngClass]="record.status.toLowerCase()">
+  <div class="student-identity">
+    <div class="avatar">{{ record.studentName.charAt(0) }}</div>
+    <div>
+      <h3>{{ record.studentName }}</h3>
+      <p>{{ record.matricule }} @if (record.groupName) { • {{ record.groupName }} }</p>
+    </div>
+  </div>
+
+  <div class="status-switcher" role="group" [attr.aria-label]="'Attendance status for ' + record.studentName">
+    @for (status of statuses; track status) {
+      <button
+        type="button"
+        [class.active]="record.status === status"
+        [disabled]="disabled"
+        [title]="status"
+        (click)="statusChanged.emit(status)">
+        <span class="material-symbols-outlined text-[17px]">{{ statusIcon(status) }}</span>
+      </button>
+    }
+  </div>
+</article>

@@ -1,0 +1,47 @@
+@if (visible) {
+  <div class="dialog-backdrop" role="presentation" (click)="closed.emit()"></div>
+  <section class="session-dialog" role="dialog" aria-modal="true" aria-labelledby="attendance-dialog-title">
+    <div class="dialog-header">
+      <div>
+        <p>New live session</p>
+        <h2 id="attendance-dialog-title">Start attendance</h2>
+      </div>
+      <button type="button" class="icon-action" aria-label="Close dialog" (click)="closed.emit()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form class="dialog-form" [formGroup]="form" (ngSubmit)="submit()">
+      <label class="full-row">
+        <span>Active timetable slot</span>
+        <select formControlName="timetableEntryId">
+          <option value="">Choose an active course slot</option>
+          @for (slot of availableSlots; track slot.timetableEntryId) {
+            <option [value]="slot.timetableEntryId">
+              {{ slot.startTime.slice(0, 5) }}-{{ slot.endTime.slice(0, 5) }} • {{ slot.courseCode }} • {{ slot.academicClassCode }} • {{ slot.teacherName }}
+            </option>
+          }
+        </select>
+      </label>
+
+      <label class="full-row">
+        <span>Session title</span>
+        <input type="text" formControlName="title" placeholder="Optional title">
+      </label>
+
+      <div class="dialog-actions">
+        <button type="button" class="ghost-action" (click)="closed.emit()">Cancel</button>
+        <button type="submit" class="start-action" [disabled]="availableSlots.length === 0">
+          <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+          Start
+        </button>
+      </div>
+
+      @if (availableSlots.length === 0) {
+        <p class="full-row text-sm font-bold text-on-surface-variant">
+          No course is currently inside its scheduled time window, or attendance was already opened for the active slot.
+        </p>
+      }
+    </form>
+  </section>
+}

@@ -10,4 +10,5 @@ public interface EnrollmentRepo extends JpaRepository<StudentEnrollmentEntity,Lo
     long countByEnrollmentDateAfter(java.time.LocalDate date);
     long countByGroupIdAndStatus(Long groupId, EnrollmentStatus status);
     List<StudentEnrollmentEntity> findByStudent_IdInAndStatus(List<Long> studentIds, EnrollmentStatus status);
+    List<StudentEnrollmentEntity> findByGroupAcademicClassIdAndStatus(Long academicClassId, EnrollmentStatus status);
 }

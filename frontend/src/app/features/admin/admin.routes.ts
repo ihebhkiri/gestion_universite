@@ -54,6 +54,9 @@ export const routes: Routes = [
   }, {
     path: 'rooms',
     loadComponent: () => import('./room-management/pages/room-container/room-container.component').then(m => m.RoomContainerComponent)
+  }, {
+    path: 'attendance',
+    loadComponent: () => import('./attendance-management/pages/attendance-session-page/attendance-session-page.component').then(m => m.AttendanceSessionPageComponent)
   }
 
 ]
