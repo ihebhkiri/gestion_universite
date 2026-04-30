@@ -1,0 +1,36 @@
+<section class="attendance-hero">
+  <div class="hero-main">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="status-pill" [class.status-closed]="session.status === 'CLOSED'">{{ session.status }}</span>
+      <span class="meta-pill">{{ session.sessionDate }} • {{ session.startTime.slice(0, 5) }}</span>
+    </div>
+    <h2>{{ session.title }}</h2>
+    <p>{{ session.academicClassCode }} • {{ session.courseCode }} - {{ session.courseTitle }}</p>
+    <div class="hero-actions">
+      <button type="button" class="secondary-action" (click)="startRequested.emit()">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        New session
+      </button>
+      <button
+        type="button"
+        class="danger-action"
+        [disabled]="session.status === 'CLOSED'"
+        (click)="closeRequested.emit()">
+        <span class="material-symbols-outlined text-[18px]">lock</span>
+        Close
+      </button>
+    </div>
+  </div>
+
+  <div class="session-code-panel" aria-label="Simulated session QR">
+    <div class="qr-grid">
+      @for (cell of qrCells; track cell) {
+        <span [class.active]="(cell + session.sessionCode.length) % 3 !== 0"></span>
+      }
+    </div>
+    <div>
+      <small>Session code</small>
+      <strong>{{ session.sessionCode }}</strong>
+    </div>
+  </div>
+</section>

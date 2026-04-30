@@ -1,0 +1,23 @@
+<section class="timeline-panel">
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <p class="text-xs font-bold uppercase text-on-surface-variant">Live timeline</p>
+      <h2 class="font-['Space_Grotesk'] text-lg font-bold text-primary">Session pulse</h2>
+    </div>
+    <span class="material-symbols-outlined text-primary">timeline</span>
+  </div>
+
+  <div class="timeline-list">
+    @for (record of markedRecords; track record.id) {
+      <div class="timeline-item" [ngClass]="record.status.toLowerCase()">
+        <span></span>
+        <div>
+          <strong>{{ record.studentName }}</strong>
+          <small>{{ record.status }} • {{ record.markedAt | date:'shortTime' }}</small>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-timeline">Changes will appear here as statuses are marked.</p>
+    }
+  </div>
+</section>

@@ -6,3 +6,4 @@ docker-compose-dev.yml
 docker-compose.yml
 .idea/
 target/
+docs/

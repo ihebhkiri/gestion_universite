@@ -1,0 +1,28 @@
+<section class="stats-grid">
+  <article class="rate-card">
+    <div>
+      <span>Presence rate</span>
+      <strong>{{ stats.attendanceRate }}%</strong>
+    </div>
+    <div class="progress-track">
+      <span [style.width.%]="stats.attendanceRate"></span>
+    </div>
+  </article>
+
+  <article class="stat-card present">
+    <span>Present</span>
+    <strong>{{ stats.present }}</strong>
+  </article>
+  <article class="stat-card absent">
+    <span>Absent</span>
+    <strong>{{ stats.absent }}</strong>
+  </article>
+  <article class="stat-card late">
+    <span>Late</span>
+    <strong>{{ stats.late }}</strong>
+  </article>
+  <article class="stat-card excused">
+    <span>Excused</span>
+    <strong>{{ stats.excused }}</strong>
+  </article>
+</section>

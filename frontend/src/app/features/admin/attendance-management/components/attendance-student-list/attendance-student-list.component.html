@@ -1,0 +1,21 @@
+<section class="student-list-panel">
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <p class="text-xs font-bold uppercase text-on-surface-variant">Class roster</p>
+      <h2 class="font-['Space_Grotesk'] text-lg font-bold text-primary">{{ records.length }} students</h2>
+    </div>
+    <span class="material-symbols-outlined text-primary">grid_view</span>
+  </div>
+
+  <div class="student-grid">
+    @for (record of records; track record.id) {
+      <app-attendance-student-card
+        [record]="record"
+        [disabled]="disabled"
+        (statusChanged)="statusChanged.emit({record, status: $event})">
+      </app-attendance-student-card>
+    } @empty {
+      <p class="empty-roster">No confirmed students found for this class.</p>
+    }
+  </div>
+</section>

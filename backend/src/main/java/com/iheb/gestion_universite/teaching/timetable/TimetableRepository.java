@@ -16,6 +16,8 @@ public interface TimetableRepository extends JpaRepository<TimetableEntity, Long
 
     List<TimetableEntity> findBySemesterId(Long semesterId);
 
+    List<TimetableEntity> findByDayOfWeek(DayOfWeek dayOfWeek);
+
     @Query("""
             select count(entry) > 0
             from TimetableEntity entry
