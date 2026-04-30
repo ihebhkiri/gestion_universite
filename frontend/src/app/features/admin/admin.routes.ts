@@ -57,6 +57,9 @@ export const routes: Routes = [
   }, {
     path: 'attendance',
     loadComponent: () => import('./attendance-management/pages/attendance-session-page/attendance-session-page.component').then(m => m.AttendanceSessionPageComponent)
+  }, {
+    path: 'attendance-analytics',
+    loadComponent: () => import('./attendance-analytics/pages/attendance-analytics-page/attendance-analytics-page.component').then(m => m.AttendanceAnalyticsPageComponent)
   }
 
 ]

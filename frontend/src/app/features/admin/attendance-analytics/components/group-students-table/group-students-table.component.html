@@ -1,0 +1,65 @@
+<section class="analytics-panel overflow-hidden p-0">
+  <div class="flex flex-col gap-2 border-b border-outline-variant p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="text-xs font-black uppercase text-on-surface-variant">Group roster</p>
+      <h2 class="font-['Space_Grotesk'] text-lg font-black text-primary">Student Attendance Risk</h2>
+    </div>
+    <span class="rounded-xl bg-primary-fixed px-3 py-1 text-xs font-black text-primary">{{ students.length }} students</span>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="analytics-table" [@studentRowsEnter]="students.length">
+      <thead>
+      <tr>
+        <th>Matricule</th>
+        <th>Student</th>
+        <th>Group</th>
+        <th>Sessions</th>
+        <th>Presence</th>
+        <th>Absence</th>
+        <th>Late</th>
+        <th>Risk</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (student of students; track student.studentId) {
+          <tr>
+            <td class="font-black text-primary">{{ student.matricule }}</td>
+            <td>{{ student.studentName || 'Unnamed student' }}</td>
+            <td>{{ student.groupName || '-' }}</td>
+            <td>{{ student.totalSessions }}</td>
+            <td>
+              <div class="rate-cell">
+                <span>{{ student.presenceRate }}%</span>
+                <div class="rate-bar"><i class="rate-presence" [style.width.%]="student.presenceRate"></i></div>
+              </div>
+            </td>
+            <td>
+              <div class="rate-cell">
+                <span>{{ student.absenceRate }}%</span>
+                <div class="rate-bar"><i class="rate-absence" [style.width.%]="student.absenceRate"></i></div>
+              </div>
+            </td>
+            <td>{{ student.lateCount }}</td>
+            <td><span class="risk-tag" [ngClass]="riskClass(student.riskLevel)">{{ student.riskLevel }}</span></td>
+            <td>
+              <button type="button" class="analytics-icon-button" (click)="studentSelected.emit(student.studentId)" aria-label="Open student profile">
+                <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="9">
+              <div class="empty-inline">
+                <span class="material-symbols-outlined">person_search</span>
+                <span>No students found for these filters.</span>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

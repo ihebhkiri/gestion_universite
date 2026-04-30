@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { SKIP_GLOBAL_LOADER } from '../../../../core/constant/loader-context';
 import {
   AcademicYearResponse,
   AddAcademicYearRequest,
@@ -13,11 +14,14 @@ import {
 })
 export class AcademicYearService {
   private apiUrl = `${environment.apiUrl}admin/academic-years`;
+  private readonly localLoaderContext = new HttpContext().set(SKIP_GLOBAL_LOADER, true);
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<AcademicYearResponse[]> {
-    return this.http.get<AcademicYearResponse[]>(this.apiUrl);
+  getAll(skipGlobalLoader = false): Observable<AcademicYearResponse[]> {
+    return this.http.get<AcademicYearResponse[]>(this.apiUrl, {
+      context: skipGlobalLoader ? this.localLoaderContext : undefined
+    });
   }
 
   getStats(): Observable<AcademicYearStatsResponse> {

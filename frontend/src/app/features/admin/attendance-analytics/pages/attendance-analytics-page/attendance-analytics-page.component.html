@@ -1,0 +1,57 @@
+<app-sidebar></app-sidebar>
+<section class="min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="analytics-shell relative px-4 py-6 sm:px-6 lg:px-8" @analyticsPageEnter>
+    @if (facade.localLoading$ | async) {
+      <div class="analytics-local-loader" aria-live="polite" aria-label="Loading attendance analytics">
+        <div class="loader-card">
+          <span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span>
+          <span>Refreshing attendance analytics</span>
+        </div>
+      </div>
+    }
+
+    <div class="analytics-animate mb-5 flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-xs font-semibold uppercase text-on-surface-variant">Attendance reporting</p>
+        <h1 class="font-['Space_Grotesk'] text-2xl font-bold text-primary">Attendance Analytics</h1>
+      </div>
+      <div class="rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-2 text-sm font-bold text-on-surface-variant">
+        Group, course, teacher and student risk view
+      </div>
+    </div>
+
+    <app-analytics-filters
+      class="analytics-animate block"
+      [form]="facade.filtersForm"
+      [academicYears]="(facade.academicYears$ | async) ?? []"
+      [semesters]="(facade.filteredSemesters$ | async) ?? []"
+      [classes]="(facade.filteredClasses$ | async) ?? []"
+      [groups]="(facade.filteredGroups$ | async) ?? []"
+      (refreshed)="facade.loadDashboard()"
+      (reset)="facade.resetFilters()">
+    </app-analytics-filters>
+
+    <div class="mt-5 space-y-5">
+      <app-group-summary-cards class="analytics-animate block" [summary]="facade.groupSummary$ | async"></app-group-summary-cards>
+
+      <section class="analytics-animate grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
+        <app-group-students-table
+          [students]="(facade.students$ | async) ?? []"
+          (studentSelected)="facade.selectStudent($event)">
+        </app-group-students-table>
+
+        <aside class="space-y-5">
+          <app-course-absence-ranking [courses]="(facade.courseAbsenceRanking$ | async) ?? []"></app-course-absence-ranking>
+          <app-teacher-absence-ranking [teachers]="(facade.teacherAbsenceRanking$ | async) ?? []"></app-teacher-absence-ranking>
+        </aside>
+      </section>
+    </div>
+  </main>
+</section>
+
+<app-student-attendance-dialog
+  [profile]="facade.selectedStudentProfile$ | async"
+  (closed)="facade.clearSelectedStudent()">
+</app-student-attendance-dialog>

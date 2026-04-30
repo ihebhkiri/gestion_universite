@@ -1,0 +1,26 @@
+<section class="analytics-panel">
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <p class="text-xs font-black uppercase text-on-surface-variant">Associated absence</p>
+      <h2 class="font-['Space_Grotesk'] text-lg font-black text-primary">Teachers</h2>
+    </div>
+    <span class="material-symbols-outlined text-primary">co_present</span>
+  </div>
+
+  <div class="space-y-3" [@rankingEnter]="teachers.length">
+    @for (teacher of teachers.slice(0, 6); track teacher.teacherId) {
+      <article class="ranking-row">
+        <div class="min-w-0">
+          <strong>{{ teacher.teacherName || 'Unnamed teacher' }}</strong>
+          <small>{{ teacher.totalCourses }} courses · {{ teacher.totalSessions }} sessions · {{ teacher.absentCount }} absences</small>
+        </div>
+        <em>{{ teacher.absenceRate }}%</em>
+      </article>
+    } @empty {
+      <div class="empty-inline">
+        <span class="material-symbols-outlined">person_search</span>
+        <span>No teacher ranking yet.</span>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,92 @@
+@if (profile) {
+  <div class="analytics-dialog-backdrop" @dialogBackdrop (click)="closed.emit()">
+    <section class="analytics-dialog" @studentDrawer (click)="$event.stopPropagation()">
+      <header class="flex items-start justify-between gap-4 border-b border-outline-variant p-5">
+        <div>
+          <p class="text-xs font-black uppercase text-on-surface-variant">{{ profile.matricule }}</p>
+          <h2 class="font-['Space_Grotesk'] text-2xl font-black text-primary">{{ profile.studentName }}</h2>
+          <small class="font-bold text-on-surface-variant">{{ profile.classCode || '-' }} · {{ profile.groupName || '-' }}</small>
+        </div>
+        <button type="button" class="analytics-icon-button" (click)="closed.emit()" aria-label="Close student profile">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <div class="grid gap-5 overflow-y-auto p-5">
+        <section class="dialog-animate grid gap-3 sm:grid-cols-4">
+          <article class="mini-kpi">
+            <span>Presence</span>
+            <strong class="text-emerald-700">{{ profile.globalSummary.presenceRate }}%</strong>
+          </article>
+          <article class="mini-kpi">
+            <span>Absence</span>
+            <strong class="text-rose-700">{{ profile.globalSummary.absenceRate }}%</strong>
+          </article>
+          <article class="mini-kpi">
+            <span>Late</span>
+            <strong class="text-amber-700">{{ profile.globalSummary.lateRate }}%</strong>
+          </article>
+          <article class="mini-kpi">
+            <span>Excused</span>
+            <strong class="text-sky-700">{{ profile.globalSummary.excusedRate }}%</strong>
+          </article>
+        </section>
+
+        <section class="dialog-animate analytics-panel p-0">
+          <div class="border-b border-outline-variant p-4">
+            <h3 class="font-['Space_Grotesk'] text-lg font-black text-primary">Course Breakdown</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="analytics-table">
+              <thead>
+              <tr>
+                <th>Course</th>
+                <th>Teacher</th>
+                <th>Sessions</th>
+                <th>Presence</th>
+                <th>Absence</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (course of profile.courseSummaries; track course.courseId) {
+                  <tr>
+                    <td class="font-black text-primary">{{ course.courseCode }} - {{ course.courseTitle }}</td>
+                    <td>{{ course.teacherName || '-' }}</td>
+                    <td>{{ course.totalSessions }}</td>
+                    <td>{{ course.presenceRate }}%</td>
+                    <td>{{ course.absenceRate }}%</td>
+                  </tr>
+                } @empty {
+                  <tr><td colspan="5">No course attendance yet.</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="dialog-animate analytics-panel">
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="font-['Space_Grotesk'] text-lg font-black text-primary">Session History</h3>
+            <span class="rounded-xl bg-primary-fixed px-3 py-1 text-xs font-black text-primary">{{ profile.history.length }} records</span>
+          </div>
+          <div class="space-y-3">
+            @for (item of profile.history; track item.sessionId) {
+              <article class="history-row">
+                <div>
+                  <strong>{{ item.courseCode || '-' }} - {{ item.courseTitle || 'Course' }}</strong>
+                  <small>{{ item.sessionDate }} · {{ item.teacherName || 'No teacher' }}</small>
+                </div>
+                <span class="status-tag" [ngClass]="statusClass(item.status)">{{ item.status }}</span>
+              </article>
+            } @empty {
+              <div class="empty-inline">
+                <span class="material-symbols-outlined">history</span>
+                <span>No attendance history for these filters.</span>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+}

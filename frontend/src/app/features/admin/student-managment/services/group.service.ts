@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { SKIP_GLOBAL_LOADER } from '../../../../core/constant/loader-context';
 import { GroupResponse, AddGroupRequest, GroupStatsResponse, AcademicClassOption } from '../models/group.model';
 
 @Injectable({
@@ -10,11 +11,14 @@ import { GroupResponse, AddGroupRequest, GroupStatsResponse, AcademicClassOption
 export class GroupService {
   private apiUrl = `${environment.apiUrl}admin/groups`;
   private classApiUrl = `${environment.apiUrl}admin/classes`;
+  private readonly localLoaderContext = new HttpContext().set(SKIP_GLOBAL_LOADER, true);
 
   constructor(private http: HttpClient) {}
 
-  getGroups(): Observable<GroupResponse[]> {
-    return this.http.get<GroupResponse[]>(this.apiUrl);
+  getGroups(skipGlobalLoader = false): Observable<GroupResponse[]> {
+    return this.http.get<GroupResponse[]>(this.apiUrl, {
+      context: skipGlobalLoader ? this.localLoaderContext : undefined
+    });
   }
 
   getStats(): Observable<GroupStatsResponse> {

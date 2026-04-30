@@ -1,0 +1,26 @@
+<section class="analytics-panel">
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <p class="text-xs font-black uppercase text-on-surface-variant">Highest absence</p>
+      <h2 class="font-['Space_Grotesk'] text-lg font-black text-primary">Courses</h2>
+    </div>
+    <span class="material-symbols-outlined text-primary">menu_book</span>
+  </div>
+
+  <div class="space-y-3" [@rankingEnter]="courses.length">
+    @for (course of courses.slice(0, 6); track course.courseId) {
+      <article class="ranking-row">
+        <div class="min-w-0">
+          <strong>{{ course.courseCode }} - {{ course.courseTitle }}</strong>
+          <small>{{ course.teacherName || 'No teacher' }} · {{ course.totalSessions }} sessions · {{ course.absentCount }} absences</small>
+        </div>
+        <em>{{ course.absenceRate }}%</em>
+      </article>
+    } @empty {
+      <div class="empty-inline">
+        <span class="material-symbols-outlined">insights</span>
+        <span>No course ranking yet.</span>
+      </div>
+    }
+  </div>
+</section>

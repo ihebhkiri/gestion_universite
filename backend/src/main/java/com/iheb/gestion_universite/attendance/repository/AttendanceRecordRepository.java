@@ -17,4 +17,18 @@ public interface AttendanceRecordRepository extends JpaRepository<AttendanceReco
             order by student.lastName asc, student.firstName asc
             """)
     List<AttendanceRecordEntity> findBySessionIdOrderByStudentName(@Param("sessionId") Long sessionId);
+
+    @Query("""
+            select record
+            from AttendanceRecordEntity record
+            join fetch record.student student
+            join fetch record.session session
+            left join fetch session.course course
+            left join fetch session.teacher teacher
+            left join fetch session.academicClass academicClass
+            left join fetch academicClass.academicYear academicYear
+            left join fetch session.timetableEntry timetableEntry
+            left join fetch timetableEntry.semester semester
+            """)
+    List<AttendanceRecordEntity> findAllForAnalytics();
 }
