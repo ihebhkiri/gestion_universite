@@ -51,6 +51,9 @@ export const routes: Routes = [
   }, {
     path: 'timetable',
     loadComponent: () => import('./timetable-management/pages/timetable-container/timetable-container.component').then(m => m.TimetableContainerComponent)
+  }, {
+    path: 'rooms',
+    loadComponent: () => import('./room-management/pages/room-container/room-container.component').then(m => m.RoomContainerComponent)
   }
 
 ]

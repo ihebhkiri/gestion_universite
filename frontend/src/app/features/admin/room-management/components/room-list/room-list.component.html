@@ -1,0 +1,108 @@
+@if (facade.rooms$ | async; as rooms) {
+  <section class="min-w-0">
+    @if (rooms.length > 0) {
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
+        @for (room of rooms; track room.id) {
+          <article class="room-card group rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+            <div class="mb-4 flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="truncate font-headline text-xl font-semibold text-primary">{{ room.name }}</p>
+                <p class="mt-1 text-xs font-semibold uppercase text-on-surface-variant">{{ room.code }}</p>
+              </div>
+              <span
+                class="shrink-0 rounded-md px-2.5 py-1 text-xs font-semibold"
+                [ngClass]="facade.typeBadgeClass(room.type)">
+                {{ facade.typeLabel(room.type) }}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div class="rounded-lg bg-surface-container-low p-3">
+                <p class="text-xs font-semibold uppercase text-on-surface-variant">Capacity</p>
+                <p class="mt-1 font-headline text-2xl font-bold text-on-surface">{{ room.capacity }}</p>
+              </div>
+              <div class="rounded-lg bg-surface-container-low p-3">
+                <p class="text-xs font-semibold uppercase text-on-surface-variant">Building</p>
+                <p class="mt-2 truncate font-semibold text-on-surface">{{ room.building || 'Unassigned' }}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 grid gap-2 text-sm text-on-surface-variant">
+
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">location_on</span>
+                <span class="truncate">{{ room.location || 'No location' }}</span>
+              </div>
+            </div>
+
+            <div class="mt-5 flex items-center justify-end gap-2 border-t border-outline-variant/20 pt-4 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
+              <button
+                type="button"
+                class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-on-surface-variant transition hover:bg-surface-container-high hover:text-primary"
+                title="Edit room"
+                (click)="facade.openEdit(room)">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
+              <button
+                type="button"
+                class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-on-surface-variant transition hover:bg-error-container hover:text-on-error-container"
+                title="Delete room"
+                (click)="facade.deleteRoom(room)">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+      <div class="mt-6 flex flex-col gap-3 rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+        <div class="text-sm text-on-surface-variant">
+          Page <span class="font-semibold text-on-surface">{{ ((facade.pageIndex$ | async) ?? 0) + 1 }}</span>
+          of <span class="font-semibold text-on-surface">{{ facade.totalPages$ | async }}</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <select
+            class="rounded-lg border border-outline-variant/30 bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none focus:border-primary"
+            [value]="facade.pageSize$ | async"
+            (change)="facade.changePageSize($any($event.target).value)">
+            <option value="6">6 / page</option>
+            <option value="9">9 / page</option>
+            <option value="12">12 / page</option>
+            <option value="24">24 / page</option>
+          </select>
+          <button
+            type="button"
+            class="room-page-button"
+            [disabled]="(facade.page$ | async)?.first"
+            (click)="facade.previousPage()">
+            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+          </button>
+          @if (facade.pageNumbers$ | async; as pages) {
+            @for (page of pages; track page) {
+              <button
+                type="button"
+                class="room-page-number"
+                [class.room-page-number-active]="page === (facade.pageIndex$ | async)"
+                (click)="facade.changePage(page)">
+                {{ page + 1 }}
+              </button>
+            }
+          }
+          <button
+            type="button"
+            class="room-page-button"
+            [disabled]="(facade.page$ | async)?.last"
+            (click)="facade.nextPage()">
+            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="rounded-lg border border-dashed border-outline-variant bg-surface-container-lowest px-6 py-16 text-center">
+        <span class="material-symbols-outlined text-5xl text-on-surface-variant/50">meeting_room</span>
+        <h2 class="mt-3 font-headline text-xl font-semibold text-primary">No rooms found</h2>
+
+      </div>
+    }
+  </section>
+}

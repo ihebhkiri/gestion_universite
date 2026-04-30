@@ -1,0 +1,98 @@
+<app-sidebar></app-sidebar>
+<section class="min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="room-page relative px-4 py-6 sm:px-6 lg:px-8">
+    @if (facade.isLoading$ | async) {
+      <div class="room-local-loader" aria-live="polite" aria-label="Loading rooms">
+        <div class="loader-panel">
+          <div class="loader-ring"></div>
+          <span>Loading rooms</span>
+        </div>
+      </div>
+    }
+
+    <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-xs font-semibold uppercase text-on-surface-variant">Academic resources</p>
+        <h1 class="font-headline text-3xl font-semibold text-primary">Room Management</h1>
+        <p class="mt-2 max-w-2xl text-sm leading-6 text-on-surface-variant">
+          Manage rooms, capacity, type, building, floor and location.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-surface-container-high px-4 py-2.5 text-sm font-semibold text-on-surface transition-colors hover:bg-surface-container-highest"
+          (click)="facade.refresh()">
+          <span class="material-symbols-outlined text-[18px]">refresh</span>
+          Refresh
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary shadow-sm transition hover:bg-primary-container"
+          (click)="facade.openCreate()">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          New room
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase text-on-surface-variant">Rooms</p>
+        <p class="mt-2 font-headline text-3xl font-bold text-primary">{{ facade.totalElements$ | async }}</p>
+      </div>
+      <div class="rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase text-on-surface-variant">Total capacity</p>
+        <p class="mt-2 font-headline text-3xl font-bold text-primary">{{ facade.totalCapacity$ | async }}</p>
+      </div>
+      <div class="rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase text-on-surface-variant">Visible</p>
+        <p class="mt-2 font-headline text-3xl font-bold text-primary">{{ (facade.rooms$ | async)?.length ?? 0 }}</p>
+      </div>
+    </div>
+
+    <form
+      class="mb-6 grid grid-cols-1 gap-4 rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-4 shadow-sm md:grid-cols-2 xl:grid-cols-[minmax(16rem,1.5fr)_minmax(10rem,1fr)_minmax(8rem,.8fr)_minmax(10rem,1fr)_auto]"
+      [formGroup]="facade.filtersForm">
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">search</span>
+        <input
+          type="text"
+          class="w-full rounded-lg border border-outline-variant/30 bg-surface-container-low py-2.5 pl-10 pr-4 text-sm text-on-surface outline-none transition focus:border-primary focus:bg-surface-container-lowest"
+          placeholder="Search rooms, type, building..."
+          formControlName="search" />
+      </div>
+      <input
+        type="text"
+        class="room-filter-input"
+        placeholder="Building"
+        formControlName="building" />
+      <input
+        type="text"
+        class="room-filter-input"
+        placeholder="Location"
+        formControlName="location" />
+      <select class="room-filter-input" formControlName="type">
+        <option value="">All types</option>
+        @for (type of facade.roomTypes; track type.value) {
+          <option [value]="type.value">{{ type.label }}</option>
+        }
+      </select>
+      <button
+        type="button"
+        class="inline-flex items-center justify-center gap-2 rounded-lg bg-surface-container-high px-4 py-2.5 text-sm font-semibold text-on-surface transition hover:bg-surface-container-highest"
+        (click)="facade.resetFilters()">
+        <span class="material-symbols-outlined text-[18px]">filter_alt_off</span>
+        Reset
+      </button>
+    </form>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <app-room-list></app-room-list>
+      <app-room-form></app-room-form>
+    </div>
+  </main>
+</section>

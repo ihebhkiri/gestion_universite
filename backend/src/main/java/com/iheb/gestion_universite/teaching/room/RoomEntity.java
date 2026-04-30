@@ -22,9 +22,14 @@ public class RoomEntity {
     @Column(nullable = false, unique = true)
     private String code;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     private Integer capacity;
 
+    private String type;
+
     private String building;
+
+    private String location;
 }
