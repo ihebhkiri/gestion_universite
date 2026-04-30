@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+.room-page {
+  min-height: calc(100vh - 4rem);
+}
+
+.room-local-loader {
+  position: absolute;
+  inset: 0.75rem;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 62%, transparent);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.loader-panel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 92%, transparent);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--color-primary) 14%, transparent);
+  padding: 0.85rem 1rem;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.loader-ring {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 3px solid var(--color-outline-variant);
+  border-top-color: var(--color-primary);
+  border-radius: 999px;
+  animation: room-spin 780ms linear infinite;
+}
+
+.room-filter-input {
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 70%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+  font-size: 0.875rem;
+  outline: none;
+  padding: 0.65rem 0.8rem;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.room-filter-input:focus {
+  border-color: var(--color-primary);
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+@keyframes room-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

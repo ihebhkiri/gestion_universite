@@ -5,6 +5,8 @@ public record RoomResponse(
         String code,
         String name,
         Integer capacity,
-        String building
+        String type,
+        String building,
+        String location
 ) {
 }

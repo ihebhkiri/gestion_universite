@@ -2,6 +2,8 @@ package com.iheb.gestion_universite.core.exceptions;
 
 
 import com.iheb.gestion_universite.teaching.timetable.TimetableConflictException;
+import com.iheb.gestion_universite.teaching.room.RoomAlreadyExistsException;
+import com.iheb.gestion_universite.teaching.room.RoomNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -15,7 +17,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler ({UserNotFoundException.class, TeacherNotFoundException.class, RefreshTokenNotFoundException.class, ExamNotFoundException.class, StudentNotFoundException.class, RoleNotFoundException.class})
+    @ExceptionHandler ({UserNotFoundException.class, TeacherNotFoundException.class, RefreshTokenNotFoundException.class, ExamNotFoundException.class, StudentNotFoundException.class, RoleNotFoundException.class, RoomNotFoundException.class})
     public ResponseEntity<?> handleNotFound (RuntimeException ex) {
 
         return ResponseEntity
@@ -87,7 +89,7 @@ public class GlobalExceptionHandler {
                 .body("Password expired");
     }
 
-    @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class, TimetableConflictException.class})
+    @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class, TimetableConflictException.class, RoomAlreadyExistsException.class})
     public ResponseEntity<?> handleAlreadyExists (RuntimeException ex) {
 
         return ResponseEntity

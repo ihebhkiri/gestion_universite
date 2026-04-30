@@ -15,6 +15,6 @@ export class RoomService {
   constructor(private readonly http: HttpClient) {}
 
   getRooms(): Observable<RoomResponse[]> {
-    return this.http.get<RoomResponse[]>(this.apiUrl, {context: this.localLoaderContext});
+    return this.http.get<RoomResponse[]>(`${this.apiUrl}/all`, {context: this.localLoaderContext});
   }
 }

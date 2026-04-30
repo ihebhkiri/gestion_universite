@@ -1,0 +1,111 @@
+<aside class="xl:sticky xl:top-24">
+  @if (facade.isFormOpen$ | async) {
+    <form
+      [formGroup]="form"
+      class="rounded-lg border border-outline-variant/20 bg-surface-container-lowest p-5 shadow-sm"
+      (ngSubmit)="submit()"
+      @panelIn>
+      <div class="mb-5 flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold uppercase text-on-surface-variant">
+            {{ (facade.selectedRoom$ | async) ? 'Edit room' : 'New room' }}
+          </p>
+          <h2 class="mt-1 font-headline text-xl font-semibold text-primary">
+            {{ (facade.selectedRoom$ | async)?.name || 'Room details' }}
+          </h2>
+        </div>
+        <button
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-on-surface-variant transition hover:bg-surface-container-high hover:text-primary"
+          title="Close"
+          (click)="facade.closeForm()">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <label class="block">
+          <span class="mb-1.5 block text-xs font-semibold uppercase text-on-surface-variant">Name</span>
+          <input
+            type="text"
+            formControlName="name"
+            class="room-input"
+            placeholder="A101" />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <span class="mt-1 block text-xs font-semibold text-error">Name is required.</span>
+          }
+        </label>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
+          <label class="block">
+            <span class="mb-1.5 block text-xs font-semibold uppercase text-on-surface-variant">Capacity</span>
+            <input
+              type="number"
+              min="1"
+              formControlName="capacity"
+              class="room-input" />
+            @if (form.controls.capacity.touched && form.controls.capacity.invalid) {
+              <span class="mt-1 block text-xs font-semibold text-error">Capacity must be greater than 0.</span>
+            }
+          </label>
+
+          <label class="block">
+            <span class="mb-1.5 block text-xs font-semibold uppercase text-on-surface-variant">Type</span>
+            <select formControlName="type" class="room-input">
+              @for (type of facade.roomTypes; track type.value) {
+                <option [value]="type.value">{{ type.label }}</option>
+              }
+            </select>
+          </label>
+        </div>
+
+        <label class="block">
+          <span class="mb-1.5 block text-xs font-semibold uppercase text-on-surface-variant">Building</span>
+          <input
+            type="text"
+            formControlName="building"
+            class="room-input"
+            placeholder="Main block" />
+        </label>
+
+
+        <label class="block">
+          <span class="mb-1.5 block text-xs font-semibold uppercase text-on-surface-variant">Location</span>
+          <input
+            type="text"
+            formControlName="location"
+            class="room-input"
+            placeholder="Floor 1, north wing" />
+        </label>
+      </div>
+
+      <div class="mt-6 flex items-center justify-end gap-3 border-t border-outline-variant/20 pt-4">
+        <button
+          type="button"
+          class="rounded-lg bg-surface-container-high px-4 py-2.5 text-sm font-semibold text-on-surface transition hover:bg-surface-container-highest"
+          (click)="facade.closeForm()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-60"
+          [disabled]="(facade.isSaving$ | async) || form.invalid">
+          <span class="material-symbols-outlined text-[18px]">save</span>
+          {{ (facade.isSaving$ | async) ? 'Saving' : 'Save room' }}
+        </button>
+      </div>
+    </form>
+  } @else {
+    <div class="rounded-lg border border-dashed border-outline-variant bg-surface-container-lowest p-6 text-center shadow-sm">
+      <span class="material-symbols-outlined text-4xl text-on-surface-variant/50">add_business</span>
+      <h2 class="mt-3 font-headline text-lg font-semibold text-primary">No room selected</h2>
+      <button
+        type="button"
+        class="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition hover:bg-primary-container"
+        (click)="facade.openCreate()">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        New room
+      </button>
+    </div>
+  }
+</aside>
