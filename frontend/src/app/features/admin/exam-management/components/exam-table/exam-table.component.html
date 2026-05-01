@@ -1,0 +1,81 @@
+<section class="exam-table-panel">
+  <div class="exam-table-panel__header">
+    <div>
+      <p>Exam roster</p>
+      <h2>{{ sortedExams.length }} visible exams</h2>
+    </div>
+  </div>
+
+  @if (sortedExams.length > 0) {
+    <div class="exam-table-scroll">
+      <table class="exam-table">
+        <thead>
+          <tr>
+            <th>Exam</th>
+            <th>Schedule</th>
+            <th>Class</th>
+            <th>Room</th>
+            <th>Supervisor</th>
+            <th>Status</th>
+            <th class="exam-table__actions-heading">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (exam of sortedExams; track exam.id) {
+            <tr [class.exam-table__row--active]="selectedExam?.id === exam.id">
+              <td>
+                <button type="button" class="exam-table__main" (click)="examSelected.emit(exam)">
+                  <strong>{{ exam.title }}</strong>
+                  <small>{{ exam.courseCode || 'Course' }} - {{ exam.type }} / {{ exam.sessionType || 'MAIN' }}</small>
+                </button>
+              </td>
+              <td>
+                <span class="exam-table__stack">
+                  <strong>{{ exam.examDate || 'Unscheduled' }}</strong>
+                  <small>{{ (exam.startTime || '--:--') | slice:0:5 }} - {{ (exam.endTime || '--:--') | slice:0:5 }}</small>
+                </span>
+              </td>
+              <td>
+                <span>{{ exam.classCode || '-' }}</span>
+                @if (exam.groupName) {
+                  <small>{{ exam.groupName }}</small>
+                }
+              </td>
+              <td>{{ exam.roomCode || '-' }}</td>
+              <td>{{ exam.supervisorName || '-' }}</td>
+              <td>
+                <div class="exam-table__status">
+                  <app-exam-status-tag [status]="exam.status"></app-exam-status-tag>
+                  <select [value]="exam.status" (change)="changeStatus(exam, $any($event.target).value)">
+                    @for (status of statusOptions; track status.value) {
+                      <option [value]="status.value">{{ status.label }}</option>
+                    }
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="exam-table__actions">
+                  <button type="button" title="Edit exam" aria-label="Edit exam" (click)="editRequested.emit(exam)">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                  </button>
+                  <button type="button" title="Cancel exam" aria-label="Cancel exam" (click)="cancelRequested.emit(exam)" [disabled]="exam.status === 'CANCELLED'">
+                    <span class="material-symbols-outlined text-[18px]">block</span>
+                  </button>
+                  <button type="button" class="danger" title="Delete exam" aria-label="Delete exam" (click)="deleteRequested.emit(exam)">
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="exam-table__empty">
+      <span class="material-symbols-outlined">quiz</span>
+      <strong>No exams match the current filters</strong>
+      <small>Reset filters or create a new exam to start planning.</small>
+    </div>
+  }
+</section>

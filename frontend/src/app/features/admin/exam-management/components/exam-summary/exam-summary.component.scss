@@ -1,0 +1,27 @@
+.exam-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: .75rem;
+}
+
+.exam-summary div {
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: .5rem;
+  padding: 1rem;
+  background: var(--color-surface-container-lowest, #fff);
+}
+
+.exam-summary span,
+.exam-summary strong {
+  display: block;
+}
+
+.exam-summary span {
+  font-size: .75rem;
+  color: var(--color-on-surface-variant, #64748b);
+}
+
+.exam-summary strong {
+  margin-top: .25rem;
+  font-size: 1.5rem;
+}

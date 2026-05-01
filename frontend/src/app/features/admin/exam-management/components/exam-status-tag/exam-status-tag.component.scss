@@ -1,0 +1,39 @@
+.exam-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.exam-status-tag__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.exam-status-tag--planned {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.exam-status-tag--in-progress {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.exam-status-tag--completed {
+  background: #dcfce7;
+  color: #047857;
+}
+
+.exam-status-tag--cancelled {
+  background: #ffe4e6;
+  color: #be123c;
+}

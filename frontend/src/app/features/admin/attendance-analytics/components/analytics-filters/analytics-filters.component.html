@@ -1,0 +1,51 @@
+<form class="analytics-panel grid gap-3 lg:grid-cols-[repeat(4,minmax(150px,1fr))_auto_auto]" [formGroup]="form">
+  <label class="grid gap-1">
+    <span class="analytics-label">Year</span>
+    <select class="analytics-select" formControlName="academicYearId">
+      <option value="">All years</option>
+      @for (year of academicYears; track year.id) {
+        <option [value]="year.id">{{ year.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="grid gap-1">
+    <span class="analytics-label">Semester</span>
+    <select class="analytics-select" formControlName="semesterId">
+      <option value="">All semesters</option>
+      @for (semester of semesters; track semester.id) {
+        <option [value]="semester.id">{{ semester.name }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="grid gap-1">
+    <span class="analytics-label">Class</span>
+    <select class="analytics-select" formControlName="classId">
+      <option value="">All classes</option>
+      @for (academicClass of classes; track academicClass.id) {
+        <option [value]="academicClass.id">{{ academicClass.code }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="grid gap-1">
+    <span class="analytics-label">Group</span>
+    <select class="analytics-select" formControlName="groupId">
+      <option value="">All groups</option>
+      @for (group of groups; track group.id) {
+        <option [value]="group.id">{{ group.name }} - {{ group.classCode }}</option>
+      }
+    </select>
+  </label>
+
+  <button type="button" class="analytics-action analytics-action-primary self-end" (click)="refreshed.emit()">
+    <span class="material-symbols-outlined text-[18px]">refresh</span>
+    Refresh
+  </button>
+
+  <button type="button" class="analytics-action self-end" (click)="reset.emit()">
+    <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+    Reset
+  </button>
+</form>

@@ -21,6 +21,7 @@ import com.iheb.gestion_universite.attendance.entity.AttendanceStatus;
 import com.iheb.gestion_universite.attendance.repository.AttendanceSessionRepository;
 import com.iheb.gestion_universite.evaluation.exam.ExamEntity;
 import com.iheb.gestion_universite.evaluation.exam.ExamRepo;
+import com.iheb.gestion_universite.evaluation.exam.ExamStatus;
 import com.iheb.gestion_universite.evaluation.exam.ExamType;
 import com.iheb.gestion_universite.evaluation.exam.SessionType;
 import com.iheb.gestion_universite.evaluation.grade.entities.GradeEntity;
@@ -161,6 +162,9 @@ public class DemoDataSeeder implements CommandLineRunner {
         timetableSlot(aiCourse, teacherFatma, roomB204, sdiaClass, s1, DayOfWeek.WEDNESDAY, LocalTime.of(14, 0), LocalTime.of(15, 30), CourseSessionType.TD);
 
         ExamEntity dsSpring = exam(springCourse, "Spring Boot DS", ExamType.DS, SessionType.MAIN, 1.5, 0.4);
+        scheduleExam(dsSpring, glsiClass, glsiG1, roomLab1, teacherIheb, s1, LocalDate.now().plusDays(5), LocalTime.of(9, 0), LocalTime.of(10, 30));
+        ExamEntity databaseExam = exam(databaseCourse, "Database Main Exam", ExamType.EXAM, SessionType.MAIN, 2.0, 0.6);
+        scheduleExam(databaseExam, prepClass, prepG1, roomA101, teacherIheb, s1, LocalDate.now().plusDays(7), LocalTime.of(11, 0), LocalTime.of(13, 0));
         grade(dsSpring, studentAmina, 16.0);
         grade(dsSpring, studentYoussef, 13.5);
         grade(dsSpring, studentNour, 15.0);
@@ -463,11 +467,36 @@ public class DemoDataSeeder implements CommandLineRunner {
                     entity.setTitle(title);
                     entity.setType(type);
                     entity.setSessionType(sessionType);
+                    entity.setStatus(ExamStatus.PLANNED);
                     entity.setDuration(duration);
                     entity.setWeight(weight);
                     entity.setCreatedAt(Instant.now());
                     return examRepo.save(entity);
                 });
+    }
+
+    private void scheduleExam(
+            ExamEntity exam,
+            AcademicClassEntity academicClass,
+            StudentGroupEntity group,
+            RoomEntity room,
+            TeacherEntity supervisor,
+            SemesterEntity semester,
+            LocalDate date,
+            LocalTime start,
+            LocalTime end
+    ) {
+        if (exam.getExamDate() != null) return;
+        exam.setAcademicClass(academicClass);
+        exam.setStudentGroup(group);
+        exam.setRoom(room);
+        exam.setSupervisor(supervisor);
+        exam.setSemester(semester);
+        exam.setExamDate(date);
+        exam.setStartTime(start);
+        exam.setEndTime(end);
+        exam.setInstructions("Demo exam generated for exam management testing.");
+        examRepo.save(exam);
     }
 
     private void grade(ExamEntity exam, StudentEntity student, double score) {

@@ -2,6 +2,7 @@ package com.iheb.gestion_universite.core.exceptions;
 
 
 import com.iheb.gestion_universite.attendance.exception.AttendanceAlreadyStartedException;
+import com.iheb.gestion_universite.evaluation.exam.ExamConflictException;
 import com.iheb.gestion_universite.teaching.timetable.TimetableConflictException;
 import com.iheb.gestion_universite.teaching.room.RoomAlreadyExistsException;
 import com.iheb.gestion_universite.teaching.room.RoomNotFoundException;
@@ -90,7 +91,7 @@ public class GlobalExceptionHandler {
                 .body("Password expired");
     }
 
-    @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class, TimetableConflictException.class, RoomAlreadyExistsException.class, AttendanceAlreadyStartedException.class})
+    @ExceptionHandler ({ExamAlreadyExistsException.class, GradeAlreadyExistsException.class, UserAlreadyExistsException.class, TimetableConflictException.class, RoomAlreadyExistsException.class, AttendanceAlreadyStartedException.class, ExamConflictException.class})
     public ResponseEntity<?> handleAlreadyExists (RuntimeException ex) {
 
         return ResponseEntity

@@ -1,0 +1,45 @@
+<section class="exam-panel exam-calendar" aria-label="Exam calendar">
+  <div class="exam-panel__header">
+    <div>
+      <p>Calendar</p>
+      <h2>{{ monthLabel }}</h2>
+    </div>
+    <div class="exam-calendar__actions">
+      <button type="button" aria-label="Previous month" title="Previous month" (click)="previousMonth()">
+        <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+      </button>
+      <button type="button" aria-label="Next month" title="Next month" (click)="nextMonth()">
+        <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="exam-calendar__weekdays">
+    @for (day of weekDays; track day) {
+      <span>{{ day }}</span>
+    }
+  </div>
+
+  <div class="exam-calendar__grid">
+    @for (cell of cells; track cell.date) {
+      <button
+        type="button"
+        class="exam-calendar__cell"
+        [class.exam-calendar__cell--muted]="!cell.inCurrentMonth"
+        [class.exam-calendar__cell--today]="cell.isToday"
+        [class.exam-calendar__cell--selected]="cell.isSelected"
+        [class.exam-calendar__cell--risk]="cell.hasConflictRisk"
+        (click)="selectDate(cell.date)">
+        <span>{{ cell.day }}</span>
+        @if (cell.count > 0) {
+          <small>{{ cell.count }}</small>
+        }
+      </button>
+    }
+  </div>
+
+  <div class="exam-calendar__footer">
+    <button type="button" (click)="dateSelected.emit(null)">Clear</button>
+    <button type="button" (click)="today()">Today</button>
+  </div>
+</section>

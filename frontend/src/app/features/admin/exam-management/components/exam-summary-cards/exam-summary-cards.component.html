@@ -1,0 +1,14 @@
+<section class="exam-summary-cards" aria-label="Exam summary">
+  @for (card of cards; track card.label) {
+    <article class="exam-summary-card">
+      <span class="exam-summary-card__icon" [ngClass]="'tone-' + card.tone">
+        <span class="material-symbols-outlined text-[20px]">{{ card.icon }}</span>
+      </span>
+      <div>
+        <p>{{ card.label }}</p>
+        <strong>{{ card.value }}</strong>
+        <small>{{ card.hint }}</small>
+      </div>
+    </article>
+  }
+</section>

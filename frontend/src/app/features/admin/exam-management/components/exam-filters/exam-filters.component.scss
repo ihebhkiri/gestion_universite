@@ -1,0 +1,79 @@
+.exam-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.8rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  padding: 1rem;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--color-primary) 7%, transparent);
+}
+
+.exam-filters label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.exam-filters label > span {
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.exam-filters input,
+.exam-filters select {
+  min-height: 2.55rem;
+  width: 100%;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+  padding: 0 0.75rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+  outline: none;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.exam-filters input:focus,
+.exam-filters select:focus {
+  border-color: var(--color-primary);
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.exam-filters__actions {
+  display: flex;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.exam-filters__actions button {
+  display: grid;
+  width: 2.55rem;
+  height: 2.55rem;
+  place-items: center;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-low);
+  color: var(--color-primary);
+}
+
+.exam-filters__actions button:hover {
+  background: var(--color-surface-container);
+}
+
+@media (max-width: 640px) {
+  .exam-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .exam-filters__actions {
+    justify-content: stretch;
+  }
+
+  .exam-filters__actions button {
+    width: 100%;
+  }
+}

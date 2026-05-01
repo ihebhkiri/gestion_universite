@@ -1,0 +1,92 @@
+<form class="exam-filters" [formGroup]="form">
+  <label>
+    <span>Course</span>
+    <select formControlName="courseId">
+      <option value="">All courses</option>
+      @for (course of courses ?? []; track course.id) {
+        <option [value]="course.id">{{ course.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Academic year</span>
+    <select formControlName="academicYearId">
+      <option value="">All years</option>
+      @for (year of academicYears ?? []; track year.id) {
+        <option [value]="year.id">{{ year.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Semester</span>
+    <select formControlName="semesterId">
+      <option value="">All semesters</option>
+      @for (semester of semesters ?? []; track semester.id) {
+        <option [value]="semester.id">{{ semester.label }} {{ semester.meta ? '- ' + semester.meta : '' }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Class</span>
+    <select formControlName="classId">
+      <option value="">All classes</option>
+      @for (academicClass of classes ?? []; track academicClass.id) {
+        <option [value]="academicClass.id">{{ academicClass.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Group</span>
+    <select formControlName="groupId">
+      <option value="">All groups</option>
+      @for (group of groups ?? []; track group.id) {
+        <option [value]="group.id">{{ group.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Room</span>
+    <select formControlName="roomId">
+      <option value="">All rooms</option>
+      @for (room of rooms ?? []; track room.id) {
+        <option [value]="room.id">{{ room.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Supervisor</span>
+    <select formControlName="supervisorId">
+      <option value="">All supervisors</option>
+      @for (supervisor of supervisors ?? []; track supervisor.id) {
+        <option [value]="supervisor.id">{{ supervisor.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Date</span>
+    <input type="date" formControlName="date" />
+  </label>
+
+  <label>
+    <span>Status</span>
+    <select formControlName="status">
+      <option value="">All statuses</option>
+      @for (status of statuses; track status.value) {
+        <option [value]="status.value">{{ status.label }}</option>
+      }
+    </select>
+  </label>
+
+  <div class="exam-filters__actions">
+    <button type="button" title="Reset filters" aria-label="Reset filters" (click)="resetRequested.emit()">
+      <span class="material-symbols-outlined text-[18px]">filter_alt_off</span>
+    </button>
+  </div>
+</form>
