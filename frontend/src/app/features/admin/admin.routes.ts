@@ -60,6 +60,9 @@ export const routes: Routes = [
   }, {
     path: 'attendance-analytics',
     loadComponent: () => import('./attendance-analytics/pages/attendance-analytics-page/attendance-analytics-page.component').then(m => m.AttendanceAnalyticsPageComponent)
+  }, {
+    path: 'exams',
+    loadComponent: () => import('./exam-management/pages/exam-management-page/exam-management-page.component').then(m => m.ExamManagementPageComponent)
   }
 
 ]

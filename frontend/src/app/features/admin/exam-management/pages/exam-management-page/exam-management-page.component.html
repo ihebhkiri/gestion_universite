@@ -1,0 +1,108 @@
+<app-sidebar></app-sidebar>
+<section class="exam-page min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="exam-page__main px-4 py-6 sm:px-6 lg:px-8">
+    @if (facade.localLoading$ | async) {
+      <div class="exam-page__loader" aria-live="polite" aria-label="Loading exam data">
+        <div class="exam-page__loader-card">
+          <span class="exam-page__loader-ring"></span>
+          <span>Syncing exams</span>
+        </div>
+      </div>
+    }
+
+    <div class="exam-page__heading">
+      <div>
+        <p>Academic planning</p>
+        <h1>Exam Management</h1>
+        <span>Plan exam slots, inspect room usage, update statuses and check scheduling conflicts.</span>
+      </div>
+
+      <div class="exam-page__actions">
+        <button type="button" class="exam-page__secondary" (click)="facade.refresh()">
+          <span class="material-symbols-outlined text-[18px]">refresh</span>
+          Refresh
+        </button>
+        <button type="button" class="exam-page__primary" (click)="facade.openCreate()">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          New exam
+        </button>
+      </div>
+    </div>
+
+    <div class="exam-page__content">
+      <app-exam-summary-cards [summary]="facade.summary$ | async"></app-exam-summary-cards>
+
+      <app-exam-filters
+        [form]="facade.filtersForm"
+        [academicYears]="facade.academicYears$ | async"
+        [semesters]="facade.semesters$ | async"
+        [courses]="facade.courses$ | async"
+        [classes]="facade.classes$ | async"
+        [groups]="facade.groups$ | async"
+        [rooms]="facade.rooms$ | async"
+        [supervisors]="facade.teachers$ | async"
+        [statuses]="facade.examStatuses"
+        (resetRequested)="facade.resetFilters()"
+      >
+      </app-exam-filters>
+
+      <div class="exam-page__grid">
+        <div class="exam-page__primary-column">
+          <app-exam-table
+            [exams]="facade.dayExams$ | async"
+            [selectedExam]="facade.selectedExam$ | async"
+            [statusOptions]="facade.examStatuses"
+            (examSelected)="facade.selectExam($event)"
+            (editRequested)="facade.openEdit($event)"
+            (deleteRequested)="facade.deleteExam($event)"
+            (cancelRequested)="facade.cancelExam($event.id)"
+            (statusChanged)="facade.changeStatus($event.exam.id, $event.status)">
+          </app-exam-table>
+        </div>
+
+        <aside class="exam-page__side-column">
+          <app-exam-calendar
+            [exams]="facade.exams$ | async"
+            [selectedDate]="facade.selectedDate$ | async"
+            (dateSelected)="facade.selectDate($event)">
+          </app-exam-calendar>
+
+          <app-exam-day-snapshot
+            [exams]="facade.dayExams$ | async"
+            [selectedDate]="facade.selectedDate$ | async"
+            [selectedExam]="facade.selectedExam$ | async"
+            (examSelected)="facade.selectExam($event)"
+            (createRequested)="facade.openCreate($event)">
+          </app-exam-day-snapshot>
+
+          <app-exam-conflict-panel
+            [conflicts]="facade.conflicts$ | async"
+            [loading]="(facade.localLoading$ | async) ?? false"
+            (checkRequested)="facade.requestConflictCheck()">
+          </app-exam-conflict-panel>
+        </aside>
+      </div>
+    </div>
+  </main>
+</section>
+
+<app-exam-dialog
+  [visible]="(facade.dialogOpen$ | async) ?? false"
+  [form]="facade.examForm"
+  [courses]="facade.courses$ | async"
+  [classes]="facade.classes$ | async"
+  [groups]="facade.groups$ | async"
+  [rooms]="facade.rooms$ | async"
+  [supervisors]="facade.teachers$ | async"
+  [semesters]="facade.semesters$ | async"
+  [types]="facade.examTypes"
+  [statuses]="facade.examStatuses"
+  [sessionTypes]="facade.examSessionTypes"
+  [conflicts]="facade.conflicts$ | async"
+  [loading]="(facade.localLoading$ | async) ?? false"
+  (closed)="facade.closeDialog()"
+  (saved)="facade.saveDialog()"
+  (conflictsChecked)="facade.requestConflictCheck()">
+</app-exam-dialog>

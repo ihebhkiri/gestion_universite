@@ -1,0 +1,35 @@
+<section class="exam-panel day-snapshot">
+  <div class="exam-panel__header">
+    <div>
+      <p>Day snapshot</p>
+      <h2>{{ title }}</h2>
+    </div>
+    <button type="button" class="day-snapshot__add" (click)="createRequested.emit(selectedDate)">
+      <span class="material-symbols-outlined text-[18px]">add</span>
+      Exam
+    </button>
+  </div>
+
+  <div class="day-snapshot__list">
+    @for (exam of sortedExams; track exam.id) {
+      <button
+        type="button"
+        class="day-snapshot__item"
+        [class.day-snapshot__item--active]="selectedExam?.id === exam.id"
+        (click)="examSelected.emit(exam)">
+        <span class="day-snapshot__time">{{ (exam.startTime || '--:--') | slice:0:5 }}</span>
+        <span class="day-snapshot__body">
+          <strong>{{ exam.title }}</strong>
+          <small>{{ exam.courseCode || 'Course' }} - {{ exam.roomCode || 'Room pending' }}</small>
+        </span>
+        <app-exam-status-tag [status]="exam.status"></app-exam-status-tag>
+      </button>
+    } @empty {
+      <div class="day-snapshot__empty">
+        <span class="material-symbols-outlined">event_busy</span>
+        <strong>No exams for this view</strong>
+        <small>Use the calendar, filters, or create a new exam slot.</small>
+      </div>
+    }
+  </div>
+</section>

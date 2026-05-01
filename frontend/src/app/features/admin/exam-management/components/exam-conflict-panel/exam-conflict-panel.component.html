@@ -1,0 +1,33 @@
+<section class="conflict-panel">
+  <div class="conflict-panel__header">
+    <div>
+      <p>Conflict radar</p>
+      <h2>{{ (conflicts ?? []).length }} findings</h2>
+    </div>
+    <button type="button" (click)="checkRequested.emit()" [disabled]="loading">
+      <span class="material-symbols-outlined text-[18px]">{{ loading ? 'progress_activity' : 'rule' }}</span>
+      Check
+    </button>
+  </div>
+
+  <div class="conflict-panel__body">
+    @for (conflict of conflicts ?? []; track conflict.conflictType + conflict.message) {
+      <article class="conflict-panel__item">
+        <span class="material-symbols-outlined">{{ icon(conflict) }}</span>
+        <div>
+          <strong>{{ conflict.conflictType }}</strong>
+          <p>{{ conflict.message }}</p>
+          @if (conflict.examTitle) {
+            <small>{{ conflict.examTitle }}</small>
+          }
+        </div>
+      </article>
+    } @empty {
+      <div class="conflict-panel__empty">
+        <span class="material-symbols-outlined">verified</span>
+        <strong>No conflicts loaded</strong>
+        <small>Run a check from the dialog or this panel.</small>
+      </div>
+    }
+  </div>
+</section>

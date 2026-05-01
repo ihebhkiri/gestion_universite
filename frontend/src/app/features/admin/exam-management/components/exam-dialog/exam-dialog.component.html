@@ -1,0 +1,170 @@
+@if (visible) {
+  <div class="exam-dialog-backdrop">
+    <form class="exam-dialog" [formGroup]="form" (ngSubmit)="saved.emit()">
+      <header class="exam-dialog__header">
+        <div>
+          <p>Exam slot</p>
+          <h2>{{ form.controls.id.value ? 'Edit exam' : 'New exam' }}</h2>
+        </div>
+        <button type="button" class="exam-dialog__icon" aria-label="Close dialog" (click)="closed.emit()">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </header>
+
+      <div class="exam-dialog__body">
+        <div class="exam-dialog__form-grid">
+          <label class="field field--wide">
+            <span>Title</span>
+            <input type="text" formControlName="title" placeholder="Database main exam" />
+            @if (invalid('title')) {
+              <small>Title is required.</small>
+            }
+          </label>
+
+          <label class="field field--wide">
+            <span>Course</span>
+            <select formControlName="courseId">
+              <option value="">Select course</option>
+              @for (course of courses ?? []; track course.id) {
+                <option [value]="course.id">{{ course.label }}</option>
+              }
+            </select>
+            @if (invalid('courseId')) {
+              <small>Course is required.</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Class</span>
+            <select formControlName="classId">
+              <option value="">Select class</option>
+              @for (academicClass of classes ?? []; track academicClass.id) {
+                <option [value]="academicClass.id">{{ academicClass.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Group</span>
+            <select formControlName="groupId">
+              <option value="">All class</option>
+              @for (group of groups ?? []; track group.id) {
+                <option [value]="group.id">{{ group.label }} {{ group.meta ? '- ' + group.meta : '' }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Room</span>
+            <select formControlName="roomId">
+              <option value="">Select room</option>
+              @for (room of rooms ?? []; track room.id) {
+                <option [value]="room.id">{{ room.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Supervisor</span>
+            <select formControlName="supervisorId">
+              <option value="">Select supervisor</option>
+              @for (supervisor of supervisors ?? []; track supervisor.id) {
+                <option [value]="supervisor.id">{{ supervisor.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Semester</span>
+            <select formControlName="semesterId">
+              <option value="">Select semester</option>
+              @for (semester of semesters ?? []; track semester.id) {
+                <option [value]="semester.id">{{ semester.label }} {{ semester.meta ? '- ' + semester.meta : '' }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Date</span>
+            <input type="date" formControlName="examDate" />
+          </label>
+
+          <label class="field">
+            <span>Start</span>
+            <input type="time" formControlName="startTime" />
+          </label>
+
+          <label class="field">
+            <span>End</span>
+            <input type="time" formControlName="endTime" />
+          </label>
+
+          <label class="field">
+            <span>Type</span>
+            <select formControlName="type">
+              @for (type of types; track type.value) {
+                <option [value]="type.value">{{ type.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Session</span>
+            <select formControlName="sessionType">
+              <option value="">None</option>
+              @for (sessionType of sessionTypes; track sessionType.value) {
+                <option [value]="sessionType.value">{{ sessionType.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Status</span>
+            <select formControlName="status">
+              @for (status of statuses; track status.value) {
+                <option [value]="status.value">{{ status.label }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Duration</span>
+            <input type="number" min="0" step="0.25" formControlName="duration" />
+          </label>
+
+          <label class="field">
+            <span>Weight</span>
+            <input type="number" min="0" max="1" step="0.05" formControlName="weight" />
+          </label>
+
+          <label class="field field--wide">
+            <span>Instructions</span>
+            <textarea rows="4" formControlName="instructions" placeholder="Allowed documents, arrival time, or invigilation notes"></textarea>
+          </label>
+        </div>
+
+        <app-exam-conflict-panel
+          [conflicts]="conflicts"
+          [loading]="loading"
+          (checkRequested)="conflictsChecked.emit()">
+        </app-exam-conflict-panel>
+      </div>
+
+      <footer class="exam-dialog__footer">
+        <button type="button" class="exam-dialog__secondary" (click)="conflictsChecked.emit()">
+          <span class="material-symbols-outlined text-[18px]">rule</span>
+          Check conflicts
+        </button>
+        <span class="exam-dialog__spacer"></span>
+        <button type="button" class="exam-dialog__secondary" (click)="closed.emit()">Cancel</button>
+        <button type="submit" class="exam-dialog__primary" [disabled]="loading">
+          @if (loading) {
+            Saving
+          } @else {
+            Save exam
+          }
+        </button>
+      </footer>
+    </form>
+  </div>
+}

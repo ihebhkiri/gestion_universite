@@ -1,0 +1,14 @@
+<div class="exam-list">
+  @for (exam of exams ?? []; track exam.id) {
+    <button
+      type="button"
+      class="exam-list__item"
+      [class.exam-list__item--active]="selectedExam?.id === exam.id"
+      (click)="examSelected.emit(exam)">
+      <span>{{ exam.title }}</span>
+      <small>{{ exam.examDate || 'Unscheduled' }} · {{ exam.status }}</small>
+    </button>
+  } @empty {
+    <p class="exam-list__empty">No exams loaded.</p>
+  }
+</div>
