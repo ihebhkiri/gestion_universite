@@ -1,0 +1,49 @@
+<section class="grade-records">
+  <div class="grade-records__header">
+    <div>
+      <p>Grade records</p>
+      <h2>{{ currentExam?.title ?? 'No exam selected' }}</h2>
+    </div>
+    <span>{{ (records ?? []).length }} students</span>
+  </div>
+
+  <div class="grade-records__table-wrap">
+    <table>
+      <thead>
+      <tr>
+        <th>Student</th>
+        <th>Group</th>
+        <th>Score</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (record of records ?? []; track record.id) {
+          <tr>
+            <td>
+              <strong>{{ record.studentName }}</strong>
+              <span>{{ record.matricule ?? 'No matricule' }}</span>
+            </td>
+            <td>{{ record.groupName ?? '-' }}</td>
+            <td>{{ record.score ?? '-' }}</td>
+            <td>
+              <span class="grade-records__status" [class.grade-records__status--ready]="record.status === 'VALIDATED' || record.status === 'PUBLISHED'">
+                {{ record.status }}
+              </span>
+            </td>
+            <td>
+              <button type="button" (click)="validateRequested.emit(record.id)" [disabled]="record.status === 'VALIDATED' || record.status === 'PUBLISHED'">
+                Validate
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="grade-records__empty">No grade records loaded for this exam yet.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

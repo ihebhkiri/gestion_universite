@@ -1,0 +1,154 @@
+@if (visible) {
+  <div class="grade-dialog-backdrop">
+    <form class="grade-dialog" [formGroup]="form" (ngSubmit)="submit()">
+      <header class="grade-dialog__header">
+        <div>
+          <p>Exam</p>
+          <h2>New gradebook exam</h2>
+        </div>
+        <button type="button" class="grade-dialog__icon" aria-label="Close dialog" (click)="close()">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </header>
+
+      <div class="grade-dialog__body">
+        <label class="field field--wide">
+          <span>Title</span>
+          <input type="text" formControlName="title" placeholder="Main exam" />
+          @if (invalid('title')) {
+            <small>Required</small>
+          }
+        </label>
+
+        <label class="field field--wide">
+          <span>Course</span>
+          <select formControlName="courseId">
+            <option value="">Select course</option>
+            @for (course of courses ?? []; track course.id) {
+              <option [value]="course.id">{{ course.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Class</span>
+          <select formControlName="classId">
+            <option value="">Select class</option>
+            @for (academicClass of classes ?? []; track academicClass.id) {
+              <option [value]="academicClass.id">{{ academicClass.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Group</span>
+          <select formControlName="groupId">
+            <option value="">All class</option>
+            @for (group of groups ?? []; track group.id) {
+              <option [value]="group.id">{{ group.label }} {{ group.meta ? '- ' + group.meta : '' }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Room</span>
+          <select formControlName="roomId">
+            <option value="">Select room</option>
+            @for (room of rooms ?? []; track room.id) {
+              <option [value]="room.id">{{ room.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Supervisor</span>
+          <select formControlName="supervisorId">
+            <option value="">Select supervisor</option>
+            @for (supervisor of supervisors ?? []; track supervisor.id) {
+              <option [value]="supervisor.id">{{ supervisor.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Semester</span>
+          <select formControlName="semesterId">
+            <option value="">Select semester</option>
+            @for (semester of semesters ?? []; track semester.id) {
+              <option [value]="semester.id">{{ semester.label }} {{ semester.meta ? '- ' + semester.meta : '' }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Date</span>
+          <input type="date" formControlName="examDate" />
+        </label>
+
+        <label class="field">
+          <span>Start</span>
+          <input type="time" formControlName="startTime" />
+        </label>
+
+        <label class="field">
+          <span>End</span>
+          <input type="time" formControlName="endTime" />
+          @if (invalid('endTime')) {
+            <small>Invalid time</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Type</span>
+          <select formControlName="type">
+            @for (type of examTypes; track type.value) {
+              <option [value]="type.value">{{ type.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Session</span>
+          <select formControlName="sessionType">
+            <option value="">None</option>
+            @for (session of sessionTypes; track session.value) {
+              <option [value]="session.value">{{ session.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Status</span>
+          <select formControlName="status">
+            @for (status of statuses; track status.value) {
+              <option [value]="status.value">{{ status.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Duration</span>
+          <input type="number" min="0" step="0.25" formControlName="duration" />
+        </label>
+
+        <label class="field">
+          <span>Coefficient</span>
+          <input type="number" min="0" step="0.25" formControlName="weight" />
+        </label>
+
+        <label class="field field--wide">
+          <span>Instructions</span>
+          <textarea rows="3" formControlName="instructions"></textarea>
+        </label>
+      </div>
+
+      <footer class="grade-dialog__footer">
+        <button type="button" class="grade-dialog__secondary" (click)="close()">Cancel</button>
+        <button type="submit" class="grade-dialog__primary" [disabled]="loading">
+          <span class="material-symbols-outlined text-[18px]">save</span>
+          Create
+        </button>
+      </footer>
+    </form>
+  </div>
+}

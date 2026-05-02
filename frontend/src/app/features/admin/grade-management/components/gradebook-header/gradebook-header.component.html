@@ -1,0 +1,51 @@
+<section class="gradebook-header">
+  <div class="gradebook-header__main">
+    <div class="gradebook-header__statusline">
+      <span class="gradebook-header__tag" [class.gradebook-header__tag--published]="exam?.status === 'PUBLISHED'">
+        {{ exam?.status ?? 'NO_EXAM' }}
+      </span>
+      <span class="gradebook-header__meta">{{ dateLabel }}</span>
+      <span class="gradebook-header__meta">Coeff. {{ coefficientLabel }}</span>
+    </div>
+
+    <h1>{{ exam?.title ?? 'Gradebook' }}</h1>
+    <p>{{ courseLabel }} · {{ classLabel }}</p>
+
+    <div class="gradebook-header__selectors">
+      <label>
+        <span>Course</span>
+        <select [value]="selectedCourseId ?? ''" (change)="onCourseChange($any($event.target).value)">
+          <option value="">Select course</option>
+          @for (course of courses ?? []; track course.id) {
+            <option [value]="course.id">{{ course.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Exam</span>
+        <select [value]="exam?.id ?? ''" (change)="onExamChange($any($event.target).value)">
+          <option value="">Select exam</option>
+          @for (item of exams ?? []; track item.id) {
+            <option [value]="item.id">{{ item.title }}</option>
+          }
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="gradebook-header__actions">
+    <button type="button" class="gradebook-header__secondary" (click)="createRequested.emit()">
+      <span class="material-symbols-outlined text-[18px]">add</span>
+      New exam
+    </button>
+    <button
+      type="button"
+      class="gradebook-header__primary"
+      [disabled]="!exam || exam.status === 'PUBLISHED'"
+      (click)="publishRequested.emit()">
+      <span class="material-symbols-outlined text-[18px]">publish</span>
+      Publish
+    </button>
+  </div>
+</section>
