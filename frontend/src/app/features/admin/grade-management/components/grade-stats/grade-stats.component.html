@@ -1,0 +1,23 @@
+<section class="grade-stats">
+  @for (card of cards; track card.label) {
+    <article class="grade-stats__card">
+      <span class="grade-stats__icon" [ngClass]="'tone-' + card.tone">
+        <span class="material-symbols-outlined text-[18px]">{{ card.icon }}</span>
+      </span>
+      <div>
+        <small>{{ card.label }}</small>
+        <strong>{{ card.value }}</strong>
+      </div>
+    </article>
+  }
+</section>
+
+<section class="grade-stats__progress" aria-label="Grade completion">
+  <div>
+    <span>Completion</span>
+    <strong>{{ completionRate }}%</strong>
+  </div>
+  <div class="grade-stats__track">
+    <i [style.width.%]="completionRate"></i>
+  </div>
+</section>

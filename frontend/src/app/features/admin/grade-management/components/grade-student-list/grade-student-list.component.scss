@@ -1,0 +1,130 @@
+:host {
+  display: block;
+}
+
+.grade-students {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-low);
+  padding: 1rem;
+}
+
+.grade-students__header,
+.grade-students__legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.grade-students__header {
+  margin-bottom: 0.9rem;
+}
+
+p {
+  color: var(--color-on-surface-variant);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+h2 {
+  color: var(--color-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.grade-students__locked {
+  display: inline-flex;
+  min-height: 1.9rem;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #047857;
+  padding: 0 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.grade-students__legend {
+  display: grid;
+  grid-template-columns: minmax(13rem, 1.35fr) minmax(6rem, 0.45fr) minmax(13rem, 1.2fr) minmax(7.5rem, 0.6fr) 5.7rem;
+  padding: 0 0.75rem 0.5rem;
+  color: var(--color-on-surface-variant);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.grade-students__legend span:last-child {
+  text-align: right;
+}
+
+.grade-students__rows {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.grade-students__empty {
+  display: grid;
+  min-height: 10rem;
+  place-items: center;
+  border: 1px dashed var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  color: var(--color-on-surface-variant);
+  text-align: center;
+}
+
+.grade-students__empty span {
+  color: var(--color-primary);
+  font-size: 2rem;
+}
+
+.grade-students__empty strong {
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.grade-students__skeleton {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.grade-students__skeleton-row {
+  display: grid;
+  grid-template-columns: 1.3fr 0.5fr 1fr;
+  gap: 0.75rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  padding: 1rem;
+}
+
+.grade-students__skeleton-row span {
+  height: 2.3rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-container) 0%,
+    var(--color-surface-container-highest) 50%,
+    var(--color-surface-container) 100%
+  );
+  background-size: 220% 100%;
+  animation: skeleton-shine 1.1s ease-in-out infinite;
+}
+
+@keyframes skeleton-shine {
+  to {
+    background-position: -220% 0;
+  }
+}
+
+@media (max-width: 980px) {
+  .grade-students__legend {
+    display: none;
+  }
+}

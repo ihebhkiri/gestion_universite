@@ -1,0 +1,87 @@
+<app-sidebar></app-sidebar>
+<section class="gradebook-page min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="gradebook-page__main px-4 py-6 sm:px-6 lg:px-8" @fadeInUp>
+    <app-gradebook-header
+      [exam]="facade.currentExam$ | async"
+      [courses]="facade.courseOptions$ | async"
+      [exams]="facade.exams$ | async"
+      [selectedCourseId]="facade.selectedCourseId$ | async"
+      (courseChanged)="facade.loadExamsByCourse($event)"
+      (examSelected)="facade.loadExamDetails($event)"
+      (createRequested)="openExamDialog()"
+      (publishRequested)="openPublishDialog()">
+    </app-gradebook-header>
+
+    @if (facade.localLoading$ | async) {
+      <section class="gradebook-page__skeleton" aria-live="polite" aria-label="Loading gradebook">
+        <div class="gradebook-page__skeleton-card"></div>
+        <div class="gradebook-page__skeleton-card"></div>
+        <div class="gradebook-page__skeleton-card gradebook-page__skeleton-card--wide"></div>
+      </section>
+    }
+
+    <div class="gradebook-page__layout">
+      <section class="gradebook-page__content">
+        <app-grade-stats [stats]="facade.stats$ | async"></app-grade-stats>
+
+        <app-grade-student-list
+          [exam]="facade.currentExam$ | async"
+          [records]="facade.gradeRecords$ | async"
+          [loading]="(facade.localLoading$ | async) ?? false"
+          (gradeSaved)="saveGrade($event)"
+          (gradeValidated)="validateGrade($event)">
+        </app-grade-student-list>
+      </section>
+
+      <aside class="gradebook-page__side">
+        <app-grade-distribution [records]="facade.gradeRecords$ | async"></app-grade-distribution>
+
+        <section class="gradebook-page__exam-list">
+          <div class="gradebook-page__side-title">
+            <p>Course exams</p>
+            <strong>{{ ((facade.exams$ | async) ?? []).length }}</strong>
+          </div>
+
+          @for (exam of (facade.exams$ | async) ?? []; track exam.id) {
+            <button
+              type="button"
+              class="gradebook-page__exam"
+              [class.gradebook-page__exam--active]="((facade.currentExam$ | async)?.id) === exam.id"
+              (click)="facade.loadExamDetails(exam.id)">
+              <span>{{ exam.status }}</span>
+              <strong>{{ exam.title }}</strong>
+              <small>{{ exam.examDate ?? 'No date' }} · coeff. {{ exam.weight ?? 1 }}</small>
+            </button>
+          } @empty {
+            <div class="gradebook-page__empty">No exams</div>
+          }
+        </section>
+      </aside>
+    </div>
+  </main>
+</section>
+
+<app-grade-exam-dialog
+  [visible]="examDialogOpen"
+  [loading]="(facade.localLoading$ | async) ?? false"
+  [selectedCourseId]="facade.selectedCourseId$ | async"
+  [courses]="facade.courseOptions$ | async"
+  [classes]="facade.classOptions$ | async"
+  [groups]="facade.groupOptions$ | async"
+  [rooms]="facade.roomOptions$ | async"
+  [supervisors]="facade.supervisorOptions$ | async"
+  [semesters]="facade.semesterOptions$ | async"
+  (closed)="closeExamDialog()"
+  (created)="createExam($event)">
+</app-grade-exam-dialog>
+
+<app-grade-publish-dialog
+  [visible]="publishDialogOpen"
+  [exam]="facade.currentExam$ | async"
+  [stats]="facade.stats$ | async"
+  [loading]="(facade.localLoading$ | async) ?? false"
+  (cancelled)="closePublishDialog()"
+  (confirmed)="publishExam($event)">
+</app-grade-publish-dialog>

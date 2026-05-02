@@ -46,4 +46,17 @@ public interface ExamRepo extends JpaRepository<ExamEntity, Long> {
             @Param("endTime") LocalTime endTime,
             @Param("excludedId") Long excludedId
     );
+
+    @Query("""
+            select exam
+            from ExamEntity exam
+            left join fetch exam.course course
+            left join fetch exam.academicClass academicClass
+            left join fetch exam.studentGroup studentGroup
+            left join fetch exam.room room
+            left join fetch exam.supervisor supervisor
+            left join fetch exam.semester semester
+            where exam.id = :id
+            """)
+    java.util.Optional<ExamEntity> findByIdWithRelations(@Param("id") Long id);
 }

@@ -1,0 +1,88 @@
+<app-sidebar></app-sidebar>
+<section class="grade-page min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="grade-page__main px-4 py-6 sm:px-6 lg:px-8" @fadeInUp>
+    @if (facade.localLoading$ | async) {
+      <div class="grade-page__loader" aria-live="polite" aria-label="Loading grade data">
+        <div class="grade-page__loader-card">
+          <span class="grade-page__loader-ring"></span>
+          <span>Syncing grades</span>
+        </div>
+      </div>
+    }
+
+    <div class="grade-page__heading">
+      <div>
+        <p>Academic evaluation</p>
+        <h1>Grade Management</h1>
+        <span>Architecture shell for exam grades, local state, draft validation and publishing workflows.</span>
+      </div>
+
+      @if (facade.currentExam$ | async; as currentExam) {
+        <button type="button" class="grade-page__primary" (click)="facade.publishExam(currentExam.id)">
+          <span class="material-symbols-outlined text-[18px]">publish</span>
+          Publish
+        </button>
+      }
+    </div>
+
+    <section class="grade-page__toolbar">
+      <label>
+        Course
+        <select (change)="onCourseChange($event)">
+          @for (course of facade.courseOptions$ | async; track course.id) {
+            <option [value]="course.id">{{ course.label }}</option>
+          }
+        </select>
+      </label>
+    </section>
+
+    <div class="grade-page__grid">
+      <aside class="grade-page__panel">
+        <div class="grade-page__panel-title">
+          <p>Course exams</p>
+          <span>{{ (facade.exams$ | async)?.length ?? 0 }}</span>
+        </div>
+
+        @for (exam of facade.exams$ | async; track exam.id) {
+          <button type="button" class="grade-page__exam" (click)="facade.loadExamDetails(exam.id)">
+            <strong>{{ exam.title }}</strong>
+            <span>{{ exam.courseCode ?? 'Course' }} · {{ exam.status }}</span>
+          </button>
+        } @empty {
+          <p class="grade-page__empty">Select a course to load exams.</p>
+        }
+      </aside>
+
+      <section class="grade-page__content">
+        @if (facade.stats$ | async; as stats) {
+          <div class="grade-page__stats">
+            <article>
+              <span>Total</span>
+              <strong>{{ stats.totalStudents }}</strong>
+            </article>
+            <article>
+              <span>Graded</span>
+              <strong>{{ stats.gradedCount }}</strong>
+            </article>
+            <article>
+              <span>Average</span>
+              <strong>{{ stats.averageScore ?? '-' }}</strong>
+            </article>
+            <article>
+              <span>Success</span>
+              <strong>{{ stats.successRate ?? '-' }}%</strong>
+            </article>
+          </div>
+        }
+
+        <app-grade-records-table
+          [currentExam]="facade.currentExam$ | async"
+          [records]="facade.gradeRecords$ | async"
+          (validateRequested)="facade.validateGrade($event)">
+        </app-grade-records-table>
+      </section>
+    </div>
+  </main>
+</section>

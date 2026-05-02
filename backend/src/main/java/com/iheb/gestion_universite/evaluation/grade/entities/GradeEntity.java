@@ -4,8 +4,6 @@ package com.iheb.gestion_universite.evaluation.grade.entities;
 import com.iheb.gestion_universite.evaluation.exam.ExamEntity;
 import com.iheb.gestion_universite.student_managment.student.StudentEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.time.Instant;
@@ -20,10 +18,20 @@ public class GradeEntity {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Min (0)
-    @Max (20)
     private Double score;
 
+    private Double maxScore = 20.0;
+
+    @Column(length = 1000)
+    private String comment;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private GradeStatus status = GradeStatus.NOT_GRADED;
+
+    private Instant gradedAt;
+
+    private Instant updatedAt;
 
     @ManyToOne
     @JoinColumn (name = "student_id", nullable = false)
@@ -40,5 +48,10 @@ public class GradeEntity {
         this.createdAt = Instant.now();
     }
 
+    @PreUpdate
+    public void preUpdate()
+    {
+        this.updatedAt = Instant.now();
+    }
 
 }

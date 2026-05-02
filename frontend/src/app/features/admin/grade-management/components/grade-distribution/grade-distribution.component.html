@@ -1,0 +1,21 @@
+<section class="grade-distribution">
+  <div class="grade-distribution__header">
+    <div>
+      <p>Distribution</p>
+      <h2>Score bands</h2>
+    </div>
+    <span class="material-symbols-outlined text-primary">bar_chart</span>
+  </div>
+
+  <div class="grade-distribution__body">
+    @for (bucket of buckets; track bucket.label) {
+      <div class="grade-distribution__row">
+        <span>{{ bucket.label }}</span>
+        <div class="grade-distribution__track">
+          <i [style.width.%]="bucket.percent"></i>
+        </div>
+        <strong>{{ bucket.count }}</strong>
+      </div>
+    }
+  </div>
+</section>

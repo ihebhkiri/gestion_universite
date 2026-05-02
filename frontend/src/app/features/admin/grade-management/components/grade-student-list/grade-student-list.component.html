@@ -1,0 +1,50 @@
+<section class="grade-students">
+  <div class="grade-students__header">
+    <div>
+      <p>Students</p>
+      <h2>{{ (records ?? []).length }} records</h2>
+    </div>
+    @if (exam?.status === 'PUBLISHED') {
+      <span class="grade-students__locked">
+        <span class="material-symbols-outlined text-[16px]">lock</span>
+        Locked
+      </span>
+    }
+  </div>
+
+  @if (loading) {
+    <div class="grade-students__skeleton">
+      @for (item of [1, 2, 3, 4, 5]; track item) {
+        <div class="grade-students__skeleton-row">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="grade-students__legend">
+      <span>Student</span>
+      <span>Score</span>
+      <span>Comment</span>
+      <span>Status</span>
+      <span>Actions</span>
+    </div>
+
+    <div class="grade-students__rows">
+      @for (record of records ?? []; track record.id) {
+        <app-grade-student-row
+          [record]="record"
+          [disabled]="disabled"
+          (saveRequested)="gradeSaved.emit($event)"
+          (validateRequested)="gradeValidated.emit($event)">
+        </app-grade-student-row>
+      } @empty {
+        <div class="grade-students__empty">
+          <span class="material-symbols-outlined">list_alt</span>
+          <strong>No students loaded</strong>
+        </div>
+      }
+    </div>
+  }
+</section>

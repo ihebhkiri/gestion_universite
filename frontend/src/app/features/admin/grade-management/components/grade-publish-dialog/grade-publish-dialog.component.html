@@ -1,0 +1,23 @@
+@if (visible) {
+  <div class="publish-backdrop">
+    <section class="publish-dialog" role="dialog" aria-modal="true">
+      <div class="publish-dialog__icon">
+        <span class="material-symbols-outlined">publish</span>
+      </div>
+      <h2>Publish grades?</h2>
+      <p>{{ exam?.title ?? 'Selected exam' }}</p>
+
+      <div class="publish-dialog__summary">
+        <span>{{ stats?.gradedCount ?? 0 }} / {{ stats?.totalStudents ?? 0 }} graded</span>
+        <span>{{ stats?.validatedCount ?? 0 }} validated</span>
+      </div>
+
+      <footer>
+        <button type="button" class="publish-dialog__secondary" (click)="cancelled.emit()">Cancel</button>
+        <button type="button" class="publish-dialog__primary" [disabled]="loading || !exam" (click)="confirm()">
+          Confirm
+        </button>
+      </footer>
+    </section>
+  </div>
+}

@@ -32,6 +32,8 @@ public class ExamEntity {
 
     private Double weight; // 0.4 ds   0.6 exam  et 0.2 pour le tp
 
+    private Double maxScore = 20.0;
+
     private String title;
 
     @Enumerated (EnumType.STRING)

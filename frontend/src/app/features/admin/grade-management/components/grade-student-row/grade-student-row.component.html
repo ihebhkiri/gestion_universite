@@ -1,0 +1,29 @@
+<form class="grade-row" [formGroup]="form" (ngSubmit)="save()">
+  <div class="grade-row__student">
+    <strong>{{ record.studentName }}</strong>
+    <span>{{ record.matricule ?? 'No matricule' }} · {{ record.groupName ?? 'No group' }}</span>
+  </div>
+
+  <label class="grade-row__score">
+    <span>Score</span>
+    <input type="number" min="0" max="20" step="0.25" formControlName="score" />
+  </label>
+
+  <label class="grade-row__comment">
+    <span>Comment</span>
+    <input type="text" formControlName="comment" placeholder="Optional note" />
+  </label>
+
+  <div class="grade-row__status">
+    <span class="grade-row__pill" [ngClass]="statusTone(record.status)">{{ record.status }}</span>
+  </div>
+
+  <div class="grade-row__actions">
+    <button type="submit" class="grade-row__icon-button" [disabled]="form.invalid || disabled || record.status === 'PUBLISHED'" aria-label="Save grade">
+      <span class="material-symbols-outlined text-[18px]">save</span>
+    </button>
+    <button type="button" class="grade-row__icon-button grade-row__icon-button--primary" [disabled]="!canValidate || disabled" aria-label="Validate grade" (click)="validateRequested.emit(record)">
+      <span class="material-symbols-outlined text-[18px]">task_alt</span>
+    </button>
+  </div>
+</form>

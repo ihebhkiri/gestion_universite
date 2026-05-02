@@ -5,6 +5,7 @@ import com.iheb.gestion_universite.evaluation.grade.dtos.AddGradeRequest;
 import com.iheb.gestion_universite.evaluation.grade.dtos.AddGradeResponse;
 import com.iheb.gestion_universite.evaluation.exam.ExamEntity;
 import com.iheb.gestion_universite.evaluation.grade.entities.GradeEntity;
+import com.iheb.gestion_universite.evaluation.grade.entities.GradeStatus;
 import com.iheb.gestion_universite.evaluation.exam.ExamRepo;
 import com.iheb.gestion_universite.evaluation.grade.repositories.GradesRepo;
 import com.iheb.gestion_universite.core.exceptions.ExamNotFoundException;
@@ -66,6 +67,8 @@ public class GradesService {
         grade.setExam(exam);
         grade.setStudent(student);
         grade.setScore(request.score());
+        grade.setMaxScore(exam.getMaxScore() != null ? exam.getMaxScore() : 20.0);
+        grade.setStatus(GradeStatus.DRAFT);
 
         return grade;
     }

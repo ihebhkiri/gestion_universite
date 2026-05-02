@@ -25,6 +25,7 @@ import com.iheb.gestion_universite.evaluation.exam.ExamStatus;
 import com.iheb.gestion_universite.evaluation.exam.ExamType;
 import com.iheb.gestion_universite.evaluation.exam.SessionType;
 import com.iheb.gestion_universite.evaluation.grade.entities.GradeEntity;
+import com.iheb.gestion_universite.evaluation.grade.entities.GradeStatus;
 import com.iheb.gestion_universite.evaluation.grade.repositories.GradesRepo;
 import com.iheb.gestion_universite.security.role.RoleEntity;
 import com.iheb.gestion_universite.security.role.RoleRepository;
@@ -505,6 +506,9 @@ public class DemoDataSeeder implements CommandLineRunner {
         entity.setExam(exam);
         entity.setStudent(student);
         entity.setScore(score);
+        entity.setMaxScore(exam.getMaxScore() != null ? exam.getMaxScore() : 20.0);
+        entity.setStatus(GradeStatus.VALIDATED);
+        entity.setGradedAt(Instant.now());
         gradesRepo.save(entity);
     }
 

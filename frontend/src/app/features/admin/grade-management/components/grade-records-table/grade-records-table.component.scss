@@ -1,0 +1,115 @@
+:host {
+  display: block;
+}
+
+.grade-records {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  overflow: hidden;
+}
+
+.grade-records__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: 1rem;
+}
+
+.grade-records__header p {
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.grade-records__header h2 {
+  color: var(--color-on-surface);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.grade-records__header > span {
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.grade-records__table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: 0.85rem 1rem;
+  text-align: left;
+}
+
+th {
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+td {
+  color: var(--color-on-surface);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+td strong,
+td span {
+  display: block;
+}
+
+td span {
+  color: var(--color-on-surface-variant);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.grade-records__status {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--color-surface-container);
+  padding: 0.3rem 0.55rem;
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.grade-records__status--ready {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface-container-lowest));
+  color: var(--color-primary);
+}
+
+button {
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  padding: 0.45rem 0.75rem;
+  color: var(--color-on-primary);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.grade-records__empty {
+  padding: 1.5rem;
+  color: var(--color-on-surface-variant);
+  text-align: center;
+}
