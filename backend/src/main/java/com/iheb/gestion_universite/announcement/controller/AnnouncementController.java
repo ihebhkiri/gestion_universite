@@ -113,11 +113,5 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementService.getStats());
     }
 
-    @PostMapping("/{id}/read")
-    public ResponseEntity<AnnouncementDetailsResponse> markAsRead(
-            @PathVariable Long id,
-            @RequestParam Long studentId
-    ) {
-        return ResponseEntity.ok(announcementService.markAsRead(id, studentId));
-    }
+
 }

@@ -3,7 +3,6 @@ package com.iheb.gestion_universite.announcement.service;
 import com.iheb.gestion_universite.announcement.AnnouncementAudienceType;
 import com.iheb.gestion_universite.announcement.AnnouncementEntity;
 import com.iheb.gestion_universite.announcement.AnnouncementPriority;
-import com.iheb.gestion_universite.announcement.AnnouncementReadReceiptEntity;
 import com.iheb.gestion_universite.announcement.AnnouncementStatus;
 import com.iheb.gestion_universite.announcement.AnnouncementType;
 import com.iheb.gestion_universite.announcement.dto.AnnouncementDetailsResponse;
@@ -14,7 +13,6 @@ import com.iheb.gestion_universite.announcement.dto.CreateAnnouncementRequest;
 import com.iheb.gestion_universite.announcement.dto.PublishAnnouncementRequest;
 import com.iheb.gestion_universite.announcement.dto.StudentAnnouncementOverviewResponse;
 import com.iheb.gestion_universite.announcement.dto.UpdateAnnouncementRequest;
-import com.iheb.gestion_universite.announcement.repository.AnnouncementReadReceiptRepository;
 import com.iheb.gestion_universite.announcement.repository.AnnouncementRepository;
 import com.iheb.gestion_universite.core.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +36,6 @@ import java.util.stream.Collectors;
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
-    private final AnnouncementReadReceiptRepository readReceiptRepository;
     private final AnnouncementMapper mapper;
     private final FileStorageService fileStorageService;
 
@@ -221,44 +218,8 @@ public class AnnouncementService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public StudentAnnouncementOverviewResponse getStudentAnnouncements(Long studentId) {
-        List<AnnouncementEntity> announcements = announcementRepository.findVisibleForStudent(studentId, Instant.now());
-        Set<Long> readAnnouncementIds = readReceiptRepository.findByStudentId(studentId)
-                .stream()
-                .map(receipt -> receipt.getAnnouncement().getId())
-                .collect(Collectors.toSet());
-        long unreadCount = announcements.stream()
-                .filter(announcement -> !readAnnouncementIds.contains(announcement.getId()))
-                .count();
-        long pinnedCount = announcements.stream()
-                .filter(AnnouncementEntity::isPinned)
-                .count();
 
-        return new StudentAnnouncementOverviewResponse(
-                studentId,
-                unreadCount,
-                pinnedCount,
-                announcements.stream().map(mapper::toResponse).toList()
-        );
-    }
 
-    @Transactional
-    public AnnouncementDetailsResponse markAsRead(Long id, Long studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("studentId is required");
-        }
-        AnnouncementEntity announcement = getAnnouncementOrThrow(id);
-        readReceiptRepository.findByAnnouncementIdAndStudentId(id, studentId)
-                .orElseGet(() -> {
-                    AnnouncementReadReceiptEntity receipt = new AnnouncementReadReceiptEntity();
-                    receipt.setAnnouncement(announcement);
-                    receipt.setStudentId(studentId);
-                    receipt.setReadAt(Instant.now());
-                    return readReceiptRepository.save(receipt);
-                });
-        return mapper.toDetailsResponse(announcement);
-    }
 
     private AnnouncementEntity getAnnouncementOrThrow(Long id) {
         return announcementRepository.findById(id)
