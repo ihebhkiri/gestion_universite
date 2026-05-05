@@ -1,13 +1,16 @@
 package com.iheb.gestion_universite.security;
 
 
+import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,6 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +34,14 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtCookieFilter jwtCookieFilter;
+    @Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @Value ("${cloudinary.api-secret}")
+    private String apiSecret;
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
@@ -49,6 +61,12 @@ public class SecurityConfig {
 
 
                         .requestMatchers("/api/v1/results/**", "/api/results/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/announcements/**", "/api/announcements/**")
+                        .authenticated()
+
+                        .requestMatchers("/api/v1/announcements/**", "/api/announcements/**")
                         .hasRole("ADMIN")
 
                         .requestMatchers("/api/v1/teachers/**")
@@ -118,5 +136,14 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+    @Bean
+    public Cloudinary cloudinary() {
+        return new Cloudinary(Map.of(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret,
+                "secure", true
+        ));
     }
 }

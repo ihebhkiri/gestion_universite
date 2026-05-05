@@ -1,0 +1,63 @@
+<app-sidebar></app-sidebar>
+<section class="announcement-page min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="announcement-page__main px-4 py-6 sm:px-6 lg:px-8" @pageFade>
+    <app-announcement-header
+      [loading]="(loading$ | async) ?? false"
+      (create)="create()">
+    </app-announcement-header>
+
+    <app-announcement-hero-slider
+      [announcements]="announcements$ | async"
+      (viewDetails)="viewDetails($event)">
+    </app-announcement-hero-slider>
+
+    <app-announcement-filters
+      [filters]="filters"
+      (filterChanged)="onFilterChanged($event)">
+    </app-announcement-filters>
+
+    <div class="announcement-page__layout">
+      <section class="announcement-page__content">
+        <app-announcement-stats
+          [stats]="stats$ | async"
+          [announcements]="announcements$ | async">
+        </app-announcement-stats>
+
+        <app-announcement-list
+          [announcements]="announcements$ | async"
+          [filters]="filters"
+          [loading]="(loading$ | async) ?? false"
+          (edit)="edit($event)"
+          (publish)="publish($event)"
+          (schedule)="schedule($event)"
+          (archive)="archive($event)"
+          (pin)="pin($event)"
+          (unpin)="unpin($event)"
+          (viewDetails)="viewDetails($event)">
+        </app-announcement-list>
+      </section>
+
+      <app-announcement-snapshot
+        [announcements]="announcements$ | async"
+        (viewDetails)="viewDetails($event)">
+      </app-announcement-snapshot>
+    </div>
+  </main>
+</section>
+
+<app-announcement-editor-dialog
+  [visible]="editorOpen"
+  [announcement]="selectedAnnouncement"
+  [loading]="(loading$ | async) ?? false"
+  (closed)="closeEditor()"
+  (saved)="save($event)">
+</app-announcement-editor-dialog>
+
+<app-announcement-details-dialog
+  [visible]="detailsOpen"
+  [announcement]="selectedAnnouncement"
+  (closed)="closeDetails()"
+  (edit)="edit($event)">
+</app-announcement-details-dialog>

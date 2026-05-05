@@ -1,0 +1,58 @@
+<section class="announcement-slider" (mouseenter)="pause()" (mouseleave)="resume()">
+  @if (slides.length && active) {
+    <div class="announcement-slider__viewport">
+      @for (slide of slides; track slide.id ?? slide.title; let index = $index) {
+        <article
+          class="announcement-slider__slide"
+          [class.is-active]="index === activeIndex"
+          [style.transform]="'translateX(' + ((index - activeIndex) * 100) + '%)'">
+          <div class="announcement-slider__content">
+            <div class="announcement-slider__tags">
+              <span>{{ slide.type ?? 'INFO' }}</span>
+              <span>{{ slide.priority ?? 'HIGH' }}</span>
+              @if (slide.pinned) {
+                <span>PINNED</span>
+              }
+            </div>
+            <h2>{{ slide.title || 'Annonce importante' }}</h2>
+            <p>{{ slide.content ?? slide.body ?? 'Une nouvelle communication est disponible.' }}</p>
+            <button type="button" (click)="viewDetails.emit(slide)">
+              <span class="material-symbols-outlined">open_in_new</span>
+              Voir details
+            </button>
+          </div>
+          <div class="announcement-slider__signal">
+            <span class="material-symbols-outlined">campaign</span>
+            <small>PUBLIC</small>
+          </div>
+        </article>
+      }
+    </div>
+
+    @if (slides.length > 1) {
+      <button type="button" class="announcement-slider__nav prev" aria-label="Annonce precedente" (click)="prev()">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="announcement-slider__nav next" aria-label="Annonce suivante" (click)="next()">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+
+      <div class="announcement-slider__dots">
+        @for (slide of slides; track slide.id ?? slide.title; let index = $index) {
+          <button
+            type="button"
+            [class.is-active]="index === activeIndex"
+            [attr.aria-label]="'Afficher annonce ' + (index + 1)"
+            (click)="goTo(index)">
+          </button>
+        }
+      </div>
+    }
+  } @else {
+    <div class="announcement-slider__empty">
+      <span class="material-symbols-outlined">campaign</span>
+      <strong>Aucune annonce prioritaire</strong>
+      <small>Les annonces epinglees, urgentes ou haute priorite apparaitront ici.</small>
+    </div>
+  }
+</section>

@@ -1,0 +1,44 @@
+@if (visible && announcement) {
+  <div class="announcement-dialog-backdrop" (click)="closed.emit()">
+    <article class="announcement-details" (click)="$event.stopPropagation()">
+      <header>
+        <div>
+          <span>{{ announcement.type ?? 'INFO' }} / {{ announcement.priority ?? 'NORMAL' }}</span>
+          <h2>{{ announcement.title }}</h2>
+        </div>
+        <button type="button" aria-label="Fermer" (click)="closed.emit()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <p class="announcement-details__content">{{ content }}</p>
+
+      <dl>
+        <div><dt>Statut</dt><dd>{{ announcement.status ?? 'DRAFT' }}</dd></div>
+        <div><dt>Visibilite</dt><dd>PUBLIC</dd></div>
+        <div><dt>Publication</dt><dd>{{ dateLabel(announcement.publishedAt ?? announcement.scheduledAt) }}</dd></div>
+        <div><dt>Expiration</dt><dd>{{ dateLabel(announcement.expiresAt) }}</dd></div>
+        <div><dt>Vues</dt><dd>{{ announcement.views ?? announcement.viewCount ?? 0 }}</dd></div>
+        <div><dt>Auteur</dt><dd>{{ announcement.authorName ?? announcement.createdBy ?? '-' }}</dd></div>
+      </dl>
+
+      @if (announcement.externalLink || attachments.length) {
+        <div class="announcement-details__links">
+          @if (announcement.externalLink) {
+            <a [href]="announcement.externalLink" target="_blank" rel="noreferrer">Lien externe</a>
+          }
+          @for (attachment of attachments; track attachment) {
+            <a [href]="attachment" target="_blank" rel="noreferrer" class="announcement-details__file">
+              {{ attachmentLabel(attachment) }}
+            </a>
+          }
+        </div>
+      }
+
+      <footer>
+        <button type="button" (click)="closed.emit()">Fermer</button>
+        <button type="button" class="primary" (click)="edit.emit(announcement)">Modifier</button>
+      </footer>
+    </article>
+  </div>
+}

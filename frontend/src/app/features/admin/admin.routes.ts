@@ -69,6 +69,9 @@ export const routes: Routes = [
   }, {
     path: 'results',
     loadComponent: () => import('./result-management/pages/result-management-page/result-management-page.component').then(m => m.ResultManagementPageComponent)
+  }, {
+    path: 'announcements',
+    loadComponent: () => import('./announcement-management/pages/announcement-management-page/announcement-management-page.component').then(m => m.AnnouncementManagementPageComponent)
   }
 
 ]
