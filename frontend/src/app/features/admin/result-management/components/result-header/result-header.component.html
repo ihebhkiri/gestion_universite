@@ -1,0 +1,24 @@
+<section class="result-header">
+  <div class="result-header__main">
+    <div class="result-header__statusline">
+      <span class="result-tag" [class.result-tag--success]="isPublished">{{ status }}</span>
+      <span class="result-chip">{{ classLabel }}</span>
+      <span class="result-chip">{{ semesterLabel }}</span>
+      <span class="result-chip">{{ yearLabel }}</span>
+    </div>
+
+    <h1>{{ title }}</h1>
+    <p>{{ subjectLabel }}</p>
+  </div>
+
+  <div class="result-header__actions">
+    <button type="button" class="result-button result-button--secondary" [disabled]="!canValidate" (click)="validateRequested.emit()">
+      <span class="material-symbols-outlined text-[18px]">task_alt</span>
+      Valider
+    </button>
+    <button type="button" class="result-button result-button--primary" [disabled]="!canPublish" (click)="publishRequested.emit()">
+      <span class="material-symbols-outlined text-[18px]">publish</span>
+      Publier
+    </button>
+  </div>
+</section>

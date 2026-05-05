@@ -1,0 +1,93 @@
+<app-sidebar></app-sidebar>
+<section class="result-page min-h-screen bg-background text-on-surface md:pl-72">
+  <app-header></app-header>
+
+  <main class="result-page__main px-4 py-6 sm:px-6 lg:px-8" @fadeInUp>
+    <app-result-header
+      [session]="currentSession$ | async"
+      [loading]="(loading$ | async) ?? false"
+      (validateRequested)="validateResults()"
+      (publishRequested)="publishResults()">
+    </app-result-header>
+
+    <section class="result-session-bar">
+      <label>
+        <span>Session</span>
+        <select [value]="selectedSessionId ?? ''" (change)="selectSession($any($event.target).value)">
+          <option value="">Selectionner une session</option>
+          @for (session of sessionOptions$ | async; track session.id) {
+            <option [value]="session.id">{{ session.label }} - {{ session.meta }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Créer depuis un examen</span>
+        <select [value]="selectedExamId ?? ''" (change)="selectExam($any($event.target).value)">
+          <option value="">Selectionner un examen</option>
+          @for (exam of examOptions$ | async; track exam.id) {
+            <option [value]="exam.id" [disabled]="exam.disabled">{{ exam.label }} - {{ exam.meta }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="result-button result-button--primary"
+        [disabled]="selectedExamId === null || ((loading$ | async) ?? false)"
+        (click)="createSessionFromExam()">
+        <span class="material-symbols-outlined text-[18px]">add_task</span>
+        Créer session
+      </button>
+    </section>
+
+    <app-result-filters
+      [filters]="filters"
+      (filtersChanged)="onFiltersChanged($event)">
+    </app-result-filters>
+
+    @if (loading$ | async) {
+      <section class="result-page__skeleton" aria-live="polite" aria-label="Chargement des resultats">
+        <div class="result-page__skeleton-card"></div>
+        <div class="result-page__skeleton-card"></div>
+        <div class="result-page__skeleton-card result-page__skeleton-card--wide"></div>
+      </section>
+    }
+
+    <div class="result-page__layout">
+      <section class="result-page__content">
+        <app-result-stats
+          [stats]="stats$ | async"
+          [records]="records$ | async">
+        </app-result-stats>
+
+        <app-result-student-list
+          [records]="records$ | async"
+          [filters]="filters"
+          [loading]="(loading$ | async) ?? false"
+          [highlightedRecord]="highlightedRecord"
+          (scoreChanged)="openScoreDialog($event)"
+          (statusChanged)="changeStatus($event)"
+          (viewDetails)="viewDetails($event)">
+        </app-result-student-list>
+      </section>
+
+      <aside class="result-page__side">
+        <app-result-snapshot
+          [session]="currentSession$ | async"
+          [stats]="stats$ | async"
+          [records]="records$ | async"
+          (viewDetails)="viewDetails($event)">
+        </app-result-snapshot>
+      </aside>
+    </div>
+  </main>
+</section>
+
+<app-result-score-dialog
+  [visible]="scoreDialogOpen"
+  [record]="selectedRecord"
+  [loading]="(loading$ | async) ?? false"
+  (closed)="closeScoreDialog()"
+  (scoreChanged)="saveScore($event)">
+</app-result-score-dialog>

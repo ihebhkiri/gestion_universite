@@ -1,0 +1,13 @@
+<section class="result-stats">
+  @for (card of cards; track card.label) {
+    <article class="result-stat-card">
+      <div class="result-stat-card__icon" [ngClass]="'tone-' + card.tone">
+        <span class="material-symbols-outlined">{{ card.icon }}</span>
+      </div>
+      <div>
+        <span>{{ card.label  }}</span>
+        <strong>{{ card.value }}</strong>
+      </div>
+    </article>
+  }
+</section>

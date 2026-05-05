@@ -48,6 +48,12 @@ public class SecurityConfig {
                         .permitAll()
 
 
+                        .requestMatchers("/api/v1/results/**", "/api/results/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/api/v1/teachers/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
                         .requestMatchers("/api/v1/admin/**")
                         .hasRole("ADMIN")
 

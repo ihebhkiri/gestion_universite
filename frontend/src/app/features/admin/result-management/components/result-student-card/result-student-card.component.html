@@ -1,0 +1,33 @@
+<article class="result-student-card" [class.result-student-card--active]="highlighted">
+  <div class="result-student-card__student">
+    <div class="result-avatar">{{ initials }}</div>
+    <div>
+      <strong>{{ studentName }}</strong>
+      <span>{{ identity }}</span>
+    </div>
+  </div>
+
+  <div class="result-student-card__score">
+    <strong>{{ scoreLabel }}</strong>
+    <div class="result-progress result-progress--mini">
+      <i [style.width.%]="progress"></i>
+    </div>
+  </div>
+
+  <div class="result-student-card__tags">
+    <span class="result-status" [ngClass]="'result-status--' + status.toLowerCase()">{{ statusLabel }}</span>
+    <span class="result-mention">{{ mention }}</span>
+  </div>
+
+  <div class="result-student-card__actions">
+    <button type="button" class="result-icon-button" aria-label="Modifier note" title="Modifier note" (click)="scoreChanged.emit(record)">
+      <span class="material-symbols-outlined">edit</span>
+    </button>
+    <button type="button" class="result-icon-button" aria-label="Marquer absent" title="Marquer absent" (click)="markAbsent()">
+      <span class="material-symbols-outlined">person_off</span>
+    </button>
+    <button type="button" class="result-icon-button result-icon-button--primary" aria-label="Voir detail" title="Voir detail" (click)="viewDetails.emit(record)">
+      <span class="material-symbols-outlined">visibility</span>
+    </button>
+  </div>
+</article>
