@@ -1,21 +1,21 @@
 <app-sidebar></app-sidebar>
-<main class="flex-1 ml-68 min-h-screen flex flex-col">
+<main class="flex-1 md:ml-72 min-h-screen flex flex-col">
   <!-- TopAppBar (Authority Source: JSON) -->
   <app-header></app-header>
   <!-- Content Area -->
-  <div class="p-8 space-y-8 max-w-7xl mx-auto w-full">
+  <div class="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto w-full">
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
-        <h2 class="text-3xl font-bold tracking-tight text-primary font-headline ">User Management</h2>
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-primary font-headline">User Management</h2>
         <p class="text-slate-500 body-md">Manage institutional access and administrative roles across the university .</p>
       </div>
-      <div class="flex items-center gap-3">
-        <button (click)="isManageRolesModalOpen = true" class="flex items-center gap-2 px-5 py-2.5 bg-secondary-container text-white rounded-lg text-sm font-bold shadow-sm hover:opacity-90 transition-all active:scale-95">
+      <div class="flex flex-wrap items-center gap-3">
+        <button (click)="isManageRolesModalOpen = true" class="flex items-center gap-2 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg text-sm font-semibold shadow-sm hover:opacity-90 transition-all active:scale-95">
           <span class="material-symbols-outlined text-lg">admin_panel_settings</span>
           Roles
         </button>
-        <button (click)="isAddUserModalOpen = true" class="flex items-center gap-2 px-5 py-2.5 bg-primary-container text-white rounded-lg text-sm font-bold shadow-sm hover:opacity-90 transition-all active:scale-95">
+        <button (click)="isAddUserModalOpen = true" class="flex items-center gap-2 px-4 py-2.5 bg-primary-container text-white rounded-lg text-sm font-semibold shadow-sm hover:opacity-90 transition-all active:scale-95">
           <span class="material-symbols-outlined text-lg">add</span>
           Add New User
         </button>

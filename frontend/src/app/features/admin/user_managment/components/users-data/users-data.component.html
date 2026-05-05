@@ -1,7 +1,7 @@
-<div class="bg-surface-container-lowest rounded-xl curator-shadow overflow-hidden">
+<div class="bg-surface-container-lowest rounded-xl curator-shadow overflow-hidden border border-outline-variant/20">
   <!-- Filter Row -->
-  <div class="px-8 py-5 flex items-center justify-between bg-surface-container-low/30">
-    <div class="flex items-center gap-6">
+  <div class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between bg-surface-container-low/30">
+    <div class="flex flex-wrap items-center gap-4 lg:gap-6">
       <div class="flex items-center gap-2">
         <span class="text-xs font-bold text-slate-400 uppercase">Role:</span>
         <select class="text-xs font-semibold bg-transparent border-none focus:ring-0 p-0 text-primary cursor-pointer"
@@ -24,7 +24,7 @@
           <option value="false">Disabled</option>
         </select>
       </div>
-      <div class="flex items-center flex-1 max-w-xl">
+      <div class="flex min-w-[14rem] flex-1 max-w-xl">
         @if (selectedUserIds.size > 0) {
           <div
             class="flex items-center gap-4 bg-primary-container/10 px-4 py-1.5 rounded-lg border border-primary-container/20 w-full animate-in fade-in slide-in-from-top-1">
@@ -68,7 +68,7 @@
   </div>
   <!-- Table Content -->
   <div class="overflow-x-auto">
-    <table class="w-full border-collapse text-left">
+    <table class="w-full min-w-[760px] border-collapse text-left">
       <thead>
       <tr class="bg-surface-container-low text-on-surface-variant text-[11px] uppercase tracking-widest font-bold">
         <th class="px-6 py-4 w-12 text-center">
@@ -147,8 +147,8 @@
     </table>
   </div>
   <!-- Pagination (Bottom controls) -->
-  <div class="px-8 py-6 flex items-center justify-between bg-surface-container-low/10">
-    <div class="flex items-center gap-2">
+  <div class="px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-surface-container-low/10">
+    <div class="flex flex-wrap items-center gap-2">
       <button
         class="w-8 h-8 rounded flex items-center justify-center bg-white border border-outline-variant/30 text-slate-400 hover:bg-slate-50 transition-colors">
         <span class="material-symbols-outlined text-sm"
@@ -185,17 +185,16 @@
   </div>
 </div>
 @if (modal) {
-  <body class="bg-background font-body text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
-  <div class="flex h-screen overflow-hidden">
+  <div class="bg-background font-body text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
     <!-- Main Content Canvas -->
-    <main class="flex-grow overflow-y-auto relative bg-surface-container-low">
+    <section class="relative bg-surface-container-low">
       <!--     Modal Overlay-->
       <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-[#022448]/40 backdrop-blur-sm"></div>
         <!-- Modal Window -->
         <div
-          class="relative w-full max-w-lg bg-surface-container-lowest rounded-2xl curator-shadow overflow-hidden border border-white/20">
+          class="relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest curator-shadow">
           <!-- Header -->
           <div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center">
             <div>
@@ -209,7 +208,7 @@
             </button>
           </div>
           <!-- Content -->
-          <form class="p-8 space-y-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <form class="space-y-5 overflow-y-auto p-5 sm:p-6" [formGroup]="form" (ngSubmit)="onSubmit()">
             <!-- Email Input -->
             <div class="space-y-2">
               <label class="text-xs font-label font-bold text-primary-container uppercase tracking-widest" for="email">Email
@@ -227,7 +226,7 @@
             <div class="space-y-3">
               <label class="text-xs font-label font-bold text-primary-container uppercase tracking-widest">Academic
                 Roles</label>
-              <div class="grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 @for (role of roleList; track role.id) {
                   <label
                     class="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors">
@@ -240,7 +239,7 @@
               </div>
             </div>
             <!-- Actions -->
-            <div class="flex gap-4 pt-4">
+            <div class="flex flex-col gap-3 pt-2 sm:flex-row">
               <button
                 class="flex-1 bg-surface-container-highest text-primary font-medium py-3 rounded-lg hover:bg-surface-dim transition-all"
                 type="button" (click)="closeModal()">Cancel
@@ -263,8 +262,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </section>
   </div>
-  </body>
 
 }

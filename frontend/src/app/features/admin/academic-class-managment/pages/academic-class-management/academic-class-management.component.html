@@ -4,12 +4,12 @@
   }
 </style>
 
-<body class="bg-surface text-on-background font-body min-h-screen flex antialiased">
+<div class="bg-surface text-on-background font-body min-h-screen flex antialiased">
   <app-sidebar></app-sidebar>
-  <main class="ml-64 flex-1 flex flex-col min-h-screen relative">
+  <main class="md:ml-72 flex-1 flex flex-col min-h-screen relative">
     <app-header></app-header>
 
-    <div class="mt-16 p-8 lg:p-12 flex-1 max-w-7xl mx-auto w-full">
+    <div class="p-4 sm:p-6 lg:p-8 flex-1 max-w-7xl mx-auto w-full">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <div>
           <h2 class="font-headline text-3xl font-semibold text-primary-container tracking-tight -ml-0.5">Academic Class Registry</h2>
@@ -135,4 +135,4 @@
       (close)="hideUpdateModal()"
       (save)="onUpdateClass($event)"></app-update-class>
   </main>
-</body>
+</div>

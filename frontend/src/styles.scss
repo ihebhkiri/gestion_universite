@@ -69,10 +69,10 @@
   --color-surface-tint: #455f86;
 
   /* ================= RADIUS ================= */
-  --radius-default: 0.125rem;
-  --radius-lg: 0.25rem;
-  --radius-xl: 0.5rem;
-  --radius-full: 0.75rem;
+  --radius-default: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 999px;
 
   /* ================= FONTS ================= */
   --font-headline: "Space Grotesk", sans-serif;
@@ -80,23 +80,84 @@
   --font-label: "Inter", sans-serif;
 }
 
-//html, body {
-//  height: 100%;
-//}
+html,
+body {
+  min-height: 100%;
+}
 
-//body {
-//  margin: 0;
-//  font-family: var(--font-body);
-//  //background-color: var(--color-surface);
-//  //color: var(--color-on-surface);
-//  -webkit-font-smoothing: antialiased;
-//}
-//h1, h2, h3, h4, h5, h6 {
-//  font-family: var(--font-h1);
-//}
-//label {
-//  font-family: var(--font-label);
-//}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-headline);
+  letter-spacing: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+:where(.flex, .grid) > * {
+  min-width: 0;
+}
+
+:where(main, section, article, aside, header, footer, form, table, td, th) {
+  min-width: 0;
+}
+
+:where(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* Compatibility for older admin templates whose main content used ml-64 while the sidebar is 18rem wide. */
+.ml-64 {
+  margin-left: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .ml-64 {
+    margin-left: 18rem !important;
+  }
+}
+
+.curator-shadow {
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
 
 .analytics-panel,
 .analytics-card {
