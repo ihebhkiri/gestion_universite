@@ -1,0 +1,37 @@
+<section class="announcement-list">
+  <header>
+    <div>
+      <h2>Liste des annonces</h2>
+      <p>{{ filteredAnnouncements.length }} annonce(s)</p>
+    </div>
+  </header>
+
+  @if (loading) {
+    <div class="announcement-list__skeleton" aria-label="Chargement des annonces">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  } @else if (filteredAnnouncements.length) {
+    <div class="announcement-list__grid">
+      @for (announcement of filteredAnnouncements; track announcement.id ?? announcement.title) {
+        <app-announcement-card
+          [announcement]="announcement"
+          (edit)="edit.emit($event)"
+          (publish)="publish.emit($event)"
+          (schedule)="schedule.emit($event)"
+          (archive)="archive.emit($event)"
+          (pin)="pin.emit($event)"
+          (unpin)="unpin.emit($event)"
+          (viewDetails)="viewDetails.emit($event)">
+        </app-announcement-card>
+      }
+    </div>
+  } @else {
+    <div class="announcement-list__empty">
+      <span class="material-symbols-outlined">campaign_off</span>
+      <strong>Aucune annonce trouvee</strong>
+      <small>Ajustez les filtres ou creez une nouvelle annonce.</small>
+    </div>
+  }
+</section>

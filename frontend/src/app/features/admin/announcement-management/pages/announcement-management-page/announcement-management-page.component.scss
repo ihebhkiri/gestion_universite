@@ -1,0 +1,36 @@
+.announcement-page {
+  background: var(--color-background);
+}
+
+.announcement-page__main {
+  display: grid;
+  gap: 1rem;
+}
+
+.announcement-page__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
+  gap: 1rem;
+  align-items: start;
+}
+
+.announcement-page__content {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+app-announcement-snapshot {
+  position: sticky;
+  top: 1rem;
+}
+
+@media (max-width: 1180px) {
+  .announcement-page__layout {
+    grid-template-columns: 1fr;
+  }
+
+  app-announcement-snapshot {
+    position: static;
+  }
+}

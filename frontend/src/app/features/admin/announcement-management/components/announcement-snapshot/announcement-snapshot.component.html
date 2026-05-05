@@ -1,0 +1,40 @@
+<aside class="announcement-snapshot">
+  <section>
+    <h2><span class="material-symbols-outlined">keep</span>Epinglees</h2>
+    @for (item of pinned; track item.id ?? item.title) {
+      <button type="button" class="snapshot-row" (click)="viewDetails.emit(item)">
+        <span>{{ item.title }}</span>
+        <small>PUBLIC</small>
+      </button>
+    } @empty {
+      <p>Aucune annonce epinglee.</p>
+    }
+  </section>
+
+  <section>
+    <h2><span class="material-symbols-outlined">priority_high</span>Urgentes</h2>
+    @for (item of urgent; track item.id ?? item.title) {
+      <button type="button" class="snapshot-row is-urgent" (click)="viewDetails.emit(item)">
+        <span>{{ item.title }}</span>
+        <small>{{ item.status ?? 'DRAFT' }}</small>
+      </button>
+    } @empty {
+      <p>Aucune urgence active.</p>
+    }
+  </section>
+
+  <section>
+    <h2><span class="material-symbols-outlined">timeline</span>Timeline</h2>
+    <div class="timeline">
+      @for (item of timeline; track item.id ?? item.title) {
+        <button type="button" class="timeline-row" (click)="viewDetails.emit(item)">
+          <i></i>
+          <span>{{ item.title }}</span>
+          <small>{{ dateLabel(item.createdAt ?? item.publishedAt ?? item.scheduledAt) }}</small>
+        </button>
+      } @empty {
+        <p>Aucune activite recente.</p>
+      }
+    </div>
+  </section>
+</aside>

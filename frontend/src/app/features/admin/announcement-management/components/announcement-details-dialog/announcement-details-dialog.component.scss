@@ -1,0 +1,114 @@
+.announcement-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 23, 0.38);
+  padding: 1rem;
+  backdrop-filter: blur(6px);
+  animation: fade 160ms ease-out;
+}
+
+.announcement-details {
+  width: min(100%, 44rem);
+  max-height: min(88vh, 48rem);
+  overflow: auto;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  padding: 1.1rem;
+  box-shadow: 0 28px 72px rgba(15, 23, 42, 0.24);
+  animation: scaleIn 180ms ease-out;
+}
+
+header,
+footer,
+.announcement-details__links {
+  display: flex;
+  gap: 0.65rem;
+}
+
+header,
+footer {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+header span {
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+h2 {
+  margin: 0.25rem 0 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.announcement-details__content {
+  margin: 1rem 0;
+  color: var(--color-on-surface-variant);
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+dl div {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  padding: 0.75rem;
+}
+
+dt {
+  color: var(--color-on-surface-variant);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+dd {
+  margin: 0.2rem 0 0;
+  font-weight: 900;
+}
+
+button,
+a,
+.announcement-details__file {
+  display: inline-flex;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  color: var(--color-primary);
+  padding: 0 0.8rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.primary {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+@media (max-width: 620px) {
+  dl {
+    grid-template-columns: 1fr;
+  }
+}

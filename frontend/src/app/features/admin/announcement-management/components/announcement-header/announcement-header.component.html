@@ -1,0 +1,12 @@
+<section class="announcement-header">
+  <div>
+    <span class="announcement-header__eyebrow">Communication</span>
+    <h1>Announcements Management</h1>
+    <p>Publiez, programmez et suivez les annonces importantes du campus.</p>
+  </div>
+
+  <button type="button" class="announcement-header__action" [disabled]="loading" (click)="create.emit()">
+    <span class="material-symbols-outlined">add</span>
+    Nouvelle annonce
+  </button>
+</section>

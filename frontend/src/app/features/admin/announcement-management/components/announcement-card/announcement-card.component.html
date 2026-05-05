@@ -1,0 +1,40 @@
+@if (announcement) {
+  <article class="announcement-card" [class.is-urgent]="announcement.type === 'URGENT' || priority === 'CRITICAL'" [class.is-pinned]="announcement.pinned">
+    <header>
+      <div>
+        <div class="announcement-card__tags">
+          <span class="tag">{{ announcement.type ?? 'INFO' }}</span>
+          <span class="tag" [class.tag--urgent]="announcement.type === 'URGENT' || priority === 'CRITICAL'">{{ priority }}</span>
+          <span class="tag">{{ status }}</span>
+        </div>
+        <h3>{{ announcement.title || 'Annonce sans titre' }}</h3>
+      </div>
+
+      <button
+        type="button"
+        class="icon-button"
+        [attr.aria-label]="announcement.pinned ? 'Retirer l epingle' : 'Epingler'"
+        (click)="emit(announcement.pinned ? unpin : pin)">
+        <span class="material-symbols-outlined">{{ announcement.pinned ? 'keep_off' : 'keep' }}</span>
+      </button>
+    </header>
+
+    <p>{{ content }}</p>
+
+    <footer>
+      <div class="announcement-card__meta">
+        <span><span class="material-symbols-outlined">groups</span>{{ audience }}</span>
+        <span><span class="material-symbols-outlined">calendar_month</span>{{ dateLabel }}</span>
+        <span><span class="material-symbols-outlined">visibility</span>{{ announcement.views ?? announcement.viewCount ?? 0 }}</span>
+      </div>
+
+      <div class="announcement-card__actions">
+        <button type="button" (click)="emit(viewDetails)">Details</button>
+        <button type="button" (click)="emit(edit)">Modifier</button>
+        <button type="button" (click)="emit(schedule)">Planifier</button>
+        <button type="button" class="primary" (click)="emit(publish)" [disabled]="status === 'PUBLISHED'">Publier</button>
+        <button type="button" (click)="emit(archive)" [disabled]="status === 'ARCHIVED'">Archiver</button>
+      </div>
+    </footer>
+  </article>
+}

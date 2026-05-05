@@ -1,0 +1,42 @@
+<section class="announcement-filters">
+  <label class="announcement-filters__search">
+    <span class="material-symbols-outlined">search</span>
+    <input
+      type="search"
+      name="search"
+      placeholder="Rechercher une annonce"
+      [(ngModel)]="value.search"
+      (ngModelChange)="emit()">
+  </label>
+
+  <label>
+    <span>Type</span>
+    <select name="type" [(ngModel)]="value.type" (ngModelChange)="emit()">
+      @for (type of types; track type) {
+        <option [value]="type">{{ type === 'ALL' ? 'Tous types' : type }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Priorite</span>
+    <select name="priority" [(ngModel)]="value.priority" (ngModelChange)="emit()">
+      @for (priority of priorities; track priority) {
+        <option [value]="priority">{{ priority === 'ALL' ? 'Toutes priorites' : priority }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Statut</span>
+    <select name="status" [(ngModel)]="value.status" (ngModelChange)="emit()">
+      @for (status of statuses; track status) {
+        <option [value]="status">{{ status === 'ALL' ? 'Tous statuts' : status }}</option>
+      }
+    </select>
+  </label>
+
+  <button type="button" class="announcement-filters__reset" (click)="reset()" aria-label="Reinitialiser les filtres">
+    <span class="material-symbols-outlined">restart_alt</span>
+  </button>
+</section>

@@ -213,7 +213,7 @@
                         class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-surface-variant shrink-0">
                         @if (student.profileImage) {
                           <img
-                            [src]="'https://ui-avatars.com/api/?name='+student.firstName+' '+student.lastName +'&background=random'"
+                            [src]="student.profileImage"
                             class="w-full h-full object-cover"/>
                         } @else {
                           <span

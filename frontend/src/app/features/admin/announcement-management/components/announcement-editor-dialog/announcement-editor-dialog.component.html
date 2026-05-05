@@ -1,0 +1,85 @@
+@if (visible) {
+  <div class="announcement-dialog-backdrop" (click)="closed.emit()">
+    <form class="announcement-editor" (ngSubmit)="submit()" (click)="$event.stopPropagation()">
+      <header>
+        <div>
+          <span>{{ announcement ? 'Edition' : 'Creation' }}</span>
+          <h2>{{ announcement ? 'Modifier annonce' : 'Nouvelle annonce' }}</h2>
+        </div>
+        <button type="button" class="icon-button" aria-label="Fermer" (click)="closed.emit()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <div class="announcement-editor__grid">
+        <label class="full">
+          <span>Titre</span>
+          <input name="title" required [(ngModel)]="form.title">
+        </label>
+
+        <label class="full">
+          <span>Contenu</span>
+          <textarea name="content" rows="5" required [(ngModel)]="form.content"></textarea>
+        </label>
+
+        <label>
+          <span>Type</span>
+          <select name="type" [(ngModel)]="form.type">
+            @for (type of types; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          <span>Priorite</span>
+          <select name="priority" [(ngModel)]="form.priority">
+            @for (priority of priorities; track priority) {
+              <option [value]="priority">{{ priority }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          <span>Scheduled at</span>
+          <input name="scheduledAt" type="datetime-local" [(ngModel)]="form.scheduledAt">
+        </label>
+
+        <label>
+          <span>Expires at</span>
+          <input name="expiresAt" type="datetime-local" [(ngModel)]="form.expiresAt">
+        </label>
+
+        <label>
+          <span>External link</span>
+          <input name="externalLink" type="url" [(ngModel)]="form.externalLink">
+        </label>
+
+        <label>
+          <span>Pieces jointes</span>
+          <input name="attachments" type="file" multiple (change)="onAttachmentChange($event)">
+        </label>
+
+        @if (selectedAttachmentNames.length) {
+          <div class="announcement-editor__files full">
+            @for (fileName of selectedAttachmentNames; track fileName) {
+              <span>{{ fileName }}</span>
+            }
+          </div>
+        }
+
+        <label class="announcement-editor__check">
+          <input name="pinned" type="checkbox" [(ngModel)]="form.pinned">
+          <span>Annonce epinglee</span>
+        </label>
+      </div>
+
+      <footer>
+        <button type="button" (click)="closed.emit()">Annuler</button>
+        <button type="submit" class="primary" [disabled]="loading || !form.title.trim() || !form.content.trim()">
+          {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </footer>
+    </form>
+  </div>
+}
