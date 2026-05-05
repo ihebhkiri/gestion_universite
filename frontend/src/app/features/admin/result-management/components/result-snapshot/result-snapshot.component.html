@@ -1,0 +1,46 @@
+<section class="result-snapshot">
+  <div class="result-section-head">
+    <div>
+      <p>Snapshot</p>
+      <h2>Vue rapide</h2>
+    </div>
+    <span class="material-symbols-outlined text-primary">analytics</span>
+  </div>
+
+  <div class="result-snapshot__rate">
+    <div class="result-donut" [style.background]="'conic-gradient(#10b981 ' + successRate + '%, var(--color-surface-container) 0)'">
+      <div>
+        <strong>{{ successRate }}%</strong>
+        <span>reussite</span>
+      </div>
+    </div>
+    <div>
+      <strong>{{ session?.status ?? 'PENDING' }}</strong>
+      <span>{{ session?.semesterName ?? session?.semesterLabel ?? 'Session active' }}</span>
+    </div>
+  </div>
+
+  <div class="result-snapshot__block">
+    <h3>Meilleures notes</h3>
+    @for (record of topRecords; track record.id ?? record.studentId) {
+      <button type="button" class="result-snapshot-row" (click)="viewDetails.emit(record)">
+        <span>{{ studentName(record) }}</span>
+        <strong>{{ scoreLabel(record) }}</strong>
+      </button>
+    } @empty {
+      <div class="result-empty result-empty--compact">Aucune note</div>
+    }
+  </div>
+
+  <div class="result-snapshot__block">
+    <h3>A surveiller</h3>
+    @for (record of attentionRecords; track record.id ?? record.studentId) {
+      <button type="button" class="result-snapshot-row result-snapshot-row--warn" (click)="viewDetails.emit(record)">
+        <span>{{ studentName(record) }}</span>
+        <strong>{{ status(record) }}</strong>
+      </button>
+    } @empty {
+      <div class="result-empty result-empty--compact">Rien a signaler</div>
+    }
+  </div>
+</section>

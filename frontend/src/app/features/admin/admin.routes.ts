@@ -66,6 +66,9 @@ export const routes: Routes = [
   }, {
     path: 'grades',
     loadComponent: () => import('./grade-management/pages/gradebook-page/gradebook-page.component').then(m => m.GradebookPageComponent)
+  }, {
+    path: 'results',
+    loadComponent: () => import('./result-management/pages/result-management-page/result-management-page.component').then(m => m.ResultManagementPageComponent)
   }
 
 ]

@@ -1,0 +1,45 @@
+<section class="result-student-list">
+  <div class="result-section-head">
+    <div>
+      <p>Etudiants</p>
+      <h2>{{ visibleRecords.length }} resultats</h2>
+    </div>
+    <span class="result-chip">{{ (records ?? []).length }} inscrits</span>
+  </div>
+
+  @if (loading) {
+    <div class="result-list-skeleton">
+      @for (item of [1, 2, 3, 4, 5]; track item) {
+        <div class="result-list-skeleton__row">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="result-student-list__legend">
+      <span>Etudiant</span>
+      <span>Note</span>
+      <span>Statut</span>
+      <span>Actions</span>
+    </div>
+
+    <div class="result-student-list__rows">
+      @for (record of visibleRecords; track trackByRecordId($index, record)) {
+        <app-result-student-card
+          [record]="record"
+          [highlighted]="isHighlighted(record)"
+          (scoreChanged)="scoreChanged.emit($event)"
+          (statusChanged)="statusChanged.emit($event)"
+          (viewDetails)="viewDetails.emit($event)">
+        </app-result-student-card>
+      } @empty {
+        <div class="result-empty">
+          <span class="material-symbols-outlined">search_off</span>
+          <strong>Aucun resultat</strong>
+        </div>
+      }
+    </div>
+  }
+</section>

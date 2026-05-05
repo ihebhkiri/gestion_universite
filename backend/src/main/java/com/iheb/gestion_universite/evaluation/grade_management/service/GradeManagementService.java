@@ -19,6 +19,8 @@ import com.iheb.gestion_universite.evaluation.grade_management.dto.GradebookExam
 import com.iheb.gestion_universite.evaluation.grade_management.dto.SaveGradeRecordItemRequest;
 import com.iheb.gestion_universite.evaluation.grade_management.dto.SaveGradeRecordsRequest;
 import com.iheb.gestion_universite.evaluation.grade_management.dto.UpdateGradeRecordRequest;
+import com.iheb.gestion_universite.evaluation.result_management.entity.ResultSessionStatus;
+import com.iheb.gestion_universite.evaluation.result_management.repository.ResultSessionRepository;
 import com.iheb.gestion_universite.student_managment.student.StudentEntity;
 import com.iheb.gestion_universite.student_managment.student_enrollment.EnrollmentRepo;
 import com.iheb.gestion_universite.student_managment.student_enrollment.EnrollmentStatus;
@@ -54,6 +56,7 @@ public class GradeManagementService {
     private final TeacherRepository teacherRepository;
     private final RoomRepository roomRepository;
     private final SemesterRepository semesterRepository;
+    private final ResultSessionRepository resultSessionRepository;
     private final GradeManagementMapper mapper;
 
     public GradebookDetailsResponse createExam(CreateGradeExamRequest request) {
@@ -273,6 +276,11 @@ public class GradeManagementService {
     }
 
     private void ensureExamCanBeEdited(ExamEntity exam) {
+        resultSessionRepository.findByExamId(exam.getId()).ifPresent(session -> {
+            if (session.getStatus() != ResultSessionStatus.DRAFT) {
+                throw new IllegalArgumentException("Grades cannot be edited after result session validation");
+            }
+        });
         if (exam.getStatus() == ExamStatus.PUBLISHED) {
             throw new IllegalArgumentException("Published exams cannot be edited");
         }

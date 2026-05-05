@@ -1,0 +1,42 @@
+<section class="result-filters">
+  <label class="result-filters__search">
+    <span>Recherche</span>
+    <input
+      type="search"
+      [(ngModel)]="value.search"
+      (ngModelChange)="emit()"
+      placeholder="Nom, matricule ou CIN" />
+  </label>
+
+  <label>
+    <span>Statut</span>
+    <select [(ngModel)]="value.status" (ngModelChange)="emit()">
+      @for (status of statuses; track status.value) {
+        <option [value]="status.value">{{ status.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Mention</span>
+    <select [(ngModel)]="value.mention" (ngModelChange)="emit()">
+      @for (mention of mentions; track mention.value) {
+        <option [value]="mention.value">{{ mention.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    <span>Min</span>
+    <input type="number" min="0" max="20" step="0.25" [(ngModel)]="value.minScore" (ngModelChange)="emit()" />
+  </label>
+
+  <label>
+    <span>Max</span>
+    <input type="number" min="0" max="20" step="0.25" [(ngModel)]="value.maxScore" (ngModelChange)="emit()" />
+  </label>
+
+  <button type="button" class="result-icon-button" aria-label="Reinitialiser les filtres" (click)="reset()">
+    <span class="material-symbols-outlined">restart_alt</span>
+  </button>
+</section>
