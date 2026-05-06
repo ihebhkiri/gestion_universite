@@ -3,7 +3,8 @@
   <!-- TopAppBar (Authority Source: JSON) -->
   <app-header></app-header>
   <!-- Content Area -->
-  <div class="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto w-full">
+  <div class="scalable-page-shell flex-1">
+    <div class="scalable-page-content space-y-6">
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
@@ -36,6 +37,7 @@
     (statusChanged)="onStatusChanged($event) " (userDeleted)="onUserDeleted($event)" (userUpdated)="onUserUpdated($event)"
     (bulkDeleteEvent)="onBulkDelete($event)" (bulkStatusEvent)="onBulkStatusChanged($event)"
     [roleList]="rolesList"></app-users-data>
+    </div>
   </div>
 
 </main>

@@ -3,7 +3,8 @@
 <main class="min-h-screen bg-background md:ml-72">
   <app-header></app-header>
 
-  <section class="mx-auto flex w-full max-w-[1500px] flex-col gap-4 p-4 sm:p-6 lg:p-8">
+  <section class="scalable-page-shell">
+    <div class="scalable-page-content is-dashboard-scale flex flex-col gap-4">
     <div class="overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-5 shadow-sm lg:p-6">
       <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
         <div class="max-w-4xl">
@@ -92,5 +93,6 @@
         </app-info-panel>
       </section>
     }
+    </div>
   </section>
 </main>

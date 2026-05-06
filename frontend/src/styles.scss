@@ -159,6 +159,68 @@ svg {
   box-shadow: 0 14px 36px color-mix(in srgb, var(--color-primary) 8%, transparent);
 }
 
+.scalable-page-shell.scalable-page-shell {
+  --dashboard-design-width: 1365px;
+
+  min-height: calc(100vh - 4rem);
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: clamp(0.75rem, 1.4vw, 1.25rem);
+  background: var(--page-background, var(--color-background));
+}
+
+.scalable-page-content.scalable-page-content {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+  transform-origin: top left;
+}
+
+.scalable-page-content.is-dashboard-scale {
+  --dashboard-scale: 1;
+
+  width: 100%;
+  max-width: none;
+  transform: scale(var(--dashboard-scale));
+}
+
+@media (max-width: 1680px) {
+  .scalable-page-content.is-dashboard-scale {
+    --dashboard-scale: 0.96;
+
+    width: 104.1667%;
+  }
+}
+
+@media (max-width: 1440px) {
+  .scalable-page-content.is-dashboard-scale {
+    --dashboard-scale: 0.92;
+
+    width: 108.6957%;
+  }
+}
+
+@media (max-width: 1280px) {
+  .scalable-page-content.is-dashboard-scale {
+    --dashboard-scale: 0.88;
+
+    width: 113.6364%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .scalable-page-content.is-dashboard-scale {
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+  }
+}
+
 .analytics-panel,
 .analytics-card {
   border: 1px solid var(--color-outline-variant);

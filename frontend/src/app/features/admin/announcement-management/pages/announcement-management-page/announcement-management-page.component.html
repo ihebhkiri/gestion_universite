@@ -2,7 +2,8 @@
 <section class="announcement-page min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="announcement-page__main px-4 py-6 sm:px-6 lg:px-8" @pageFade>
+  <main class="announcement-page__main scalable-page-shell" @pageFade>
+    <div class="scalable-page-content is-dashboard-scale grid gap-4">
     <app-announcement-header
       [loading]="(loading$ | async) ?? false"
       (create)="create()">
@@ -43,6 +44,7 @@
         [announcements]="announcements$ | async"
         (viewDetails)="viewDetails($event)">
       </app-announcement-snapshot>
+    </div>
     </div>
   </main>
 </section>

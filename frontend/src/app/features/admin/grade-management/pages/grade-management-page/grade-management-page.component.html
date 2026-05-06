@@ -2,7 +2,8 @@
 <section class="grade-page min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="grade-page__main px-4 py-6 sm:px-6 lg:px-8" @fadeInUp>
+  <main class="grade-page__main scalable-page-shell" @fadeInUp>
+    <div class="scalable-page-content is-dashboard-scale">
     @if (facade.localLoading$ | async) {
       <div class="grade-page__loader" aria-live="polite" aria-label="Loading grade data">
         <div class="grade-page__loader-card">
@@ -83,6 +84,7 @@
           (validateRequested)="facade.validateGrade($event)">
         </app-grade-records-table>
       </section>
+    </div>
     </div>
   </main>
 </section>
