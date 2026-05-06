@@ -4,12 +4,14 @@ import {Component, OnInit} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from '../../../../../shared/components/admin/header/header.component';
 import {SidebarComponent} from '../../../../../shared/components/admin/sidebar/sidebar.component';
+import {AttendanceAiReportCardComponent} from '../../components/attendance-ai-report-card/attendance-ai-report-card.component';
 import {AnalyticsFiltersComponent} from '../../components/analytics-filters/analytics-filters.component';
 import {CourseAbsenceRankingComponent} from '../../components/course-absence-ranking/course-absence-ranking.component';
 import {GroupStudentsTableComponent} from '../../components/group-students-table/group-students-table.component';
 import {GroupSummaryCardsComponent} from '../../components/group-summary-cards/group-summary-cards.component';
 import {StudentAttendanceDialogComponent} from '../../components/student-attendance-dialog/student-attendance-dialog.component';
 import {TeacherAbsenceRankingComponent} from '../../components/teacher-absence-ranking/teacher-absence-ranking.component';
+import {AttendanceAiReportFacade} from '../../facades/attendance-ai-report.facade';
 import {AttendanceAnalyticsFacade} from '../../facades/attendance-analytics.facade';
 import {AttendanceAnalyticsStateService} from '../../services/attendance-analytics-state.service';
 
@@ -22,13 +24,14 @@ import {AttendanceAnalyticsStateService} from '../../services/attendance-analyti
     SidebarComponent,
     HeaderComponent,
     AnalyticsFiltersComponent,
+    AttendanceAiReportCardComponent,
     GroupSummaryCardsComponent,
     GroupStudentsTableComponent,
     CourseAbsenceRankingComponent,
     TeacherAbsenceRankingComponent,
     StudentAttendanceDialogComponent
   ],
-  providers: [AttendanceAnalyticsFacade, AttendanceAnalyticsStateService],
+  providers: [AttendanceAnalyticsFacade, AttendanceAnalyticsStateService, AttendanceAiReportFacade],
   templateUrl: './attendance-analytics-page.component.html',
   styleUrl: './attendance-analytics-page.component.scss',
   animations: [
@@ -43,9 +46,16 @@ import {AttendanceAnalyticsStateService} from '../../services/attendance-analyti
   ]
 })
 export class AttendanceAnalyticsPageComponent implements OnInit {
-  constructor(public readonly facade: AttendanceAnalyticsFacade) {}
+  constructor(
+    public readonly facade: AttendanceAnalyticsFacade,
+    public readonly aiReportFacade: AttendanceAiReportFacade
+  ) {}
 
   ngOnInit(): void {
     this.facade.init();
+  }
+
+  generateAiReport(): void {
+    this.aiReportFacade.generateAndDownloadPdf(this.facade.filtersForm.getRawValue());
   }
 }
