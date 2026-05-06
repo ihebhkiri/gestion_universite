@@ -1,10 +1,13 @@
 package com.iheb.gestion_universite.attendance.analytics.service;
 
+import com.iheb.gestion_universite.attendance.analytics.dto.AbsenceRiskStatus;
 import com.iheb.gestion_universite.attendance.analytics.dto.AttendanceAnalyticsSummaryResponse;
 import com.iheb.gestion_universite.attendance.analytics.dto.CourseAbsenceStatResponse;
 import com.iheb.gestion_universite.attendance.analytics.dto.GroupAttendanceSummaryResponse;
 import com.iheb.gestion_universite.attendance.analytics.dto.GroupStudentAttendanceResponse;
+import com.iheb.gestion_universite.attendance.analytics.dto.LatenessStatus;
 import com.iheb.gestion_universite.attendance.analytics.dto.RiskLevel;
+import com.iheb.gestion_universite.attendance.analytics.dto.StudentCourseAttendanceRiskResponse;
 import com.iheb.gestion_universite.attendance.analytics.dto.StudentAttendanceHistoryResponse;
 import com.iheb.gestion_universite.attendance.analytics.dto.StudentAttendanceProfileResponse;
 import com.iheb.gestion_universite.attendance.analytics.dto.StudentCourseAttendanceResponse;
@@ -38,6 +41,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AttendanceAnalyticsService {
+
+    private static final double SESSION_DURATION_HOURS = 1.5;
+    private static final double ABSENCE_LIMIT_PERCENTAGE = 0.25;
+    private static final int AT_RISK_REMAINING_ABSENCES = 2;
+    private static final int BLAME_RECOMMENDED_MIN_LATE_COUNT = 2;
+    private static final int FREQUENT_LATENESS_MIN_LATE_COUNT = 4;
 
     private final AttendanceRecordRepository recordRepository;
     private final EnrollmentRepo enrollmentRepo;
@@ -95,6 +104,29 @@ public class AttendanceAnalyticsService {
                 .stream()
                 .map(this::toTeacherRanking)
                 .sorted(Comparator.comparing(TeacherAbsenceStatResponse::absenceRate).reversed())
+                .toList();
+    }
+
+    public List<StudentCourseAttendanceRiskResponse> getStudentCourseAttendanceRisks(
+            Long academicYearId,
+            Long semesterId,
+            Long classId,
+            Long groupId
+    ) {
+        Map<Long, StudentEnrollmentEntity> enrollmentByStudentId = enrollmentByStudentId();
+
+        return filteredRecords(academicYearId, semesterId, classId, groupId)
+                .stream()
+                .filter(record -> record.getSession().getCourse() != null)
+                .collect(Collectors.groupingBy(record -> record.getStudent().getId() + ":" + record.getSession().getCourse().getId()))
+                .values()
+                .stream()
+                .map(records -> toStudentCourseRisk(records, enrollmentByStudentId))
+                .filter(this::isReportableRisk)
+                .sorted(Comparator
+                        .comparing(StudentCourseAttendanceRiskResponse::absenceStatus, this::compareAbsenceStatus)
+                        .thenComparing(StudentCourseAttendanceRiskResponse::lateCount, Comparator.reverseOrder())
+                        .thenComparing(StudentCourseAttendanceRiskResponse::studentName))
                 .toList();
     }
 
@@ -184,6 +216,84 @@ public class AttendanceAnalyticsService {
                 counts.absent(),
                 rate(counts.absent(), records.size())
         );
+    }
+
+    private StudentCourseAttendanceRiskResponse toStudentCourseRisk(
+            List<AttendanceRecordEntity> records,
+            Map<Long, StudentEnrollmentEntity> enrollmentByStudentId
+    ) {
+        AttendanceRecordEntity firstRecord = records.get(0);
+        StudentEntity student = firstRecord.getStudent();
+        CourseEntity course = firstRecord.getSession().getCourse();
+        StudentEnrollmentEntity enrollment = enrollmentByStudentId.get(student.getId());
+
+        long absenceCount = records.stream().filter(record -> record.getStatus() == AttendanceStatus.ABSENT).count();
+        long lateCount = records.stream().filter(record -> record.getStatus() == AttendanceStatus.LATE).count();
+
+        Integer courseHourlyVolume = course.getHours();
+        double totalSessions = 0;
+        int absenceLimitSessions = 0;
+        int remainingBeforeElimination = 0;
+        AbsenceRiskStatus absenceStatus = AbsenceRiskStatus.NOT_CALCULABLE;
+
+        if (courseHourlyVolume != null && courseHourlyVolume > 0) {
+            totalSessions = courseHourlyVolume / SESSION_DURATION_HOURS;
+            absenceLimitSessions = (int) Math.floor(totalSessions * ABSENCE_LIMIT_PERCENTAGE);
+            remainingBeforeElimination = Math.max(absenceLimitSessions - (int) absenceCount, 0);
+            absenceStatus = absenceStatus(absenceCount, absenceLimitSessions, remainingBeforeElimination);
+        }
+
+        return new StudentCourseAttendanceRiskResponse(
+                student.getId(),
+                studentName(student),
+                student.getMatricule(),
+                enrollment != null && enrollment.getGroup() != null ? enrollment.getGroup().getName() : null,
+                course.getId(),
+                course.getCode(),
+                course.getTitle(),
+                courseHourlyVolume,
+                Math.round(totalSessions * 100.0) / 100.0,
+                absenceCount,
+                lateCount,
+                absenceLimitSessions,
+                remainingBeforeElimination,
+                absenceStatus,
+                latenessStatus(lateCount)
+        );
+    }
+
+    private boolean isReportableRisk(StudentCourseAttendanceRiskResponse risk) {
+        return risk.absenceStatus() != AbsenceRiskStatus.NORMAL || risk.latenessStatus() != LatenessStatus.NO_DELAY;
+    }
+
+    private AbsenceRiskStatus absenceStatus(long absenceCount, int absenceLimitSessions, int remainingBeforeElimination) {
+        if (absenceCount > absenceLimitSessions) return AbsenceRiskStatus.ELIMINATED;
+        if (absenceCount == absenceLimitSessions) return AbsenceRiskStatus.LIMIT_REACHED;
+        if (remainingBeforeElimination <= AT_RISK_REMAINING_ABSENCES) return AbsenceRiskStatus.AT_RISK;
+        return AbsenceRiskStatus.NORMAL;
+    }
+
+    private LatenessStatus latenessStatus(long lateCount) {
+        if (lateCount == 0) return LatenessStatus.NO_DELAY;
+        if (lateCount == 1) return LatenessStatus.MINOR_DELAY;
+        if (lateCount < FREQUENT_LATENESS_MIN_LATE_COUNT && lateCount >= BLAME_RECOMMENDED_MIN_LATE_COUNT) {
+            return LatenessStatus.BLAME_RECOMMENDED;
+        }
+        return LatenessStatus.FREQUENT_LATENESS;
+    }
+
+    private int compareAbsenceStatus(AbsenceRiskStatus left, AbsenceRiskStatus right) {
+        return Integer.compare(absenceSeverity(right), absenceSeverity(left));
+    }
+
+    private int absenceSeverity(AbsenceRiskStatus status) {
+        return switch (status) {
+            case ELIMINATED -> 4;
+            case LIMIT_REACHED -> 3;
+            case AT_RISK -> 2;
+            case NOT_CALCULABLE -> 1;
+            case NORMAL -> 0;
+        };
     }
 
     private AttendanceAnalyticsSummaryResponse toSummary(List<AttendanceRecordEntity> records) {

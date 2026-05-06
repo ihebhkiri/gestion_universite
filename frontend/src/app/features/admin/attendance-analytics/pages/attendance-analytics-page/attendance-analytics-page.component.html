@@ -17,9 +17,7 @@
         <p class="text-xs font-semibold uppercase text-on-surface-variant">Attendance reporting</p>
         <h1 class="font-['Space_Grotesk'] text-2xl font-bold text-primary">Attendance Analytics</h1>
       </div>
-      <div class="rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-2 text-sm font-bold text-on-surface-variant">
-        Group, course, teacher and student risk view
-      </div>
+
     </div>
 
     <app-analytics-filters
@@ -34,6 +32,13 @@
     </app-analytics-filters>
 
     <div class="mt-5 space-y-5">
+      <app-attendance-ai-report-card
+        class="analytics-animate block"
+        [loading]="(aiReportFacade.loading$ | async) ?? false"
+        [error]="aiReportFacade.error$ | async"
+        (generate)="generateAiReport()">
+      </app-attendance-ai-report-card>
+
       <app-group-summary-cards class="analytics-animate block" [summary]="facade.groupSummary$ | async"></app-group-summary-cards>
 
       <section class="analytics-animate grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">

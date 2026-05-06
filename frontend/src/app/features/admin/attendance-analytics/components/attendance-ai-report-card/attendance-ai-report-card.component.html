@@ -1,0 +1,33 @@
+<section class="ai-report-card" aria-labelledby="ai-report-title">
+  <div class="ai-report-card__content">
+    <div class="ai-report-card__icon" aria-hidden="true">
+      <span class="material-symbols-outlined">clinical_notes</span>
+    </div>
+
+    <div class="ai-report-card__copy">
+      <p class="ai-report-card__eyebrow">Analyse augmentée</p>
+      <h2 id="ai-report-title">Rapport IA de présence</h2>
+      <p>Génère un rapport PDF basé sur les tendances de présence, les risques et les recommandations.</p>
+    </div>
+  </div>
+
+  <div class="ai-report-card__actions">
+    @if (error) {
+      <p class="ai-report-card__error" role="alert">{{ error }}</p>
+    }
+
+    <button
+      type="button"
+      class="ai-report-card__button"
+      [disabled]="loading"
+      (click)="generate.emit()">
+      @if (loading) {
+        <span class="material-symbols-outlined ai-report-card__spinner" aria-hidden="true">progress_activity</span>
+        <span>Génération...</span>
+      } @else {
+        <span class="material-symbols-outlined" aria-hidden="true">download</span>
+        <span>Générer le rapport IA</span>
+      }
+    </button>
+  </div>
+</section>
