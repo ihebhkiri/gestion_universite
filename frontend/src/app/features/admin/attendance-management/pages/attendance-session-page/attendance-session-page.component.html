@@ -2,7 +2,8 @@
 <section class="min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="attendance-shell relative px-4 py-6 sm:px-6 lg:px-8">
+  <main class="attendance-shell scalable-page-shell">
+    <div class="scalable-page-content is-dashboard-scale">
     @if (facade.localLoading$ | async) {
       <div class="attendance-local-loader" aria-live="polite" aria-label="Loading attendance data">
         <div class="loader-card">
@@ -147,6 +148,7 @@
         </button>
       </section>
     }
+    </div>
   </main>
 </section>
 

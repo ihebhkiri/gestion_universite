@@ -2,7 +2,8 @@
 <section class="min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="room-page relative px-4 py-6 sm:px-6 lg:px-8">
+  <main class="room-page scalable-page-shell">
+    <div class="scalable-page-content is-dashboard-scale">
     @if (facade.isLoading$ | async) {
       <div class="room-local-loader" aria-live="polite" aria-label="Loading rooms">
         <div class="loader-panel">
@@ -93,6 +94,7 @@
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_24rem]">
       <app-room-list></app-room-list>
       <app-room-form></app-room-form>
+    </div>
     </div>
   </main>
 </section>

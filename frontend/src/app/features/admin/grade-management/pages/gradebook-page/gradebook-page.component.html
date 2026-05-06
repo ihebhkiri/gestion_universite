@@ -2,7 +2,8 @@
 <section class="gradebook-page min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="gradebook-page__main px-4 py-6 sm:px-6 lg:px-8" @fadeInUp>
+  <main class="gradebook-page__main scalable-page-shell" @fadeInUp>
+    <div class="scalable-page-content is-dashboard-scale grid gap-4">
     <app-gradebook-header
       [exam]="facade.currentExam$ | async"
       [courses]="facade.courseOptions$ | async"
@@ -59,6 +60,7 @@
           }
         </section>
       </aside>
+    </div>
     </div>
   </main>
 </section>

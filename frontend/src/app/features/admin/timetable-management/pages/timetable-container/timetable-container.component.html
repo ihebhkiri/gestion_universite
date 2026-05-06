@@ -2,7 +2,8 @@
 <section class="min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="relative px-4 py-6 sm:px-6 lg:px-8">
+  <main class="scalable-page-shell">
+    <div class="scalable-page-content is-dashboard-scale">
     @if (facade.loading$ | async) {
       <div class="timetable-local-loader" aria-live="polite" aria-label="Loading timetable data">
         <div class="loader-panel">
@@ -28,6 +29,7 @@
 
     <app-timetable-filters></app-timetable-filters>
     <app-timetable-grid></app-timetable-grid>
+    </div>
   </main>
 </section>
 

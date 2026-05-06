@@ -2,7 +2,8 @@
 <section class="result-page min-h-screen bg-background text-on-surface md:pl-72">
   <app-header></app-header>
 
-  <main class="result-page__main px-4 py-6 sm:px-6 lg:px-8" @fadeInUp>
+  <main class="result-page__main scalable-page-shell" @fadeInUp>
+    <div class="scalable-page-content is-dashboard-scale grid gap-4">
     <app-result-header
       [session]="currentSession$ | async"
       [loading]="(loading$ | async) ?? false"
@@ -80,6 +81,7 @@
           (viewDetails)="viewDetails($event)">
         </app-result-snapshot>
       </aside>
+    </div>
     </div>
   </main>
 </section>
