@@ -1,0 +1,67 @@
+.payment-history {
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 35%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0 12px 32px rgba(2, 36, 72, 0.04);
+  overflow: hidden;
+}
+
+.payment-history__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.payment-history h3 {
+  color: var(--color-primary-container);
+  font-family: var(--font-headline);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.payment-history__header span {
+  color: var(--color-on-surface-variant);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.payment-history__table-wrap {
+  overflow-x: auto;
+}
+
+.payment-history table {
+  border-collapse: collapse;
+  min-width: 760px;
+  width: 100%;
+}
+
+.payment-history th,
+.payment-history td {
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 20%, transparent);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.payment-history th {
+  background: var(--color-surface-bright);
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.payment-history td {
+  color: var(--color-on-surface);
+  font-size: 0.85rem;
+}
+
+.payment-history__empty {
+  color: var(--color-on-surface-variant) !important;
+  padding: 1.25rem !important;
+  text-align: center !important;
+}

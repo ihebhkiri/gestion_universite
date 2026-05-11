@@ -1,0 +1,39 @@
+<section class="payment-history">
+  <div class="payment-history__header">
+    <h3>Historique des paiements</h3>
+    <span>{{ history.length }} paiement(s)</span>
+  </div>
+
+  <div class="payment-history__table-wrap">
+    <table>
+      <thead>
+      <tr>
+        <th>Reçu</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Ancien solde</th>
+        <th>Nouveau solde</th>
+        <th>Méthode</th>
+      </tr>
+      </thead>
+      <tbody>
+        @if (history.length === 0) {
+          <tr>
+            <td colspan="6" class="payment-history__empty">Aucun paiement enregistré.</td>
+          </tr>
+        } @else {
+          @for (payment of history; track payment.paymentId) {
+            <tr>
+              <td>{{ payment.receiptNumber }}</td>
+              <td>{{ payment.paymentDate | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ money(payment.amount) }} TND</td>
+              <td>{{ money(payment.previousRemainingAmount) }} TND</td>
+              <td>{{ money(payment.newRemainingAmount) }} TND</td>
+              <td>{{ paymentMethodLabel(payment.paymentMethod) }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

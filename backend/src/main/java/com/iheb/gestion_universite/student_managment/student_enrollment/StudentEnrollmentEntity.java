@@ -4,6 +4,7 @@ package com.iheb.gestion_universite.student_managment.student_enrollment;
 import com.iheb.gestion_universite.core.base_entity.BaseEntity;
 import com.iheb.gestion_universite.student_managment.student.StudentEntity;
 import com.iheb.gestion_universite.student_managment.student_group.StudentGroupEntity;
+import com.iheb.gestion_universite.student_managment.student_payment.PaymentPlan;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,10 @@ public class StudentEnrollmentEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status = EnrollmentStatus.CONFIRMED ;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentPlan paymentPlan;
+
     private LocalDate enrollmentDate;
 
 }
