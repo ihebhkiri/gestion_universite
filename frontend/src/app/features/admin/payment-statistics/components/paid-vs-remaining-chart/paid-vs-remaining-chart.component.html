@@ -1,0 +1,36 @@
+<article class="chart-panel">
+  <div class="flex flex-col gap-1">
+    <p class="panel-eyebrow">Breakdown</p>
+    <h2 class="panel-title">Paid vs Remaining Amounts</h2>
+  </div>
+
+  @if (data().length) {
+    <div class="mt-5 grid gap-5 lg:grid-cols-[180px_minmax(0,1fr)] lg:items-center">
+      <div class="donut" [style.--paid.%]="paidPercent()">
+        <div class="donut-core">
+          <span>{{ paidPercent() | number: '1.0-0' }}%</span>
+          <small>paid</small>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="legend-row">
+          <span class="legend-dot is-paid"></span>
+          <span class="min-w-0 flex-1 text-sm font-semibold text-primary">Paid amount</span>
+          <strong>{{ totalPaid() | number: '1.0-0' }} {{ currency() }}</strong>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot is-remaining"></span>
+          <span class="min-w-0 flex-1 text-sm font-semibold text-primary">Remaining amount</span>
+          <strong>{{ totalRemaining() | number: '1.0-0' }} {{ currency() }}</strong>
+        </div>
+        <div class="stacked-bar" aria-hidden="true">
+          <span class="paid" [style.width.%]="paidPercent()"></span>
+          <span class="remaining" [style.width.%]="remainingPercent()"></span>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <p class="empty-state">No data available.</p>
+  }
+</article>

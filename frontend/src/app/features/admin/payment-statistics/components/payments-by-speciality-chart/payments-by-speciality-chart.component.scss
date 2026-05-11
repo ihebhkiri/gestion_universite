@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.chart-panel {
+  height: 100%;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  padding: 1rem;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+
+.panel-eyebrow {
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.panel-title {
+  color: var(--color-primary);
+  font-family: var(--font-headline);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.speciality-row {
+  min-width: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  padding: 0.9rem;
+}
+
+.speciality-bar {
+  display: flex;
+  height: 0.7rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-surface-container-high);
+}
+
+.speciality-bar span {
+  min-width: 0;
+}
+
+.paid {
+  background: var(--color-primary);
+}
+
+.remaining {
+  background: color-mix(in srgb, var(--color-primary) 18%, var(--color-surface-container-high));
+}
+
+.empty-state {
+  margin-top: 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  padding: 1rem;
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+}
+
