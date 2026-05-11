@@ -35,7 +35,7 @@ build/
 *.log
 .agent/
 .dockerignore
-data/
 Dockerfile-dev
 application-dev.yaml
-uploads/
+data/
+

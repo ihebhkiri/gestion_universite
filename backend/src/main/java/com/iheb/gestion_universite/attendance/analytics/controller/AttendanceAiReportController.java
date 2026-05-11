@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/attendance-analytics/ai-report")
+@RequestMapping("/api/v1/admin/attendance-analytics/ai-report")
 @PreAuthorize("hasRole('ADMIN')")
 public class AttendanceAiReportController {
 

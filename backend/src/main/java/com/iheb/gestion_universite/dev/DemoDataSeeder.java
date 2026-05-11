@@ -68,7 +68,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "prod"})
 @Order(20)
 @RequiredArgsConstructor
 public class DemoDataSeeder implements CommandLineRunner {
