@@ -70,8 +70,13 @@ export const routes: Routes = [
     path: 'results',
     loadComponent: () => import('./result-management/pages/result-management-page/result-management-page.component').then(m => m.ResultManagementPageComponent)
   }, {
+    path: 'payments',
+    loadComponent: () => import('./payment-statistics/pages/payment-stats-page/payment-stats-page.component').then(m => m.PaymentStatsPageComponent)
+  }, {
     path: 'announcements',
     loadComponent: () => import('./announcement-management/pages/announcement-management-page/announcement-management-page.component').then(m => m.AnnouncementManagementPageComponent)
-  }
+  },
+  {path: "payments", loadComponent: ()=>import('./payment-statistics/pages/payment-stats-page/payment-stats-page.component').then(m => m.PaymentStatsPageComponent)},
+
 
 ]

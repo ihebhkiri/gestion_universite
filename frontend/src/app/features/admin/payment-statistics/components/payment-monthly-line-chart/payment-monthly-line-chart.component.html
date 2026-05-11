@@ -1,0 +1,23 @@
+<div class="chart-card">
+  <div class="chart-header">
+    <h3>Paiements effectués par mois</h3>
+    <p>Évolution mensuelle des paiements encaissés.</p>
+  </div>
+
+  @if (data.length > 0) {
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [dataLabels]="chartOptions.dataLabels"
+      [grid]="chartOptions.grid">
+    </apx-chart>
+  } @else {
+    <div class="empty-state">
+      Aucune donnée de paiement mensuel disponible.
+    </div>
+  }
+</div>

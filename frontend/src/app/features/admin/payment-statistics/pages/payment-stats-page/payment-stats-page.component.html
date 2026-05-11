@@ -1,0 +1,58 @@
+<div class="bg-surface text-on-background font-body min-h-screen flex antialiased">
+  <app-sidebar></app-sidebar>
+
+  <main class="md:ml-72 flex-1 flex flex-col min-h-screen relative">
+    <app-header></app-header>
+
+    <div class="payment-stats-shell">
+      <div class="payment-stats-content">
+        <header class="payment-stats-header">
+          <div>
+            <p class="payment-stats-eyebrow">Finance</p>
+            <h2>Statistiques des paiements</h2>
+            <p>Suivi global des montants payés, des montants restants et de l’évolution des paiements.</p>
+          </div>
+        </header>
+
+        @if (paymentStatsFacade.loading()) {
+          <section class="loading-card" aria-live="polite">
+            <span class="loader-ring"></span>
+            Chargement des statistiques de paiement...
+          </section>
+        } @else if (paymentStatsFacade.error()) {
+          <section class="error-card">
+            {{ paymentStatsFacade.error() }}
+          </section>
+        } @else if (!paymentStatsFacade.hasData()) {
+          <section class="empty-card">
+            <span class="material-symbols-outlined" aria-hidden="true">payments</span>
+            <div>
+              <h3>Aucune statistique de paiement</h3>
+              <p>Les indicateurs apparaîtront dès que des paiements ou des comptes étudiants seront disponibles. Les montants seront affichés en TND.</p>
+            </div>
+          </section>
+        } @else {
+          <app-payment-summary-cards
+            [summary]="paymentStatsFacade.summary()">
+          </app-payment-summary-cards>
+
+          <section class="charts-grid">
+            <app-paid-vs-remaining-chart
+              [data]="paymentStatsFacade.paidVsRemaining()"
+              [currency]="paymentStatsFacade.summary()?.currency || 'TND'">
+            </app-paid-vs-remaining-chart>
+
+            <app-payments-by-speciality-chart
+              [data]="paymentStatsFacade.paymentsBySpeciality()"
+              [currency]="paymentStatsFacade.summary()?.currency || 'TND'">
+            </app-payments-by-speciality-chart>
+          </section>
+
+          <app-payment-monthly-line-chart
+            [data]="paymentStatsFacade.paymentEvolution()">
+          </app-payment-monthly-line-chart>
+        }
+      </div>
+    </div>
+  </main>
+</div>

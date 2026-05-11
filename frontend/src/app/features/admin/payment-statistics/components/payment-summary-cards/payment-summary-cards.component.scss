@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.summary-card {
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  padding: 1rem;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+
+.summary-label {
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.summary-icon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  color: var(--color-primary);
+  font-size: 1.35rem;
+}
+

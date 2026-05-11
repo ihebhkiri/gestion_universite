@@ -1,0 +1,133 @@
+:host {
+  display: block;
+}
+
+.payment-stats-shell {
+  flex: 1;
+  padding: 1rem;
+}
+
+.payment-stats-content {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0 auto;
+  max-width: 1180px;
+  min-width: 0;
+}
+
+.payment-stats-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.payment-stats-eyebrow {
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+}
+
+.payment-stats-header h2 {
+  color: var(--color-primary-container);
+  font-family: var(--font-headline);
+  font-size: clamp(1.65rem, 2.6vw, 2.1rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.payment-stats-header p {
+  color: var(--color-on-surface-variant);
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+  max-width: 680px;
+}
+
+.charts-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-width: 0;
+}
+
+.loading-card,
+.error-card,
+.empty-card {
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 45%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface-variant);
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.25rem;
+}
+
+.empty-card {
+  align-items: flex-start;
+}
+
+.empty-card span {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  color: var(--color-primary);
+}
+
+.empty-card h3 {
+  color: var(--color-primary);
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.empty-card p {
+  line-height: 1.5;
+  margin: 0.35rem 0 0;
+}
+
+.error-card {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.loader-ring {
+  animation: payment-stats-spin 0.8s linear infinite;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  border-top-color: transparent;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+@keyframes payment-stats-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 640px) {
+  .payment-stats-shell {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .payment-stats-shell {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
