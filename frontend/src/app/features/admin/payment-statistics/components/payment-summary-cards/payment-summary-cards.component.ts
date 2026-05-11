@@ -1,4 +1,4 @@
-import {CurrencyPipe, DecimalPipe} from '@angular/common';
+import {DecimalPipe} from '@angular/common';
 import {Component, input} from '@angular/core';
 import {PaymentSummary} from '../../models/payment-statistics.model';
 
@@ -13,7 +13,7 @@ interface PaymentSummaryCard {
 @Component({
   selector: 'app-payment-summary-cards',
   standalone: true,
-  imports: [CurrencyPipe, DecimalPipe],
+  imports: [DecimalPipe],
   templateUrl: './payment-summary-cards.component.html',
   styleUrl: './payment-summary-cards.component.scss'
 })
@@ -24,30 +24,30 @@ export class PaymentSummaryCardsComponent {
     const summary = this.summary();
     return [
       {
-        label: 'Montant total',
+        label: 'Total amount',
         value: summary?.totalAmount ?? 0,
-        hint: 'Frais attendus',
+        hint: 'Expected tuition fees',
         icon: 'account_balance_wallet',
         format: 'currency'
       },
       {
-        label: 'Montant payé',
+        label: 'Paid amount',
         value: summary?.totalPaidAmount ?? 0,
-        hint: `${summary?.paidPercentage ?? 0}% encaissé`,
+        hint: `${summary?.paidPercentage ?? 0}% collected`,
         icon: 'paid',
         format: 'currency'
       },
       {
-        label: 'Montant restant',
+        label: 'Remaining amount',
         value: summary?.totalRemainingAmount ?? 0,
-        hint: `${summary?.remainingPercentage ?? 0}% à recouvrer`,
+        hint: `${summary?.remainingPercentage ?? 0}% to collect`,
         icon: 'pending_actions',
         format: 'currency'
       },
       {
-        label: 'Taux payé',
+        label: 'Payment rate',
         value: summary?.paidPercentage ?? 0,
-        hint: 'Part des paiements reçus',
+        hint: 'Share of received payments',
         icon: 'donut_large',
         format: 'percent'
       }

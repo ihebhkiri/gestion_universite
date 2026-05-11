@@ -1,11 +1,11 @@
-import {CurrencyPipe, DecimalPipe} from '@angular/common';
+import {DecimalPipe} from '@angular/common';
 import {Component, computed, input} from '@angular/core';
 import {PaidVsRemainingStat} from '../../models/payment-statistics.model';
 
 @Component({
   selector: 'app-paid-vs-remaining-chart',
   standalone: true,
-  imports: [CurrencyPipe, DecimalPipe],
+  imports: [DecimalPipe],
   templateUrl: './paid-vs-remaining-chart.component.html',
   styleUrl: './paid-vs-remaining-chart.component.scss'
 })

@@ -1,11 +1,11 @@
-import {CurrencyPipe, DecimalPipe} from '@angular/common';
+import {DecimalPipe} from '@angular/common';
 import {Component, input} from '@angular/core';
 import {PaymentBySpecialityStat} from '../../models/payment-statistics.model';
 
 @Component({
   selector: 'app-payments-by-speciality-chart',
   standalone: true,
-  imports: [CurrencyPipe, DecimalPipe],
+  imports: [DecimalPipe],
   templateUrl: './payments-by-speciality-chart.component.html',
   styleUrl: './payments-by-speciality-chart.component.scss'
 })

@@ -6,7 +6,7 @@
           <p class="summary-label">{{ card.label }}</p>
           <p class="mt-2 truncate text-2xl font-semibold tracking-tight text-primary">
             @if (card.format === 'currency') {
-              {{ card.value | currency: currency : 'code' : '1.0-0' }}
+              {{ card.value | number: '1.0-0' }} {{ currency }}
             } @else {
               {{ card.value | number: '1.0-1' }}%
             }

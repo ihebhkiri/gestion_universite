@@ -46,7 +46,7 @@ export class PaymentMonthlyLineChartComponent implements OnChanges {
     return {
       series: [
         {
-          name: 'Paiements',
+          name: 'Payments',
           data: values
         }
       ],
@@ -86,7 +86,7 @@ export class PaymentMonthlyLineChartComponent implements OnChanges {
       },
       tooltip: {
         y: {
-          formatter: (value: number) => `${value.toLocaleString('fr-TN')} TND`
+          formatter: (value: number) => `${value.toLocaleString('en-US')} TND`
         }
       },
       grid: {
@@ -103,7 +103,7 @@ export class PaymentMonthlyLineChartComponent implements OnChanges {
       return period;
     }
 
-    return new Intl.DateTimeFormat('fr-FR', {
+    return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       year: 'numeric'
     }).format(new Date(year, month - 1, 1));
