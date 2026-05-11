@@ -119,36 +119,37 @@
         More Filters
       </button>
     </div>
-    @if (selectedCount > 0) {
-      <div
-        class="bg-secondary-container rounded-lg p-3 mb-6 flex flex-wrap gap-3 items-center justify-between border border-primary-fixed-dim/30">
-        <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-primary-container">info</span>
-          <span class="font-body text-sm font-medium text-primary-container">{{ selectedCount }}
-            student(s) selected</span>
-          <button (click)="clearSelection()" class="text-primary-container underline text-sm">Clear</button>
+    @if (!showPaymentFolder()) {
+      @if (selectedCount > 0) {
+        <div
+          class="bg-secondary-container rounded-lg p-3 mb-6 flex flex-wrap gap-3 items-center justify-between border border-primary-fixed-dim/30">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container">info</span>
+            <span class="font-body text-sm font-medium text-primary-container">{{ selectedCount }}
+              student(s) selected</span>
+            <button (click)="clearSelection()" class="text-primary-container underline text-sm">Clear</button>
+          </div>
+          <div class="flex flex-wrap gap-2 items-center">
+            <select [(ngModel)]="bulkStatus"
+                    class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
+              <option value="">Set STATUS</option>
+              <option value="CONFIRMED">CONFIRMED</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="COMPLETED">COMPLETED</option>
+            </select>
+            <button (click)="bulkChangeStatus()"
+                    class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
+              Change Status
+            </button>
+            <button (click)="bulkDelete()"
+                    class="px-3 py-1.5 bg-error-container text-on-error-container font-label text-xs font-semibold rounded-DEFAULT hover:bg-[#ffcdc9] transition-colors">
+              Delete
+            </button>
+          </div>
         </div>
-        <div class="flex flex-wrap gap-2 items-center">
-          <select [(ngModel)]="bulkStatus"
-                  class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
-            <option value="">Set STATUS</option>
-            <option value="CONFIRMED">CONFIRMED</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="COMPLETED">COMPLETED</option>
-          </select>
-          <button (click)="bulkChangeStatus()"
-                  class="px-3 py-1.5 bg-surface-container-lowest text-on-surface font-label text-xs font-semibold rounded-DEFAULT hover:bg-surface-bright transition-colors">
-            Change Status
-          </button>
-          <button (click)="bulkDelete()"
-                  class="px-3 py-1.5 bg-error-container text-on-error-container font-label text-xs font-semibold rounded-DEFAULT hover:bg-[#ffcdc9] transition-colors">
-            Delete
-          </button>
-        </div>
-      </div>
-    }
-    <!-- Data Table -->
-    <div class="bg-surface-container-lowest rounded-lg shadow-[0px_12px_32px_rgba(2,36,72,0.04)] overflow-hidden border border-outline-variant/20">
+      }
+      <!-- Data Table -->
+      <div class="bg-surface-container-lowest rounded-lg shadow-[0px_12px_32px_rgba(2,36,72,0.04)] overflow-hidden border border-outline-variant/20">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
@@ -256,9 +257,10 @@
                     <div
                       class="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                       <button
+                        (click)="showPaymentPanel(student)"
                         class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
-                        title="View Profile">
-                        <span class="material-symbols-outlined text-sm">person</span>
+                        title="Payments">
+                        <span class="material-symbols-outlined text-sm">payments</span>
                       </button>
                       <button (click)="goToEnrollment(student.id)"
                               class="p-1.5 text-on-surface-variant hover:text-primary-container hover:bg-surface-container rounded-DEFAULT transition-colors"
@@ -318,7 +320,41 @@
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    } @else {
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="font-headline text-xl font-semibold text-primary-container">Dossier de paiement</h3>
+            <p class="font-body text-sm text-on-surface-variant">
+              {{ selectedPaymentStudent()?.firstName }} {{ selectedPaymentStudent()?.lastName }}
+              @if (selectedPaymentStudent()?.programName) {
+                <span class="mx-1">•</span>
+                {{ selectedPaymentStudent()?.programName }}
+              }
+            </p>
+          </div>
+          <button type="button"
+                  (click)="closePaymentPanel()"
+                  class="px-3 py-2 bg-surface-container-highest text-on-surface font-label text-sm font-semibold rounded-DEFAULT hover:bg-surface-container-high transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">close</span>
+            Fermer
+          </button>
+        </div>
+
+        <app-student-payment-card
+          [summary]="paymentFacade.summary()"
+          [loading]="paymentFacade.loading()"
+          [paymentLoading]="paymentFacade.paymentLoading()"
+          [error]="paymentFacade.error()"
+          (pay)="onRegisterPayment()">
+        </app-student-payment-card>
+
+        <app-student-payment-history
+          [history]="paymentFacade.history()">
+        </app-student-payment-history>
+      </div>
+    }
     </div>
   </div>
 

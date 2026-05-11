@@ -1,5 +1,8 @@
+import {PaymentPlan} from './student-payment.model';
+
 export interface EnrollStudentRequest {
   studentId: number;
+  paymentPlan: PaymentPlan;
 }
 
 export interface ChangeEnrollmentStatusRequest {

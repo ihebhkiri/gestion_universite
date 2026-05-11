@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, computed, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
@@ -21,6 +21,13 @@ import {UpdateStudentComponent} from '../../components/update-student/update-stu
 import {AddStudentComponent} from '../../components/add-student/add-student.component';
 import {EnrollmentService} from '../../services/enrollment.service';
 import {ToastrService} from 'ngx-toastr';
+import {StudentPaymentFacade} from '../../facades/student-payment.facade';
+import {
+  StudentPaymentCardComponent
+} from '../../components/student-payment-card/student-payment-card.component';
+import {
+  StudentPaymentHistoryComponent
+} from '../../components/student-payment-history/student-payment-history.component';
 
 @Component({
   selector: 'app-students-managment',
@@ -32,6 +39,8 @@ import {ToastrService} from 'ngx-toastr';
     HeaderComponent,
     AddStudentComponent,
     UpdateStudentComponent,
+    StudentPaymentCardComponent,
+    StudentPaymentHistoryComponent,
     ReactiveFormsModule
   ],
   templateUrl: './students-managment.component.html',
@@ -65,6 +74,8 @@ export class StudentsManagmentComponent implements OnInit {
   isAddModalVisible = false;
   isUpdateModalVisible = false;
   selectedStudent: StudentResponse | null = null;
+  readonly selectedPaymentStudent = signal<StudentResponse | null>(null);
+  readonly showPaymentFolder = computed(() => this.selectedPaymentStudent() !== null);
 
   // Bulk selection
   selectedIds = new Set<number>();
@@ -77,7 +88,8 @@ export class StudentsManagmentComponent implements OnInit {
     private academicYearService: AcademicYearService,
     private programService: ProgramService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public readonly paymentFacade: StudentPaymentFacade
   ) {
     this.filterForm = this.fb.group({
       search: this.fb.nonNullable.control(''),
@@ -276,6 +288,22 @@ export class StudentsManagmentComponent implements OnInit {
     const returnUrl = '/admins/students';
     const extras = studentId ? `?studentId=${studentId}&returnUrl=${encodeURIComponent(returnUrl)}` : `?returnUrl=${encodeURIComponent(returnUrl)}`;
     this.router.navigateByUrl(`/admins/enrollments${extras}`);
+  }
+
+  showPaymentPanel(student: StudentResponse): void {
+    this.selectedPaymentStudent.set(student);
+    this.paymentFacade.loadPaymentData(student.id);
+  }
+
+  closePaymentPanel(): void {
+    this.selectedPaymentStudent.set(null);
+    this.paymentFacade.clear();
+  }
+
+  onRegisterPayment(): void {
+    const student = this.selectedPaymentStudent();
+    if (!student) return;
+    this.paymentFacade.registerMonthlyPayment(student.id);
   }
 
   // status

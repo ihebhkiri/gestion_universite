@@ -1,0 +1,60 @@
+<section class="payment-card">
+  <div class="payment-card__header">
+    <div>
+      <p class="payment-card__eyebrow">Paiements</p>
+      <h3>Suivi des paiements</h3>
+      <p>Gestion du montant total, des paiements mensuels et du solde restant.</p>
+    </div>
+
+    @if (summary) {
+      <span class="payment-card__status" [ngClass]="statusClass(summary.paymentStatus)">
+        {{ statusLabel(summary.paymentStatus) }}
+      </span>
+    }
+  </div>
+
+  @if (loading) {
+    <div class="payment-card__loading">
+      <span class="payment-card__spinner"></span>
+      Chargement des informations de paiement...
+    </div>
+  } @else if (error) {
+    <div class="payment-card__message payment-card__message--error">{{ error }}</div>
+  } @else if (summary) {
+    <div class="payment-card__student">
+      <div>
+        <span>Étudiant</span>
+        <strong>{{ summary.studentFullName || 'Étudiant sélectionné' }}</strong>
+      </div>
+      <div>
+        <span>Parcours</span>
+        <strong>{{ academicPathLabel(summary.academicPath) }}</strong>
+      </div>
+      <div>
+        <span>Diplomation</span>
+        <strong>{{ summary.graduated ? 'Diplômé' : 'Non diplômé' }}</strong>
+      </div>
+    </div>
+
+
+    @if (summary.blockingReason) {
+      <div class="payment-card__message">{{ summary.blockingReason }}</div>
+    } @else if (summary.paymentStatus === 'PAID') {
+      <div class="payment-card__message payment-card__message--success">Paiement totalement soldé.</div>
+    }
+
+    <div class="payment-card__actions">
+      <button type="button"
+              (click)="pay.emit()"
+              [disabled]="!summary.paymentAllowed || summary.remainingAmount <= 0 || paymentLoading">
+        @if (paymentLoading) {
+          <span class="payment-card__button-spinner"></span>
+          Enregistrement...
+        } @else {
+          <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+          Enregistrer un paiement de 600 TND
+        }
+      </button>
+    </div>
+  }
+</section>

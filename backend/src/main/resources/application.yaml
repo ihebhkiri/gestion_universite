@@ -19,3 +19,10 @@ cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME:}
   api-key: ${CLOUDINARY_API_KEY:}
   api-secret: ${CLOUDINARY_API_SECRET:}
+
+student:
+  payment:
+    amount:
+      prep: ${STUDENT_PAYMENT_AMOUNT_PREP:6000}
+      ing: ${STUDENT_PAYMENT_AMOUNT_ING:7000}
+    monthly-amount: ${STUDENT_PAYMENT_MONTHLY_AMOUNT:600}

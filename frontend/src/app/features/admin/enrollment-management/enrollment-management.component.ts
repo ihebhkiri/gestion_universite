@@ -9,6 +9,7 @@ import { EnrollmentService } from '../student-managment/services/enrollment.serv
 import { StudentResponse } from '../student-managment/models/student.model';
 import { GroupResponse } from '../student-managment/models/group.model';
 import { EnrollStudentRequest } from '../student-managment/models/enrollment.model';
+import {PaymentPlan} from '../student-managment/models/student-payment.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -24,6 +25,7 @@ export class EnrollmentManagementComponent implements OnInit {
 
   selectedStudentId: number | null = null;
   selectedGroupId: number | null = null;
+  selectedPaymentPlan: PaymentPlan | null = null;
   loadingData = false;
   submitting = false;
   private returnUrl: string | null = null;
@@ -75,9 +77,12 @@ export class EnrollmentManagementComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.selectedStudentId && this.selectedGroupId) {
+    if (this.selectedStudentId && this.selectedGroupId && this.selectedPaymentPlan) {
       this.submitting = true;
-      const request: EnrollStudentRequest = { studentId: this.selectedStudentId };
+      const request: EnrollStudentRequest = {
+        studentId: this.selectedStudentId,
+        paymentPlan: this.selectedPaymentPlan
+      };
 
       this.enrollmentService.enrollStudentToGroup(this.selectedGroupId, request).subscribe({
         next: () => {

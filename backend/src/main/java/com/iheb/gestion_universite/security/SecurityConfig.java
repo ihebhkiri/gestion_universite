@@ -90,7 +90,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
 
                 .addFilterBefore(

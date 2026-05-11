@@ -4,6 +4,7 @@ import com.iheb.gestion_universite.student_managment.student_enrollment.dto.Enro
 import com.iheb.gestion_universite.student_managment.student_group.GroupRepository;
 import com.iheb.gestion_universite.student_managment.student.StudentEntity;
 import com.iheb.gestion_universite.student_managment.student.StudentRepository;
+import com.iheb.gestion_universite.student_managment.student_payment.StudentPaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,16 @@ public class EnrollmentAdminService {
 
     private final EnrollmentRepo enrollmentRepo;
 
+    private final StudentPaymentService studentPaymentService;
+
     public StudentEnrollmentEntity enrollStudentToGroup (Long groupId, EnrollStudentRequest request) {
        ensureNoActiveEnrollment(request.studentId());
 
         StudentEnrollmentEntity enrollment = createEnrollment(request.studentId(), groupId);
-        return enrollmentRepo.save(enrollment);
+        enrollment.setPaymentPlan(request.paymentPlan());
+        StudentEnrollmentEntity savedEnrollment = enrollmentRepo.save(enrollment);
+        studentPaymentService.initializePaymentAccount(savedEnrollment);
+        return savedEnrollment;
 
     }
 
