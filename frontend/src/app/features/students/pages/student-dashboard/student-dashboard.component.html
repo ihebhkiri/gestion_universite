@@ -1,0 +1,37 @@
+<main class="student-dashboard">
+  <app-student-header></app-student-header>
+  <br><br>
+    <div class="student-dashboard__grid">
+      <div class="student-dashboard__main-column">
+        <app-student-agenda
+          dateLabel="Monday, Oct 24"
+          [items]="agendaItems">
+        </app-student-agenda>
+      </div>
+
+      <app-student-side-panel
+        [exams]="exams">
+      </app-student-side-panel>
+    </div>
+  <div class="student-dashboard__content">
+    <section class="student-overview" aria-labelledby="student-overview-title">
+      <div class="student-overview__header">
+        <p>Student Overview</p>
+        <h1 id="student-overview-title">Academic quick access</h1>
+      </div>
+
+      <div class="student-overview__grid">
+        @for (card of previewCards; track card.title) {
+          <app-student-preview-card
+            [title]="card.title"
+            [icon]="card.icon"
+            [route]="card.route"
+            [items]="card.items"
+            [emptyStateText]="card.emptyStateText ?? 'No recent items.'">
+          </app-student-preview-card>
+        }
+      </div>
+    </section>
+
+  </div>
+</main>

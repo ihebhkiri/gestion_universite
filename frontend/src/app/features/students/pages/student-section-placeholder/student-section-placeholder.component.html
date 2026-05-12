@@ -1,0 +1,20 @@
+<main class="student-section-page">
+  <app-student-header></app-student-header>
+
+  <section class="student-section">
+    <div class="student-section__icon">
+      <span class="material-symbols-outlined">{{ icon }}</span>
+    </div>
+
+    <div>
+      <p class="student-section__eyebrow">Student area</p>
+      <h1>{{ title }}</h1>
+      <p class="student-section__description">{{ description }}</p>
+
+      <a routerLink="/students/dashboard">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to dashboard
+      </a>
+    </div>
+  </section>
+</main>

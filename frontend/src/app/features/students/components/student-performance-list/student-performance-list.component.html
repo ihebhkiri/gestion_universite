@@ -1,0 +1,24 @@
+<section class="performance-panel">
+  <h3>Recent Performance</h3>
+
+  <div class="performance-list">
+    @for (item of items; track item.title) {
+      <article class="performance-row">
+        <div class="performance-row__main">
+          <div class="performance-row__initials">{{ item.initials }}</div>
+          <div>
+            <h4>{{ item.title }}</h4>
+            <p>{{ item.submittedAt }}</p>
+          </div>
+        </div>
+
+        <div class="performance-row__score">
+          <strong>{{ item.score }}</strong>
+          <span [class.performance-row__remark--success]="item.tone === 'success'">
+            {{ item.remark }}
+          </span>
+        </div>
+      </article>
+    }
+  </div>
+</section>

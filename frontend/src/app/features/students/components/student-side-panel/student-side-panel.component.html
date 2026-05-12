@@ -1,0 +1,23 @@
+<div class="side-stack">
+  <section class="exam-card">
+    <h3>Upcoming Exams</h3>
+
+    <div class="exam-card__list">
+      @for (exam of exams; track exam.title) {
+        <article class="exam-item">
+          <div class="exam-item__date">
+            <span>{{ exam.month }}</span>
+            <strong>{{ exam.day }}</strong>
+          </div>
+          <div>
+            <h4>{{ exam.title }}</h4>
+            <p>{{ exam.meta }}</p>
+          </div>
+        </article>
+      }
+    </div>
+
+    <button type="button">Exam Schedule</button>
+  </section>
+
+</div>

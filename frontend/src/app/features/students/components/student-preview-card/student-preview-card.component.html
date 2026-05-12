@@ -1,0 +1,47 @@
+<article class="preview-card">
+  <header class="preview-card__header">
+    <div class="preview-card__title">
+      <span class="material-symbols-outlined">{{ icon }}</span>
+      <h3>{{ title }}</h3>
+    </div>
+
+    <a class="preview-card__open" [routerLink]="route" [attr.aria-label]="'Open ' + title">
+      <span class="material-symbols-outlined">open_in_new</span>
+    </a>
+  </header>
+
+  @if (previewItems.length > 0) {
+    <div class="preview-card__list">
+      @for (item of previewItems; track item.title + item.meta + item.date) {
+        <section class="preview-card__item">
+          <div class="preview-card__item-main">
+            <strong>{{ item.title }}</strong>
+            @if (item.subtitle) {
+              <p>{{ item.subtitle }}</p>
+            }
+          </div>
+
+          <div class="preview-card__item-side">
+            @if (item.amount) {
+              <strong class="preview-card__amount">{{ item.amount }}</strong>
+            }
+            @if (item.status) {
+              <span class="preview-card__status">{{ item.status }}</span>
+            }
+            @if (item.meta) {
+              <span class="preview-card__meta">{{ item.meta }}</span>
+            }
+            @if (item.date) {
+              <span class="preview-card__date">{{ item.date }}</span>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <div class="preview-card__empty">
+      <span class="material-symbols-outlined">inbox</span>
+      <p>{{ emptyStateText }}</p>
+    </div>
+  }
+</article>

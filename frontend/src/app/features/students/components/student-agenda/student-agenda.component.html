@@ -1,0 +1,32 @@
+<section class="student-panel">
+  <header class="student-panel__header">
+    <h3>Today's Agenda</h3>
+    <span>{{ dateLabel }}</span>
+  </header>
+
+  <div class="agenda">
+    @for (item of items; track item.startTime + item.title) {
+      <article class="agenda__item">
+        <div class="agenda__time">
+          <strong>{{ item.startTime }}</strong>
+          <span>{{ item.duration }}</span>
+        </div>
+
+        <div class="agenda__line">
+          <span
+            class="agenda__dot"
+            [class.agenda__dot--past]="item.state === 'past'"
+            [class.agenda__dot--current]="item.state === 'current'">
+          </span>
+          <div
+            class="agenda__card"
+            [class.agenda__card--past]="item.state === 'past'"
+            [class.agenda__card--current]="item.state === 'current'">
+            <h4>{{ item.title }}</h4>
+            <p>{{ item.meta }}</p>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</section>

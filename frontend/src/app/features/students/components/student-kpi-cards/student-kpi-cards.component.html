@@ -1,0 +1,36 @@
+<section class="student-kpis" aria-label="Student dashboard summary">
+  @for (card of cards; track card.label) {
+    <article
+      class="student-kpi"
+      [class.student-kpi--accent]="card.variant === 'accent'"
+      [class.student-kpi--illustrated]="card.variant === 'illustrated'">
+      <div class="student-kpi__content">
+        <p class="student-kpi__label">{{ card.label }}</p>
+
+        <div class="student-kpi__value-row">
+          @if (card.icon && card.variant !== 'illustrated') {
+            <span class="student-kpi__status-dot"></span>
+          }
+          <strong>{{ card.value }}</strong>
+          @if (card.trend) {
+            <span class="student-kpi__trend">{{ card.trend }}</span>
+          }
+        </div>
+
+        @if (card.helper) {
+          <p class="student-kpi__helper">{{ card.helper }}</p>
+        }
+
+        @if (card.progress !== undefined) {
+          <div class="student-kpi__progress" aria-hidden="true">
+            <span [style.width.%]="card.progress"></span>
+          </div>
+        }
+      </div>
+
+      @if (card.icon && card.variant === 'illustrated') {
+        <span class="material-symbols-outlined student-kpi__watermark">{{ card.icon }}</span>
+      }
+    </article>
+  }
+</section>

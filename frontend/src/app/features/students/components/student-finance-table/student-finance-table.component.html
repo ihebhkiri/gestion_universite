@@ -1,0 +1,40 @@
+<section class="finance-panel">
+  <header>
+    <h3>Recent Financial Activity</h3>
+    <button type="button">Full Statement</button>
+  </header>
+
+  <div class="finance-panel__table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Transaction ID</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (transaction of transactions; track transaction.id) {
+          <tr>
+            <td class="finance-panel__id">{{ transaction.id }}</td>
+            <td class="finance-panel__description">{{ transaction.description }}</td>
+            <td>{{ transaction.date }}</td>
+            <td class="finance-panel__amount">{{ transaction.amount }}</td>
+            <td>
+              <span class="finance-panel__status">{{ transaction.status }}</span>
+            </td>
+            <td>
+              <a href="#">
+                <span class="material-symbols-outlined">download</span>
+                Receipt
+              </a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
