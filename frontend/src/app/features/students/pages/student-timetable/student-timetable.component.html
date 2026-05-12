@@ -1,0 +1,91 @@
+<main class="student-timetable-page">
+  <app-student-header></app-student-header>
+
+  <section class="student-timetable">
+    <header class="student-timetable__hero">
+      <div>
+        <p>Academic planning</p>
+        <h1>Timetable</h1>
+      </div>
+
+      <a routerLink="/students/dashboard">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Dashboard
+      </a>
+    </header>
+
+    @if (isLoading) {
+      <div class="student-timetable__state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <p>Loading your timetable...</p>
+      </div>
+    } @else if (errorMessage) {
+      <div class="student-timetable__state student-timetable__state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <p>{{ errorMessage }}</p>
+        <button type="button" (click)="loadTimetable()">Retry</button>
+      </div>
+    } @else if (!hasEntries) {
+      <div class="student-timetable__state" aria-live="polite">
+        <span class="material-symbols-outlined">event_available</span>
+        <p>No timetable entries are assigned to your class yet.</p>
+      </div>
+    } @else {
+      <section class="student-timetable__board">
+        <div class="student-timetable__board-header">
+          <div>
+            <h2>{{ selectedClassLabel }}</h2>
+            <p>{{ entries.length }} scheduled slots</p>
+          </div>
+        </div>
+
+        <div class="timetable-scroll">
+          <div class="timetable-grid">
+            <div class="corner-cell"></div>
+
+            @for (day of days; track trackByDay($index, day)) {
+              <div class="day-header">{{ day.label }}</div>
+            }
+
+            @for (slot of slots; track trackBySlot($index, slot)) {
+              <div class="time-cell">{{ slot.endsWith(':00') ? slot : '' }}</div>
+            }
+
+            @for (cell of slotCells; track trackByCell($index, cell)) {
+              <div
+                class="slot-cell"
+                [style.grid-column]="cellColumn(cell)"
+                [style.grid-row]="cellRow(cell)">
+              </div>
+            }
+
+            @for (entry of entries; track trackByEntry($index, entry)) {
+              <article class="course-card" [style.grid-column]="column(entry)" [style.grid-row]="row(entry)">
+                <div class="course-card__top">
+                  <div class="course-card__title">
+                    <h3>{{ courseCode(entry) }}</h3>
+                    <p>{{ courseTitle(entry) }}</p>
+                  </div>
+
+                  @if (entry.sessionType) {
+                    <span [class]="badgeClass(entry.sessionType)">{{ entry.sessionType }}</span>
+                  }
+                </div>
+
+                <p class="course-card__time">{{ formatTime(entry.startTime) }} - {{ formatTime(entry.endTime) }}</p>
+                <p class="course-card__meta">{{ detailLine(entry) }}</p>
+
+                <div class="course-card__footer">
+                  <span>{{ roomLabel(entry) }}</span>
+                  @if (durationLabel(entry)) {
+                    <small>{{ durationLabel(entry) }}</small>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+    }
+  </section>
+</main>

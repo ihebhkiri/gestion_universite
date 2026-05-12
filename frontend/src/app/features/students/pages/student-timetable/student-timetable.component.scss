@@ -1,0 +1,318 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--color-surface);
+}
+
+.student-timetable-page {
+  min-height: 100vh;
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+}
+
+.student-timetable {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem 2rem 3rem;
+}
+
+.student-timetable__hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+
+  p {
+    color: var(--color-on-surface-variant);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    color: var(--color-primary);
+    font-family: var(--font-headline);
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-weight: 850;
+    letter-spacing: 0;
+    line-height: 1.05;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-container-lowest);
+    color: var(--color-primary-container);
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 0.7rem 0.9rem;
+    text-decoration: none;
+    transition: background 180ms ease, color 180ms ease;
+
+    &:hover {
+      background: var(--color-surface-container-low);
+      color: var(--color-primary);
+    }
+  }
+}
+
+.student-timetable__board,
+.student-timetable__state {
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 85%, transparent);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.student-timetable__board {
+  border: 1px solid var(--color-outline-variant);
+  padding: 0.75rem;
+}
+
+.student-timetable__board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.25rem 0.5rem;
+
+  h2 {
+    color: var(--color-primary);
+    font-family: var(--font-headline);
+    font-size: 1.15rem;
+    font-weight: 850;
+    letter-spacing: 0;
+  }
+
+  p {
+    color: var(--color-on-surface-variant);
+    font-size: 0.88rem;
+    font-weight: 650;
+    margin-top: 0.2rem;
+  }
+}
+
+.timetable-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 4.75rem repeat(7, minmax(9.5rem, 1fr));
+  grid-template-rows: 3rem repeat(20, 2.5rem);
+  min-width: 72rem;
+  position: relative;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-surface-container-lowest);
+}
+
+.corner-cell,
+.day-header,
+.time-cell {
+  display: flex;
+  align-items: center;
+  border-color: var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.corner-cell {
+  grid-column: 1;
+  grid-row: 1;
+  border-right: 1px solid var(--color-outline-variant);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.day-header {
+  justify-content: center;
+  border-bottom: 1px solid var(--color-outline-variant);
+  border-left: 1px solid var(--color-outline-variant);
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.time-cell {
+  grid-column: 1;
+  justify-content: center;
+  border-right: 1px solid var(--color-outline-variant);
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.slot-cell {
+  min-width: 0;
+  border-left: 1px solid color-mix(in srgb, var(--color-outline-variant) 72%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 45%, transparent);
+  background: transparent;
+}
+
+.course-card {
+  z-index: 2;
+  display: flex;
+  min-height: 4.75rem;
+  flex-direction: column;
+  margin: 0.25rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 16%, transparent);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 82%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-primary) 10%, transparent);
+  backdrop-filter: blur(14px);
+  padding: 0.65rem;
+}
+
+.course-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.course-card__title {
+  min-width: 0;
+
+  h3 {
+    overflow: hidden;
+    color: var(--color-primary);
+    font-size: 0.86rem;
+    font-weight: 850;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: var(--color-on-surface);
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.3;
+    margin-top: 0.1rem;
+  }
+}
+
+.course-card__time,
+.course-card__meta {
+  color: var(--color-on-surface-variant);
+  font-size: 0.72rem;
+}
+
+.course-card__time {
+  margin-top: 0.55rem;
+}
+
+.course-card__meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.course-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.55rem;
+
+  span {
+    overflow: hidden;
+    color: var(--color-primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  small {
+    flex: 0 0 auto;
+    color: var(--color-on-surface-variant);
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+}
+
+.timetable-badge {
+  display: inline-flex;
+  min-width: 2rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  padding: 0.15rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.timetable-badge-cm {
+  background: var(--color-primary-fixed);
+  color: var(--color-on-primary-fixed);
+}
+
+.timetable-badge-td {
+  background: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed);
+}
+
+.timetable-badge-tp {
+  background: var(--color-tertiary-fixed);
+  color: var(--color-on-tertiary-fixed);
+}
+
+.student-timetable__state {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-on-surface-variant);
+  font-weight: 750;
+  padding: 1.25rem;
+
+  .material-symbols-outlined {
+    color: var(--color-primary-container);
+  }
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-primary-container);
+    color: var(--color-on-primary);
+    cursor: pointer;
+    font-weight: 800;
+    margin-left: auto;
+    padding: 0.5rem 0.85rem;
+  }
+}
+
+.student-timetable__state--error {
+  color: var(--color-error);
+
+  .material-symbols-outlined {
+    color: var(--color-error);
+  }
+}
+
+@media (max-width: 768px) {
+  .student-timetable {
+    padding-inline: 1rem;
+  }
+
+  .student-timetable__hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .timetable-grid {
+    min-width: 68rem;
+  }
+}

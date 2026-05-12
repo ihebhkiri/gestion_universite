@@ -18,9 +18,32 @@
   }
 
   span {
+    display: block;
     color: var(--color-on-surface-variant);
     font-size: 0.9rem;
     font-weight: 600;
+    margin-top: 0.25rem;
+  }
+}
+
+.student-panel__link {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--color-primary-container);
+  text-decoration: none;
+  transition: background 180ms ease, color 180ms ease;
+
+  &:hover {
+    background: var(--color-surface-container-low);
+    color: var(--color-primary);
+  }
+
+  .material-symbols-outlined {
+    font-size: 1.2rem;
   }
 }
 
@@ -103,6 +126,32 @@
     font-size: 0.78rem;
     margin-top: 0.25rem;
   }
+
+  small {
+    display: block;
+    color: var(--color-on-surface-variant);
+    font-size: 0.68rem;
+    font-weight: 800;
+    margin-top: 0.45rem;
+    text-transform: uppercase;
+  }
+}
+
+.agenda__card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  span {
+    border-radius: 999px;
+    background: var(--color-surface-container-low);
+    color: var(--color-primary-container);
+    flex: 0 0 auto;
+    font-size: 0.65rem;
+    font-weight: 850;
+    padding: 0.2rem 0.5rem;
+  }
 }
 
 .agenda__card--past {
@@ -116,12 +165,54 @@
   box-shadow: 0 16px 30px color-mix(in srgb, var(--color-primary) 14%, transparent);
 
   h4,
-  p {
+  p,
+  small {
     color: var(--color-on-primary);
   }
 
   p {
     opacity: 0.8;
+  }
+
+  .agenda__card-header span {
+    background: color-mix(in srgb, white 15%, transparent);
+    color: var(--color-on-primary);
+  }
+}
+
+.agenda-state {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px dashed color-mix(in srgb, var(--color-outline-variant) 45%, transparent);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 1rem;
+
+  .material-symbols-outlined {
+    color: var(--color-primary-container);
+  }
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-primary-container);
+    color: var(--color-on-primary);
+    cursor: pointer;
+    font-weight: 800;
+    margin-left: auto;
+    padding: 0.45rem 0.8rem;
+  }
+}
+
+.agenda-state--error {
+  color: var(--color-error);
+
+  .material-symbols-outlined {
+    color: var(--color-error);
   }
 }
 

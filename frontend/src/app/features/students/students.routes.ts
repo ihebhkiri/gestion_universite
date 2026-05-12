@@ -35,14 +35,9 @@ export const routes: Routes = [
   {
     path: 'timetable',
     loadComponent: () =>
-      import('./pages/student-section-placeholder/student-section-placeholder.component').then(
-        (m) => m.StudentSectionPlaceholderComponent,
+      import('./pages/student-timetable/student-timetable.component').then(
+        (m) => m.StudentTimetableComponent,
       ),
-    data: {
-      title: 'Timetable',
-      icon: 'calendar_today',
-      description: 'Your full class schedule will appear here.',
-    },
   },
   {
     path: 'results',

@@ -8,14 +8,6 @@ export interface StudentKpiCard {
   variant?: 'default' | 'accent' | 'illustrated';
 }
 
-export interface StudentAgendaItem {
-  startTime: string;
-  duration: string;
-  title: string;
-  meta: string;
-  state: 'past' | 'current' | 'upcoming';
-}
-
 export interface StudentPerformanceItem {
   initials: string;
   title: string;

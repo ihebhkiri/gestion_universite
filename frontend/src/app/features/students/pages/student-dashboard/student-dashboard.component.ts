@@ -3,7 +3,6 @@ import { StudentAgendaComponent } from '../../components/student-agenda/student-
 import { StudentPreviewCardComponent } from '../../components/student-preview-card/student-preview-card.component';
 import { StudentSidePanelComponent } from '../../components/student-side-panel/student-side-panel.component';
 import {
-  StudentAgendaItem,
   StudentExamItem,
   StudentPreviewCard,
 } from '../../models/student-dashboard.models';
@@ -87,30 +86,6 @@ export class StudentDashboardComponent {
         { title: 'Lab Access Receipt', subtitle: 'PDF document', date: 'Aug 28', status: 'Ready' },
         { title: 'Medical Form Validation', subtitle: 'Health office', date: 'Aug 18', status: 'Validated' },
       ],
-    },
-  ];
-
-  readonly agendaItems: StudentAgendaItem[] = [
-    {
-      startTime: '09:00',
-      duration: '60 MIN',
-      title: 'Algorithm Analysis',
-      meta: 'Dr. Aris Thorne - Lecture Hall B',
-      state: 'past',
-    },
-    {
-      startTime: '10:00',
-      duration: '90 MIN',
-      title: 'Data Structures',
-      meta: 'Prof. Sarah Jenkins - Room 402',
-      state: 'current',
-    },
-    {
-      startTime: '13:30',
-      duration: '120 MIN',
-      title: 'Software Engineering Lab',
-      meta: 'Workshop Area C - Mandatory',
-      state: 'upcoming',
     },
   ];
 

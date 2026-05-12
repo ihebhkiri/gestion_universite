@@ -1,32 +1,63 @@
 <section class="student-panel">
   <header class="student-panel__header">
-    <h3>Today's Agenda</h3>
-    <span>{{ dateLabel }}</span>
+    <div>
+      <h3>Today's Courses</h3>
+      <span>{{ dateLabel }}</span>
+    </div>
+
+    <a class="student-panel__link" routerLink="/students/timetable" aria-label="Open full timetable">
+      <span class="material-symbols-outlined">open_in_new</span>
+    </a>
   </header>
 
-  <div class="agenda">
-    @for (item of items; track item.startTime + item.title) {
-      <article class="agenda__item">
-        <div class="agenda__time">
-          <strong>{{ item.startTime }}</strong>
-          <span>{{ item.duration }}</span>
-        </div>
-
-        <div class="agenda__line">
-          <span
-            class="agenda__dot"
-            [class.agenda__dot--past]="item.state === 'past'"
-            [class.agenda__dot--current]="item.state === 'current'">
-          </span>
-          <div
-            class="agenda__card"
-            [class.agenda__card--past]="item.state === 'past'"
-            [class.agenda__card--current]="item.state === 'current'">
-            <h4>{{ item.title }}</h4>
-            <p>{{ item.meta }}</p>
+  @if (isLoading) {
+    <div class="agenda-state" aria-live="polite">
+      <span class="material-symbols-outlined">progress_activity</span>
+      <p>Loading today courses...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="agenda-state agenda-state--error" aria-live="polite">
+      <span class="material-symbols-outlined">error</span>
+      <p>{{ errorMessage }}</p>
+      <button type="button" (click)="loadAgenda()">Retry</button>
+    </div>
+  } @else if (items.length === 0) {
+    <div class="agenda-state" aria-live="polite">
+      <span class="material-symbols-outlined">event_available</span>
+      <p>No courses scheduled for today.</p>
+    </div>
+  } @else {
+    <div class="agenda">
+      @for (item of items; track trackByAgendaItem($index, item)) {
+        @let state = itemState(item);
+        <article class="agenda__item">
+          <div class="agenda__time">
+            <strong>{{ formatTime(item.startTime) }}</strong>
+            <span>{{ durationLabel(item) }}</span>
           </div>
-        </div>
-      </article>
-    }
-  </div>
+
+          <div class="agenda__line">
+            <span
+              class="agenda__dot"
+              [class.agenda__dot--past]="state === 'past'"
+              [class.agenda__dot--current]="state === 'current'">
+            </span>
+            <div
+              class="agenda__card"
+              [class.agenda__card--past]="state === 'past'"
+              [class.agenda__card--current]="state === 'current'">
+              <div class="agenda__card-header">
+                <h4>{{ courseTitle(item) }}</h4>
+                @if (item.sessionType) {
+                  <span>{{ item.sessionType }}</span>
+                }
+              </div>
+              <p>{{ itemMeta(item) }}</p>
+              <small>{{ formatTime(item.startTime) }} - {{ formatTime(item.endTime) }}</small>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
 </section>
