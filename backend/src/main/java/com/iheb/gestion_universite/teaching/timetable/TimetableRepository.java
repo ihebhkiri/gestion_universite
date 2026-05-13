@@ -13,6 +13,7 @@ public interface TimetableRepository extends JpaRepository<TimetableEntity, Long
 
     @EntityGraph(attributePaths = {
             "course",
+            "course.subject",
             "teacher",
             "room",
             "academicClass",
@@ -22,6 +23,7 @@ public interface TimetableRepository extends JpaRepository<TimetableEntity, Long
 
     @EntityGraph(attributePaths = {
             "course",
+            "course.subject",
             "teacher",
             "room",
             "academicClass",

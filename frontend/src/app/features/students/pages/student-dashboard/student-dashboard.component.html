@@ -16,15 +16,7 @@
       </div>
 
       <div class="student-overview__grid">
-        @for (card of previewCards; track card.title) {
-          <app-student-preview-card
-            [title]="card.title"
-            [icon]="card.icon"
-            [route]="card.route"
-            [items]="card.items"
-            [emptyStateText]="card.emptyStateText ?? 'No recent items.'">
-          </app-student-preview-card>
-        }
+        <app-student-courses-preview-card></app-student-courses-preview-card>
       </div>
     </section>
   </div>

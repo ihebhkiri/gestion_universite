@@ -23,6 +23,7 @@ import {CourseService} from '../../course-managment/services/course.service';
 import {DepartmentService} from '../../department-managment/services/department.service';
 import {SemesterService} from '../../semester-managment/services/semester.service';
 import {SpecialityService} from '../../speciality-managment/services/speciality.service';
+import {GroupService} from '../../student-managment/services/group.service';
 import {SubjectService} from '../../subject-managment/services/subject.service';
 import {
   AddTeacherRequest,
@@ -72,6 +73,7 @@ export class TeacherFacade implements OnDestroy {
   private readonly courseService = inject(CourseService);
   private readonly semesterService = inject(SemesterService);
   private readonly classService = inject(AcademicClassService);
+  private readonly groupService = inject(GroupService);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
 
@@ -156,6 +158,21 @@ export class TeacherFacade implements OnDestroy {
   readonly classes$ = this.classService.getClasses().pipe(
     catchError(() => of([])),
     shareReplay({bufferSize: 1, refCount: true})
+  );
+  private readonly assignmentClassId$ = this.assignmentForm.controls.classId.valueChanges.pipe(
+    startWith(this.assignmentForm.controls.classId.value),
+    distinctUntilChanged()
+  );
+  readonly groups$ = this.groupService.getGroups(true).pipe(
+    catchError(() => of([])),
+    shareReplay({bufferSize: 1, refCount: true})
+  );
+  readonly groupsForSelectedClass$ = combineLatest([this.groups$, this.assignmentClassId$]).pipe(
+    map(([groups, classId]) => {
+      const selectedClassId = Number(classId);
+      if (!classId || Number.isNaN(selectedClassId)) return [];
+      return groups.filter(group => Number(group.classId) === selectedClassId);
+    })
   );
 
   readonly page$ = combineLatest([

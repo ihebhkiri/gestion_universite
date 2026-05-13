@@ -6,11 +6,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table (name = "courses")
 @Getter
 @Setter
-public class CourseEntity {
+public class CourseEntity  {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -27,9 +31,20 @@ public class CourseEntity {
 
     private Integer hours;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date publishedAt;
+
     @ManyToOne
     @JoinColumn (name = "subject_id")
     private SubjectEntity subject;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseAttachmentEntity> attachments = new HashSet<>();
 
+    @PrePersist
+    void prePersist() {
+        if (publishedAt == null) {
+            publishedAt = new Date();
+        }
+    }
 }

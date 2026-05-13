@@ -1,0 +1,54 @@
+<article class="courses-preview-card">
+  <header class="courses-preview-card__header">
+    <div class="courses-preview-card__title">
+      <span class="material-symbols-outlined">menu_book</span>
+      <div>
+        <h3>Latest Courses</h3>
+        <p>Your recent class courses</p>
+      </div>
+    </div>
+
+    <a class="courses-preview-card__open" routerLink="/students/courses" aria-label="Open courses">
+      <span class="material-symbols-outlined">open_in_new</span>
+    </a>
+  </header>
+
+  @if (isLoading) {
+    <div class="courses-preview-state" aria-live="polite">
+      <span class="material-symbols-outlined">progress_activity</span>
+      <p>Loading courses...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="courses-preview-state courses-preview-state--error" aria-live="polite">
+      <span class="material-symbols-outlined">error</span>
+      <p>{{ errorMessage }}</p>
+      <button type="button" (click)="loadCourses()">Retry</button>
+    </div>
+  } @else if (courses.length === 0) {
+    <div class="courses-preview-state" aria-live="polite">
+      <span class="material-symbols-outlined">school</span>
+      <p>No courses available.</p>
+    </div>
+  } @else {
+    <div class="courses-preview-card__list">
+      @for (course of courses; track trackByCourse($index, course)) {
+        <section class="course-row">
+          <div class="course-row__avatar">
+            @if (course.teacherImageUrl) {
+              <img [src]="course.teacherImageUrl" [alt]="teacherName(course)" />
+            } @else {
+              <span>{{ initials(course) }}</span>
+            }
+          </div>
+
+          <div class="course-row__content">
+            <strong>{{ courseTitle(course) }}</strong>
+            <span>{{ teacherName(course) }}</span>
+          </div>
+
+          <time>{{ publishedLabel(course) }}</time>
+        </section>
+      }
+    </div>
+  }
+</article>

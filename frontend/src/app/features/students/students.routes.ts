@@ -23,14 +23,9 @@ export const routes: Routes = [
   {
     path: 'courses',
     loadComponent: () =>
-      import('./pages/student-section-placeholder/student-section-placeholder.component').then(
-        (m) => m.StudentSectionPlaceholderComponent,
+      import('./pages/student-courses/student-courses.component').then(
+        (m) => m.StudentCoursesComponent,
       ),
-    data: {
-      title: 'Courses',
-      icon: 'menu_book',
-      description: 'Your enrolled courses will appear here once the student course module is connected.',
-    },
   },
   {
     path: 'timetable',
