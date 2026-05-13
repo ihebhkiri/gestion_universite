@@ -58,14 +58,9 @@ export const routes: Routes = [
   {
     path: 'attendance',
     loadComponent: () =>
-      import('./pages/student-section-placeholder/student-section-placeholder.component').then(
-        (m) => m.StudentSectionPlaceholderComponent,
+      import('./pages/student-attendance/student-attendance.component').then(
+        (m) => m.StudentAttendanceComponent,
       ),
-    data: {
-      title: 'Attendance',
-      icon: 'fact_check',
-      description: 'Your attendance summary and absence details will appear here.',
-    },
   },
   {
     path: 'announcements',

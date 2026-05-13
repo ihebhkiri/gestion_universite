@@ -1,0 +1,166 @@
+<main class="student-attendance-page">
+  <app-student-header></app-student-header>
+
+  <section class="attendance-shell" aria-labelledby="student-attendance-title">
+
+    <section class="summary-grid" aria-label="Attendance summary">
+      @if (isSummaryLoading) {
+        @for (item of [1, 2, 3]; track item) {
+          <article class="summary-card summary-card--loading"></article>
+        }
+      } @else {
+
+        <article class="summary-card">
+          <span>Absent</span>
+          <strong>{{ summary?.absentCount ?? 0 }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Late</span>
+          <strong>{{ summary?.lateCount ?? 0 }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Justified</span>
+          <strong>{{ summary?.justifiedCount ?? 0 }}</strong>
+        </article>
+
+      }
+    </section>
+
+    <section class="attendance-filters" aria-label="Attendance filters">
+      <label>
+        <span>Status</span>
+        <select [(ngModel)]="status" (ngModelChange)="applyFilters()">
+          <option value="">All</option>
+          <option value="ABSENT">Absent</option>
+          <option value="LATE">Late</option>
+          <option value="JUSTIFIED">Justified</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Period</span>
+        <select [(ngModel)]="period" (ngModelChange)="applyFilters()">
+          <option value="">All</option>
+          <option value="S1">S1</option>
+          <option value="S2">S2</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Subject</span>
+        <select [(ngModel)]="subjectId" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">All</option>
+          @for (subject of subjectOptions; track subject.id) {
+            <option [ngValue]="subject.id">{{ subject.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Teacher</span>
+        <select [(ngModel)]="teacherId" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">All</option>
+          @for (teacher of teacherOptions; track teacher.id) {
+            <option [ngValue]="teacher.id">{{ teacher.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>From date</span>
+        <input type="date" [(ngModel)]="fromDate" (ngModelChange)="applyFilters()" />
+      </label>
+
+      <label>
+        <span>To date</span>
+        <input type="date" [(ngModel)]="toDate" (ngModelChange)="applyFilters()" />
+      </label>
+
+      <button type="button" (click)="clearFilters()">Clear</button>
+    </section>
+
+    @if (isLoading) {
+      <section class="attendance-state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <h2>Chargement des présences...</h2>
+        <p>Votre historique de présence est en cours de préparation.</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="attendance-state attendance-state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <h2>{{ errorMessage }}</h2>
+        <p>Veuillez réessayer dans un moment.</p>
+        <button type="button" (click)="retry()">Retry</button>
+      </section>
+    } @else if (records.length === 0) {
+      <section class="attendance-state" aria-live="polite">
+        <span class="material-symbols-outlined">fact_check</span>
+        <h2>Aucune présence disponible.</h2>
+        <p>Vos présences apparaîtront ici dès qu’elles seront enregistrées.</p>
+      </section>
+    } @else {
+      <section class="attendance-card" aria-labelledby="attendance-list-title">
+        <header>
+          <h2 id="attendance-list-title">Attendance records</h2>
+          <span>{{ page.totalElements }} record{{ page.totalElements === 1 ? '' : 's' }}</span>
+        </header>
+
+        <div class="attendance-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Teacher</th>
+                <th>Room</th>
+                <th>Period</th>
+                <th>Status</th>
+                <th>Justification</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (record of records; track trackByRecord($index, record)) {
+                <tr>
+                  <td>
+                    <strong>{{ courseName(record) }}</strong>
+                    <span>{{ displayText(record.subjectName) }}</span>
+                  </td>
+                  <td>{{ dateLabel(record.sessionDate) }}</td>
+                  <td>{{ timeRange(record) }}</td>
+                  <td>{{ displayText(record.teacherName) }}</td>
+                  <td>{{ displayText(record.room) }}</td>
+                  <td>{{ displayText(record.period) }}</td>
+                  <td>
+                    <span class="status-badge" [class]="statusClass(record.status)">
+                      {{ statusLabel(record.status) }}
+                    </span>
+                  </td>
+                  <td>{{ displayText(record.justificationStatus) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <nav class="attendance-pagination" aria-label="Attendance pagination">
+          <span>Showing {{ page.numberOfElements }} of {{ page.totalElements }}</span>
+
+          <div>
+            <button type="button" [disabled]="page.first" (click)="goToPage(page.number - 1)">Previous</button>
+            @for (pageNumber of pageNumbers; track pageNumber) {
+              <button
+                type="button"
+                class="attendance-pagination__number"
+                [class.attendance-pagination__number--active]="pageNumber === page.number"
+                (click)="goToPage(pageNumber)">
+                {{ pageNumber + 1 }}
+              </button>
+            }
+            <button type="button" [disabled]="page.last" (click)="goToPage(page.number + 1)">Next</button>
+          </div>
+        </nav>
+      </section>
+    }
+  </section>
+</main>
