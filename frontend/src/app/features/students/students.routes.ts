@@ -51,14 +51,9 @@ export const routes: Routes = [
   {
     path: 'payments',
     loadComponent: () =>
-      import('./pages/student-section-placeholder/student-section-placeholder.component').then(
-        (m) => m.StudentSectionPlaceholderComponent,
+      import('./pages/student-payments/student-payments.component').then(
+        (m) => m.StudentPaymentsComponent,
       ),
-    data: {
-      title: 'Payments',
-      icon: 'payments',
-      description: 'Your payment history, receipts, and fee status will appear here.',
-    },
   },
   {
     path: 'attendance',

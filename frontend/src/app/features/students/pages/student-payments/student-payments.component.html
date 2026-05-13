@@ -1,0 +1,143 @@
+<main class="student-payments-page">
+  <app-student-header></app-student-header>
+
+  <section class="payments-shell" aria-labelledby="student-payments-title">
+    <header class="payments-hero">
+      <div>
+        <p>Student area</p>
+        <h1 id="student-payments-title">Mes paiements</h1>
+        <span>Consultez vos paiements, montants restants et reçus.</span>
+      </div>
+    </header>
+
+    <section class="summary-grid" aria-label="Payment summary">
+      @if (isSummaryLoading) {
+        @for (item of [1, 2, 3, 4]; track item) {
+          <article class="summary-card summary-card--loading"></article>
+        }
+      } @else {
+        <article class="summary-card">
+          <span>Total due</span>
+          <strong>{{ money(summary?.totalDue, summary?.currency || 'TND') }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Total paid</span>
+          <strong>{{ money(summary?.totalPaid, summary?.currency || 'TND') }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Remaining amount</span>
+          <strong>{{ money(summary?.totalRemaining, summary?.currency || 'TND') }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Pending / Overdue</span>
+          <strong>{{ summary?.pendingCount ?? 0 }} / {{ summary?.overdueCount ?? 0 }}</strong>
+        </article>
+      }
+    </section>
+
+    <section class="payment-filters" aria-label="Payment filters">
+      <label>
+        <span>Status</span>
+        <select [(ngModel)]="status" (ngModelChange)="applyFilters()">
+          <option value="">All</option>
+          <option value="PAID">Paid</option>
+          <option value="PARTIAL">Partial</option>
+          <option value="PENDING">Pending</option>
+          <option value="OVERDUE">Overdue</option>
+        </select>
+      </label>
+
+      <label>
+        <span>From date</span>
+        <input type="date" [(ngModel)]="fromDate" (ngModelChange)="applyFilters()" />
+      </label>
+
+      <label>
+        <span>To date</span>
+        <input type="date" [(ngModel)]="toDate" (ngModelChange)="applyFilters()" />
+      </label>
+
+      <button type="button" (click)="clearFilters()">Clear</button>
+    </section>
+
+    @if (isLoading) {
+      <section class="payments-state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <h2>Chargement des paiements...</h2>
+        <p>Votre historique de paiement est en cours de préparation.</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="payments-state payments-state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <h2>{{ errorMessage }}</h2>
+        <p>Veuillez réessayer dans un moment.</p>
+        <button type="button" (click)="retry()">Retry</button>
+      </section>
+    } @else if (payments.length === 0) {
+      <section class="payments-state" aria-live="polite">
+        <span class="material-symbols-outlined">payments</span>
+        <h2>Aucun paiement disponible.</h2>
+        <p>Vos paiements apparaîtront ici dès qu’ils seront enregistrés.</p>
+      </section>
+    } @else {
+      <section class="payments-card" aria-labelledby="payments-list-title">
+        <header>
+          <h2 id="payments-list-title">Payment history</h2>
+          <span>{{ page.totalElements }} payment{{ page.totalElements === 1 ? '' : 's' }}</span>
+        </header>
+
+        <div class="payments-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Payment</th>
+                <th>Paid</th>
+                <th>Previous remaining</th>
+                <th>New remaining</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (payment of payments; track trackByPayment($index, payment)) {
+                <tr>
+                  <td>
+                    <strong>{{ payment.label }}</strong>
+                    <span>{{ displayText(payment.receiptNumber) }}</span>
+                  </td>
+                  <td>{{ money(payment.amountPaid, payment.currency || 'TND') }}</td>
+                  <td>{{ money(payment.amountDue, payment.currency || 'TND') }}</td>
+                  <td>{{ money(payment.remainingAmount, payment.currency || 'TND') }}</td>
+                  <td>
+                    <span class="status-badge" [class]="statusClass(payment.status)">
+                      {{ statusLabel(payment.status) }}
+                    </span>
+                  </td>
+                  <td>{{ dateLabel(payment.paidAt) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <nav class="payments-pagination" aria-label="Payments pagination">
+          <span>Showing {{ page.numberOfElements }} of {{ page.totalElements }}</span>
+
+          <div>
+            <button type="button" [disabled]="page.first" (click)="goToPage(page.number - 1)">Previous</button>
+            @for (pageNumber of pageNumbers; track pageNumber) {
+              <button
+                type="button"
+                class="payments-pagination__number"
+                [class.payments-pagination__number--active]="pageNumber === page.number"
+                (click)="goToPage(pageNumber)">
+                {{ pageNumber + 1 }}
+              </button>
+            }
+            <button type="button" [disabled]="page.last" (click)="goToPage(page.number + 1)">Next</button>
+          </div>
+        </nav>
+      </section>
+    }
+  </section>
+</main>

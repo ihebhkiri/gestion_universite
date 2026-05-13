@@ -76,33 +76,16 @@
                     <p>{{ examTitle(exam) }}</p>
                   </div>
 
-                  <div class="exam-tile__date">
-                    <span class="material-symbols-outlined">event</span>
-                    <strong>{{ dateLabel(exam) }}</strong>
-                  </div>
+
                 </div>
 
                 <div class="exam-tile__meta">
-                  <span>
-                    <span class="material-symbols-outlined">schedule</span>
-                    {{ timeRange(exam) }}
-                  </span>
+
                   <span>
                     <span class="material-symbols-outlined">meeting_room</span>
                     {{ roomLabel(exam) }}
                   </span>
-                  @if (coefficientLabel(exam)) {
-                    <span>
-                      <span class="material-symbols-outlined">percent</span>
-                      {{ coefficientLabel(exam) }}
-                    </span>
-                  }
-                  @if (exam.status) {
-                    <span>
-                      <span class="material-symbols-outlined">verified</span>
-                      {{ statusLabel(exam) }}
-                    </span>
-                  }
+
                 </div>
               </div>
             </article>
