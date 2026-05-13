@@ -1,6 +1,7 @@
 package com.iheb.gestion_universite.teaching.timetable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -10,12 +11,42 @@ import java.util.List;
 
 public interface TimetableRepository extends JpaRepository<TimetableEntity, Long> {
 
+    @EntityGraph(attributePaths = {
+            "course",
+            "course.subject",
+            "teacher",
+            "room",
+            "academicClass",
+            "semester"
+    })
     List<TimetableEntity> findByAcademicClassIdAndSemesterId(Long academicClassId, Long semesterId);
 
+    @EntityGraph(attributePaths = {
+            "course",
+            "course.subject",
+            "teacher",
+            "room",
+            "academicClass",
+            "semester"
+    })
     List<TimetableEntity> findByAcademicClassId(Long academicClassId);
 
+    @EntityGraph(attributePaths = {
+            "course",
+            "teacher",
+            "room",
+            "academicClass",
+            "semester"
+    })
     List<TimetableEntity> findBySemesterId(Long semesterId);
 
+    @EntityGraph(attributePaths = {
+            "course",
+            "teacher",
+            "room",
+            "academicClass",
+            "semester"
+    })
     List<TimetableEntity> findByDayOfWeek(DayOfWeek dayOfWeek);
 
     @Query("""

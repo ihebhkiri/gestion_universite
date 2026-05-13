@@ -1,0 +1,109 @@
+.finance-panel {
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-lowest);
+  margin-top: 2rem;
+  padding: 2rem;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    color: var(--color-primary);
+    font-size: 1.25rem;
+    font-weight: 850;
+  }
+
+  button {
+    border: 0;
+    background: transparent;
+    color: var(--color-primary-container);
+    font-size: 0.9rem;
+    font-weight: 850;
+    padding: 0;
+  }
+}
+
+.finance-panel__table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  color: var(--color-on-surface-variant);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  padding: 0 1rem 1rem 0;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+td {
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 18%, transparent);
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+  padding: 1rem 1rem 1rem 0;
+  white-space: nowrap;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.finance-panel__id {
+  color: var(--color-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.finance-panel__description,
+.finance-panel__amount {
+  color: var(--color-primary);
+  font-weight: 750;
+}
+
+.finance-panel__status {
+  border-radius: var(--radius-default);
+  background: #dcfce7;
+  color: #047857;
+  font-size: 0.68rem;
+  font-weight: 850;
+  padding: 0.3rem 0.55rem;
+  text-transform: uppercase;
+}
+
+a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  color: var(--color-primary-container);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-decoration: none;
+
+  .material-symbols-outlined {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .finance-panel {
+    padding: 1.25rem;
+
+    header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}

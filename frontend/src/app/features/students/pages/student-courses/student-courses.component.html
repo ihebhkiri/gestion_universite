@@ -1,0 +1,135 @@
+<main class="student-courses-page">
+  <app-student-header></app-student-header>
+
+  <section class="courses-shell" aria-labelledby="student-courses-title">
+    <header class="courses-hero">
+      <div>
+        <p>Student area</p>
+        <h1 id="student-courses-title">Courses</h1>
+        <span>View your courses and learning materials</span>
+      </div>
+
+      <div class="courses-hero__metric">
+        <strong>{{ page.totalElements }}</strong>
+        <span>course{{ page.totalElements === 1 ? '' : 's' }}</span>
+      </div>
+    </header>
+
+    <section class="course-filters" aria-label="Course filters">
+      <label>
+        <span>Period</span>
+        <select [(ngModel)]="period" (ngModelChange)="applyFilters()">
+          <option value="">All</option>
+          <option value="S1">S1</option>
+          <option value="S2">S2</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Teacher</span>
+        <select [(ngModel)]="teacherId" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">All teachers</option>
+          @for (teacher of teacherOptions; track teacher.id) {
+            <option [ngValue]="teacher.id">{{ teacher.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Subject</span>
+        <select [(ngModel)]="subjectId" (ngModelChange)="applyFilters()">
+          <option [ngValue]="null">All subjects</option>
+          @for (subject of subjectOptions; track subject.id) {
+            <option [ngValue]="subject.id">{{ subject.label }}</option>
+          }
+        </select>
+      </label>
+
+      <button type="button" (click)="clearFilters()">Clear</button>
+    </section>
+
+    @if (isLoading) {
+      <section class="courses-state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <h2>Loading courses...</h2>
+        <p>Your course list is being prepared.</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="courses-state courses-state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <h2>{{ errorMessage }}</h2>
+        <p>Please try again in a moment.</p>
+        <button type="button" (click)="loadCourses()">Retry</button>
+      </section>
+    } @else if (courses.length === 0) {
+      <section class="courses-state" aria-live="polite">
+        <span class="material-symbols-outlined">school</span>
+        <h2>No courses found.</h2>
+        <p>Your courses will appear here once your class timetable is published.</p>
+      </section>
+    } @else {
+      <section class="courses-list" aria-label="Student courses">
+        @for (course of courses; track trackByCourse($index, course)) {
+          <article class="course-card">
+            <div class="course-card__avatar">
+              @if (course.teacherImageUrl) {
+                <img [src]="course.teacherImageUrl" [alt]="teacherName(course)" />
+              } @else {
+                <span>{{ initials(course) }}</span>
+              }
+            </div>
+
+            <div class="course-card__body">
+              <div class="course-card__header">
+                <div>
+                  <h2>{{ courseTitle(course) }}</h2>
+                  <p>{{ teacherName(course) }}</p>
+                </div>
+
+                <time>
+                  <span class="material-symbols-outlined">event</span>
+                  {{ publishedLabel(course) }}
+                </time>
+              </div>
+
+
+              <section class="course-card__attachments" aria-label="Attachments reserved area">
+                <div>
+                  <span class="material-symbols-outlined">attach_file</span>
+                  <strong>Attachments</strong>
+                </div>
+                <p>Attachments will be available here.</p>
+              </section>
+            </div>
+          </article>
+        }
+      </section>
+
+      <nav class="courses-pagination" aria-label="Courses pagination">
+        <span>
+          Showing {{ page.numberOfElements }} of {{ page.totalElements }}
+        </span>
+
+        <div>
+          <button type="button" [disabled]="page.first" (click)="goToPage(page.number - 1)">
+            Previous
+          </button>
+
+          @for (pageNumber of pageNumbers; track pageNumber) {
+            <button
+              type="button"
+              class="courses-pagination__number"
+              [class.courses-pagination__number--active]="pageNumber === page.number"
+              (click)="goToPage(pageNumber)">
+              {{ pageNumber + 1 }}
+            </button>
+          }
+
+          <button type="button" [disabled]="page.last" (click)="goToPage(page.number + 1)">
+            Next
+          </button>
+        </div>
+      </nav>
+    }
+  </section>
+</main>

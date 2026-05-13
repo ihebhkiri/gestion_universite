@@ -1,0 +1,48 @@
+<article class="attendance-preview-card">
+  <header class="attendance-preview-card__header">
+    <div class="attendance-preview-card__title">
+      <span class="material-symbols-outlined">fact_check</span>
+      <div>
+        <h3>Top absences</h3>
+        <p>Courses with the most absences</p>
+      </div>
+    </div>
+
+    <a class="attendance-preview-card__open" routerLink="/students/attendance" aria-label="Open attendance">
+      <span class="material-symbols-outlined">open_in_new</span>
+    </a>
+  </header>
+
+  @if (isLoading) {
+    <div class="attendance-preview-state" aria-live="polite">
+      <span class="material-symbols-outlined">progress_activity</span>
+      <p>Loading absences...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="attendance-preview-state attendance-preview-state--error" aria-live="polite">
+      <span class="material-symbols-outlined">error</span>
+      <p>{{ errorMessage }}</p>
+      <button type="button" (click)="loadAbsences()">Retry</button>
+    </div>
+  } @else if (absences.length === 0) {
+    <div class="attendance-preview-state" aria-live="polite">
+      <span class="material-symbols-outlined">verified</span>
+      <p>Aucune absence enregistrée.</p>
+    </div>
+  } @else {
+    <div class="attendance-preview-card__list">
+      @for (absence of absences; track trackByAbsence($index, absence)) {
+        <section class="absence-row">
+          <div class="absence-row__content">
+            <strong>{{ subjectName(absence) }}</strong>
+            <span>Recorded absence count</span>
+          </div>
+
+          <strong class="absence-row__count">
+            {{ absenceLabel(absence.absenceCount) }}
+          </strong>
+        </section>
+      }
+    </div>
+  }
+</article>

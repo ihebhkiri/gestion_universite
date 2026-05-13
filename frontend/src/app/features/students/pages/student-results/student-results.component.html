@@ -1,0 +1,135 @@
+<main class="student-results-page">
+  <app-student-header></app-student-header>
+
+  <section class="results-shell" aria-labelledby="student-results-title">
+    <header class="results-hero">
+      <div>
+        <p>Student area</p>
+        <h1 id="student-results-title">Mes évaluations et résultats</h1>
+        <span>Ci-dessous vos notes et résultats par année/classe.</span>
+        @if (profileMeta) {
+          <strong>{{ profileMeta }}</strong>
+        }
+      </div>
+    </header>
+
+    @if (isLoading) {
+      <section class="results-state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <h2>Chargement des résultats...</h2>
+        <p>Vos notes publiées sont en cours de préparation.</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="results-state results-state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <h2>{{ errorMessage }}</h2>
+        <p>Veuillez réessayer dans un moment.</p>
+        <button type="button" (click)="loadResults()">Retry</button>
+      </section>
+    } @else if (!hasData) {
+      <section class="results-state" aria-live="polite">
+        <span class="material-symbols-outlined">grading</span>
+        <h2>Aucun résultat disponible.</h2>
+        <p>Vos résultats publiés apparaîtront ici.</p>
+      </section>
+    } @else {
+      <section class="results-card" aria-labelledby="academic-results-title">
+        <header>
+          <h2 id="academic-results-title">Résultats</h2>
+        </header>
+
+        <div class="results-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Type / Période</th>
+                <th>Moyenne</th>
+                <th>Crédit cap.</th>
+                <th>Résultat</th>
+                <th>Mention</th>
+                <th>Rang par classe</th>
+                <th>Rang par niveau</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (result of results; track trackResult($index, result)) {
+                <tr>
+                  <td>
+                    <strong>{{ result.type }}</strong>
+                    @if (result.period) {
+                      <span>{{ result.period }}</span>
+                    }
+                  </td>
+                  <td>{{ formatNumber(result.average) }}</td>
+                  <td>{{ displayText(result.capturedCredits) }}</td>
+                  <td>{{ displayText(result.result) }}</td>
+                  <td>{{ displayText(result.mention) }}</td>
+                  <td>{{ displayText(result.classRank) }}</td>
+                  <td>{{ displayText(result.levelRank) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="results-card" aria-labelledby="grades-title">
+        <header>
+          <h2 id="grades-title">Notes</h2>
+        </header>
+
+        <div class="results-table-wrap">
+          <table class="grades-table">
+            <thead>
+              <tr>
+                <th>Unité/Matière</th>
+                <th>Coef.</th>
+                <th>PROJET</th>
+                <th>EXAMEN</th>
+                <th>DEVOIR</th>
+                <th>TRAVAUX PRATIQUES</th>
+                <th>Moyenne</th>
+                <th>Crédit cap.</th>
+                <th>Rattrapage</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (unit of gradeUnits; track trackUnit($index, unit)) {
+                <tr class="unit-row">
+                  <td>
+                    <strong>{{ unit.unitName }}</strong>
+                    @if (unit.semester) {
+                      <span>{{ unit.semester }}</span>
+                    }
+                  </td>
+                  <td>{{ formatNumber(unit.coefficient) }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ formatNumber(unit.average) }}</td>
+                  <td>{{ displayText(unit.capturedCredits) }}</td>
+                  <td>-</td>
+                </tr>
+
+                @for (subject of unit.subjects; track trackSubject($index, subject)) {
+                  <tr class="subject-row">
+                    <td>{{ subject.subjectName }}</td>
+                    <td>{{ formatNumber(subject.coefficient) }}</td>
+                    <td [class.absent-cell]="isAbsent(subject.project)">{{ displayValue(subject.project) }}</td>
+                    <td [class.absent-cell]="isAbsent(subject.exam)">{{ displayValue(subject.exam) }}</td>
+                    <td [class.absent-cell]="isAbsent(subject.homework)">{{ displayValue(subject.homework) }}</td>
+                    <td [class.absent-cell]="isAbsent(subject.practicalWork)">{{ displayValue(subject.practicalWork) }}</td>
+                    <td>{{ formatNumber(subject.average) }}</td>
+                    <td>{{ displayText(subject.capturedCredits) }}</td>
+                    <td [class.absent-cell]="isAbsent(subject.retake)">{{ displayValue(subject.retake) }}</td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    }
+  </section>
+</main>

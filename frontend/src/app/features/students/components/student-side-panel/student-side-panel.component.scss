@@ -1,0 +1,240 @@
+.side-stack {
+  display: grid;
+  gap: 2rem;
+  margin-right: 10px;
+}
+
+.exam-card,
+.tasks-card,
+.notice-card {
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+}
+
+.exam-card {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary);
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 850;
+    margin: 0;
+  }
+}
+
+.exam-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  > div > span {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+    opacity: 0.72;
+  }
+}
+
+.exam-card__link {
+  display: inline-grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 2.25rem;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 12%);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  transition: background 180ms ease, transform 180ms ease;
+
+  &:hover {
+    background: rgb(255 255 255 / 20%);
+    transform: translateY(-1px);
+  }
+
+  .material-symbols-outlined {
+    font-size: 1.2rem;
+  }
+}
+
+.exam-card__list,
+.task-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.exam-item {
+  display: flex;
+  gap: 1rem;
+}
+
+.exam-item__date {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: var(--radius-default);
+  background: rgb(255 255 255 / 10%);
+
+  span {
+    font-size: 0.68rem;
+    font-weight: 850;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  strong {
+    font-family: var(--font-headline);
+    font-size: 1.1rem;
+    font-weight: 850;
+    line-height: 1;
+  }
+}
+
+.exam-item h4,
+.task-item h4 {
+  font-size: 0.9rem;
+  font-weight: 850;
+  margin: 0;
+}
+
+.exam-item p,
+.task-item p {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.exam-item p {
+  opacity: 0.72;
+}
+
+.exam-item small {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  margin-top: 0.35rem;
+  opacity: 0.82;
+}
+
+.exam-state {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  min-height: 8rem;
+  padding: 1rem;
+  place-content: center;
+  text-align: center;
+
+  .material-symbols-outlined {
+    font-size: 1.75rem;
+    opacity: 0.72;
+  }
+
+  p {
+    font-size: 0.85rem;
+    font-weight: 650;
+    margin: 0;
+    opacity: 0.82;
+  }
+
+  button {
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--color-on-primary);
+    color: var(--color-primary-container);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 850;
+    padding: 0.65rem 1rem;
+  }
+}
+
+.exam-state--error {
+  .material-symbols-outlined {
+    color: var(--color-error-container);
+    opacity: 1;
+  }
+}
+
+.tasks-card,
+.notice-card {
+  background: var(--color-surface-container-lowest);
+
+  > h3 {
+    color: var(--color-primary);
+    font-size: 1.05rem;
+    font-weight: 850;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  .material-symbols-outlined {
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+  }
+
+  h4 {
+    color: var(--color-primary);
+  }
+
+  p {
+    color: var(--color-on-surface-variant);
+  }
+}
+
+.task-item--danger .material-symbols-outlined {
+  color: var(--color-error);
+}
+
+.task-item--primary .material-symbols-outlined {
+  color: var(--color-primary-container);
+}
+
+.task-item--muted .material-symbols-outlined {
+  color: var(--color-on-surface-variant);
+}
+
+.notice-card {
+  background: var(--color-surface-container-low);
+
+  article {
+    border-left: 0.25rem solid var(--color-primary-container);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-container-lowest);
+    padding: 1rem;
+  }
+
+  p {
+    color: var(--color-primary-container);
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  strong {
+    color: var(--color-primary);
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 650;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 640px) {
+  .exam-card,
+  .tasks-card,
+  .notice-card {
+    padding: 1.25rem;
+  }
+}

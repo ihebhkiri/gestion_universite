@@ -31,4 +31,20 @@ public interface AttendanceRecordRepository extends JpaRepository<AttendanceReco
             left join fetch timetableEntry.semester semester
             """)
     List<AttendanceRecordEntity> findAllForAnalytics();
+
+    @Query("""
+            select record
+            from AttendanceRecordEntity record
+            join fetch record.student student
+            join fetch record.session session
+            left join fetch session.course course
+            left join fetch course.subject subject
+            left join fetch session.teacher teacher
+            left join fetch session.academicClass academicClass
+            left join fetch session.timetableEntry timetableEntry
+            left join fetch timetableEntry.semester semester
+            left join fetch timetableEntry.room room
+            where student.id = :studentId
+            """)
+    List<AttendanceRecordEntity> findByStudentIdForStudentAttendance(@Param("studentId") Long studentId);
 }

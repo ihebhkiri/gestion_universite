@@ -114,8 +114,15 @@ public class CourseService {
                 entity.getHours(),
                 subjectId,
                 subjectName,
-                entity.getCoefficient()
+                entity.getCoefficient(),
+                entity.getPublishedAt(),
+                attachmentCount(entity),
+                attachmentCount(entity) > 0
         );
+    }
+
+    private int attachmentCount(CourseEntity entity) {
+        return entity.getAttachments() == null ? 0 : entity.getAttachments().size();
     }
 
     private String normalizeCode(String code) {

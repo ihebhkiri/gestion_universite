@@ -1,16 +1,23 @@
 package com.iheb.gestion_universite.student_managment.student_payment;
 
 import com.iheb.gestion_universite.core.exceptions.StudentNotFoundException;
+import com.iheb.gestion_universite.security.UserPrincipal;
 import com.iheb.gestion_universite.student_managment.student.StudentEntity;
 import com.iheb.gestion_universite.student_managment.student.StudentRepository;
 import com.iheb.gestion_universite.student_managment.student_enrollment.EnrollmentStatus;
 import com.iheb.gestion_universite.student_managment.student_enrollment.StudentEnrollmentEntity;
+import com.iheb.gestion_universite.student_managment.student_payment.dto.StudentPaymentDto;
 import com.iheb.gestion_universite.student_managment.student_payment.dto.StudentPaymentHistoryResponse;
 import com.iheb.gestion_universite.student_managment.student_payment.dto.StudentPaymentReceiptResult;
+import com.iheb.gestion_universite.student_managment.student_payment.dto.StudentPaymentSummaryDto;
 import com.iheb.gestion_universite.student_managment.student_payment.dto.StudentPaymentSummaryResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -51,6 +58,48 @@ public class StudentPaymentService {
                 .stream()
                 .map(this::toHistoryResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<StudentPaymentDto> getMyPayments(
+            UserPrincipal principal,
+            String status,
+            LocalDate fromDate,
+            LocalDate toDate,
+            Pageable pageable
+    ) {
+        StudentEntity student = resolveConnectedStudent(principal);
+        List<StudentPaymentDto> payments = paymentRepository.findByStudentIdOrderByPaymentDateDescIdDesc(student.getId())
+                .stream()
+                .filter(payment -> matchesDateRange(payment, fromDate, toDate))
+                .map(this::toStudentPaymentDto)
+                .filter(payment -> matchesStatus(payment, status))
+                .toList();
+
+        return page(payments, pageable);
+    }
+
+    @Transactional
+    public StudentPaymentSummaryDto getMySummary(UserPrincipal principal) {
+        StudentEntity student = resolveConnectedStudent(principal);
+        StudentPaymentSummaryResponse summary = getSummary(student.getId());
+        List<StudentPaymentDto> payments = paymentRepository.findByStudentIdOrderByPaymentDateDescIdDesc(student.getId())
+                .stream()
+                .map(this::toStudentPaymentDto)
+                .toList();
+
+        long paidCount = payments.stream().filter(payment -> "PAID".equals(payment.status())).count();
+        long pendingCount = summary.remainingAmount().compareTo(BigDecimal.ZERO) > 0 ? 1 : 0;
+
+        return new StudentPaymentSummaryDto(
+                summary.totalAmount(),
+                summary.totalPaid(),
+                summary.remainingAmount(),
+                "TND",
+                paidCount,
+                pendingCount,
+                0
+        );
     }
 
     @Transactional
@@ -103,6 +152,15 @@ public class StudentPaymentService {
     private StudentEntity ensureStudentExists(Long studentId) {
         return studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found"));
+    }
+
+    private StudentEntity resolveConnectedStudent(UserPrincipal principal) {
+        if (principal == null || !StringUtils.hasText(principal.getUsername())) {
+            throw new StudentNotFoundException("Student profile not found");
+        }
+
+        return studentRepository.findByUser_EmailIgnoreCase(principal.getUsername())
+                .orElseThrow(() -> new StudentNotFoundException("Student profile not found"));
     }
 
     private StudentEnrollmentEntity latestEnrollment(StudentEntity student) {
@@ -249,6 +307,47 @@ public class StudentPaymentService {
                 payment.getNewRemainingAmount(),
                 payment.getPaymentMethod()
         );
+    }
+
+    private StudentPaymentDto toStudentPaymentDto(StudentPaymentEntity payment) {
+        return new StudentPaymentDto(
+                payment.getId(),
+                "Tuition Payment",
+                payment.getPreviousRemainingAmount(),
+                payment.getAmount(),
+                payment.getNewRemainingAmount(),
+                "TND",
+                payment.getNewRemainingAmount().compareTo(BigDecimal.ZERO) <= 0 ? "PAID" : "PARTIAL",
+                payment.getPaymentDate(),
+                payment.getPaymentMethod() != null ? payment.getPaymentMethod().name() : null,
+                payment.getReceiptNumber(),
+                false
+        );
+    }
+
+    private boolean matchesDateRange(StudentPaymentEntity payment, LocalDate fromDate, LocalDate toDate) {
+        LocalDate paymentDate = payment.getPaymentDate();
+        if (paymentDate == null) {
+            return fromDate == null && toDate == null;
+        }
+        if (fromDate != null && paymentDate.isBefore(fromDate)) {
+            return false;
+        }
+        return toDate == null || !paymentDate.isAfter(toDate);
+    }
+
+    private boolean matchesStatus(StudentPaymentDto payment, String status) {
+        return !StringUtils.hasText(status) || payment.status().equalsIgnoreCase(status.trim());
+    }
+
+    private Page<StudentPaymentDto> page(List<StudentPaymentDto> payments, Pageable pageable) {
+        if (pageable == null || pageable.isUnpaged()) {
+            return new PageImpl<>(payments);
+        }
+
+        int start = Math.toIntExact(Math.min(pageable.getOffset(), payments.size()));
+        int end = Math.min(start + pageable.getPageSize(), payments.size());
+        return new PageImpl<>(payments.subList(start, end), pageable, payments.size());
     }
 
     private String fullName(StudentEntity student) {

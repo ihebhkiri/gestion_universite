@@ -1,0 +1,48 @@
+<article class="results-preview-card">
+  <header class="results-preview-card__header">
+    <div class="results-preview-card__title">
+      <span class="material-symbols-outlined">grade</span>
+      <div>
+        <h3>Latest Results</h3>
+        <p>Your recently published grades</p>
+      </div>
+    </div>
+
+    <a class="results-preview-card__open" routerLink="/students/results" aria-label="Open results">
+      <span class="material-symbols-outlined">open_in_new</span>
+    </a>
+  </header>
+
+  @if (isLoading) {
+    <div class="results-preview-state" aria-live="polite">
+      <span class="material-symbols-outlined">progress_activity</span>
+      <p>Loading results...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="results-preview-state results-preview-state--error" aria-live="polite">
+      <span class="material-symbols-outlined">error</span>
+      <p>{{ errorMessage }}</p>
+      <button type="button" (click)="loadGrades()">Retry</button>
+    </div>
+  } @else if (grades.length === 0) {
+    <div class="results-preview-state" aria-live="polite">
+      <span class="material-symbols-outlined">grading</span>
+      <p>No published results.</p>
+    </div>
+  } @else {
+    <div class="results-preview-card__list">
+      @for (grade of grades; track trackByGrade($index, grade)) {
+        <section class="result-row">
+          <div class="result-row__content">
+            <strong>{{ courseName(grade) }}</strong>
+            <span>{{ examType(grade) }}</span>
+          </div>
+
+          <strong class="result-row__grade" [class.result-row__grade--absent]="isAbsent(grade.grade)">
+            {{ gradeLabel(grade.grade) }}
+          </strong>
+        </section>
+      }
+    </div>
+  }
+</article>

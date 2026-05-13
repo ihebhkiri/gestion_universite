@@ -14,6 +14,10 @@ export const routes: Routes = [
     // canMatch: [adminCanMatch],
     // canActivate: [adminCanActivate]
   },
+  {
+    path: "students",
+    loadChildren: () => import('./features/students/students.routes').then(m => m.routes),
+  },
   { path: "test", component: TestComponent }
 
 

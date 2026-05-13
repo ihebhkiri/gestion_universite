@@ -1,0 +1,50 @@
+<div class="side-stack">
+  <section class="exam-card">
+    <header class="exam-card__header">
+      <div>
+        <h3>Upcoming Exams</h3>
+        <span>Next scheduled exams</span>
+      </div>
+
+      <a class="exam-card__link" routerLink="/students/exams" aria-label="Open full exam schedule">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </header>
+
+    @if (isLoading) {
+      <div class="exam-state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <p>Loading upcoming exams...</p>
+      </div>
+    } @else if (errorMessage) {
+      <div class="exam-state exam-state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <p>{{ errorMessage }}</p>
+        <button type="button" (click)="loadUpcomingExams()">Retry</button>
+      </div>
+    } @else if (exams.length === 0) {
+      <div class="exam-state" aria-live="polite">
+        <span class="material-symbols-outlined">event_available</span>
+        <p>No upcoming exams.</p>
+      </div>
+    } @else {
+      <div class="exam-card__list">
+        @for (exam of exams; track trackByExam($index, exam)) {
+          <article class="exam-item">
+            <div class="exam-item__date">
+              <span>{{ monthLabel(exam) }}</span>
+              <strong>{{ dayLabel(exam) }}</strong>
+            </div>
+            <div class="exam-item__body">
+              <h4>{{ examTitle(exam) }}</h4>
+              @if (examSubtitle(exam)) {
+                <p>{{ examSubtitle(exam) }}</p>
+              }
+              <small>{{ examMeta(exam) }}</small>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</div>

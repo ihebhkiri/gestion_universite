@@ -1,0 +1,77 @@
+<header class="student-header">
+  <div class="student-header__top">
+    <a class="student-header__brand" routerLink="/students/dashboard">
+      <span class="student-header__brand-icon">
+        <img src="logo.png" alt="">
+      </span>
+      <span>
+        <strong>Academix</strong>
+        <small>Student Information System</small>
+      </span>
+    </a>
+
+    <div class="student-header__actions">
+      <button class="student-header__icon-button student-header__notification" type="button" aria-label="Notifications">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <button class="student-header__icon-button" type="button" aria-label="Settings">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+
+      <div class="student-header__profile-menu" (click)="$event.stopPropagation()">
+        <button
+          class="student-header__profile"
+          type="button"
+          aria-label="Open student menu"
+          [attr.aria-expanded]="isProfileMenuOpen"
+          (click)="toggleProfileMenu($event)">
+          <div>
+            <strong>{{ isProfileLoading ? 'Loading...' : displayName }}</strong>
+            <span>{{ isProfileLoading ? 'Loading class...' : displayClassCode }}</span>
+          </div>
+          <img [src]="getAvatarUrl(profile)" [alt]="displayName + ' profile picture'" />
+        </button>
+
+        @if (isProfileMenuOpen) {
+          <div class="student-header__dropdown" role="menu">
+            <a
+              class="student-header__dropdown-item"
+              routerLink="/students/profile"
+              routerLinkActive="student-header__dropdown-item--active"
+              role="menuitem"
+              (click)="closeProfileMenu()">
+              <span class="material-symbols-outlined">person</span>
+              <span>Profile</span>
+            </a>
+
+            <button
+              class="student-header__dropdown-item student-header__dropdown-item--danger"
+              type="button"
+              role="menuitem"
+              (click)="signOut($event)">
+              <span class="material-symbols-outlined">logout</span>
+              <span>Sign out</span>
+            </button>
+          </div>
+        }
+      </div>
+
+    </div>
+  </div>
+
+
+</header>
+<header class="student-header1">
+    <nav class="student-header__top1" aria-label="Student navigation">
+      @for (item of navItems; track item.label) {
+        <a
+          class="student-header__nav-link"
+          [routerLink]="item.route"
+          routerLinkActive="student-header__nav-link--active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }">
+          <span class="material-symbols-outlined">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+</header>

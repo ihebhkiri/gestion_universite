@@ -1,0 +1,96 @@
+<main class="student-profile-page">
+  <app-student-header></app-student-header>
+
+  @if (isLoading) {
+    <section class="student-profile">
+      <div class="student-profile__state">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <p>Loading your profile...</p>
+      </div>
+    </section>
+  } @else if (errorMessage) {
+    <section class="student-profile">
+      <div class="student-profile__state student-profile__state--error">
+        <span class="material-symbols-outlined">error</span>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </section>
+  } @else {
+    <section class="student-profile">
+      <div class="student-profile__summary">
+        <div class="student-profile__image-wrap">
+          <img [src]="getAvatarUrl(profile)" [alt]="displayName" />
+          <span>{{ valueOrFallback(profile?.status) }}</span>
+        </div>
+
+        <div class="student-profile__identity">
+          <p class="student-profile__eyebrow">Student Profile</p>
+          <h1>{{ displayName }}</h1>
+          <p class="student-profile__subtitle">
+            <strong>{{ valueOrFallback(profile?.email) }}</strong>
+            <span></span>
+            {{ valueOrFallback(profile?.academicClassCode, 'Class not assigned') }}
+          </p>
+        </div>
+      </div>
+
+      <div class="student-profile__details" aria-label="Student profile details">
+        <article>
+          <span class="material-symbols-outlined">badge</span>
+          <div>
+            <p>Student ID</p>
+            <strong>{{ profile?.matricule?? 'Not specified' }}</strong>
+          </div>
+        </article>
+
+        <article>
+          <span class="material-symbols-outlined">mail</span>
+          <div>
+            <p>Email</p>
+            <strong>{{ valueOrFallback(profile?.email) }}</strong>
+          </div>
+        </article>
+
+        <article>
+          <span class="material-symbols-outlined">call</span>
+          <div>
+            <p>Phone Number</p>
+            <strong>{{ valueOrFallback(profile?.phoneNumber) }}</strong>
+          </div>
+        </article>
+
+        <article>
+          <span class="material-symbols-outlined">fingerprint</span>
+          <div>
+            <p>CIN</p>
+            <strong>{{ valueOrFallback(profile?.cin) }}</strong>
+          </div>
+        </article>
+
+        <article>
+          <span class="material-symbols-outlined">groups</span>
+          <div>
+            <p>Academic Class</p>
+            <strong>{{ valueOrFallback(profile?.academicClassCode, 'Class not assigned') }}</strong>
+          </div>
+        </article>
+
+        <article>
+          <span class="material-symbols-outlined">auto_stories</span>
+          <div>
+            <p>Program</p>
+            <strong>{{ valueOrFallback(profile?.program) }}</strong>
+          </div>
+        </article>
+
+        <article>
+          <span class="material-symbols-outlined">verified</span>
+          <div>
+            <p>Status</p>
+            <strong>{{ valueOrFallback(profile?.status) }}</strong>
+          </div>
+        </article>
+      </div>
+    </section>
+  }
+</main>

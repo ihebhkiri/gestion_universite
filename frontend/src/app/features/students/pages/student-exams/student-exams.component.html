@@ -1,0 +1,97 @@
+<main class="student-exams-page">
+  <app-student-header></app-student-header>
+
+  <section class="exams-shell" aria-labelledby="student-exams-title">
+    <header class="exams-hero">
+      <div>
+        <p>Student area</p>
+        <h1 id="student-exams-title">Exams</h1>
+        <span>View your scheduled exams</span>
+      </div>
+
+      <div class="exams-hero__metric">
+        <strong>{{ exams.length }}</strong>
+        <span>exam{{ exams.length === 1 ? '' : 's' }}</span>
+      </div>
+    </header>
+
+    @if (isLoading) {
+      <section class="exams-state" aria-live="polite">
+        <span class="material-symbols-outlined">progress_activity</span>
+        <h2>Loading exams...</h2>
+        <p>Your exam timeline is being prepared.</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="exams-state exams-state--error" aria-live="polite">
+        <span class="material-symbols-outlined">error</span>
+        <h2>{{ errorMessage }}</h2>
+        <p>Please try again in a moment.</p>
+        <button type="button" (click)="loadExams()">Retry</button>
+      </section>
+    } @else if (exams.length === 0) {
+      <section class="exams-state" aria-live="polite">
+        <span class="material-symbols-outlined">event_available</span>
+        <h2>No exams scheduled.</h2>
+        <p>Your exams will appear here once they are published.</p>
+      </section>
+    } @else {
+      <section class="timeline-card" aria-label="Exam timeline">
+        <div class="timeline">
+          @for (exam of exams; track trackByExam($index, exam)) {
+            @let state = timelineState(exam);
+            <article class="timeline-item" [class.timeline-item--past]="state === 'past'">
+              <div class="timeline-item__date">
+                <span>{{ monthLabel(exam) }}</span>
+                <strong>{{ dayLabel(exam) }}</strong>
+                <small>{{ timeRange(exam) }}</small>
+              </div>
+
+              <div class="timeline-item__rail" aria-hidden="true">
+                <span
+                  class="timeline-item__marker"
+                  [class.timeline-item__marker--today]="state === 'today'"
+                  [class.timeline-item__marker--upcoming]="state === 'upcoming'"
+                  [class.timeline-item__marker--past]="state === 'past'">
+                </span>
+              </div>
+
+              <div class="exam-tile">
+                <div class="exam-tile__topline">
+                  <span
+                    class="state-badge"
+                    [class.state-badge--today]="state === 'today'"
+                    [class.state-badge--upcoming]="state === 'upcoming'"
+                    [class.state-badge--past]="state === 'past'">
+                    {{ stateLabel(exam) }}
+                  </span>
+
+                  @if (exam.type) {
+                    <span class="type-badge">{{ exam.type }}</span>
+                  }
+                </div>
+
+                <div class="exam-tile__content">
+                  <div>
+                    <h2>{{ courseTitle(exam) }}</h2>
+                    <p>{{ examTitle(exam) }}</p>
+                  </div>
+
+
+                </div>
+
+                <div class="exam-tile__meta">
+
+                  <span>
+                    <span class="material-symbols-outlined">meeting_room</span>
+                    {{ roomLabel(exam) }}
+                  </span>
+
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </section>
+</main>

@@ -131,6 +131,18 @@ public class ExamService {
     }
 
     @Transactional(readOnly = true)
+    public List<ExamResponse> findStudentVisibleExams(Long classId, Long groupId) {
+        if (classId == null) {
+            return List.of();
+        }
+
+        return findExams(null, null, classId, null, null, null, null, null, null)
+                .stream()
+                .filter(exam -> exam.groupId() == null || groupId != null && exam.groupId().equals(groupId))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public ExamResponse getExamDetails(Long id) {
         return examRepo.findAllWithRelations()
                 .stream()

@@ -7,6 +7,9 @@ export interface CourseResponse {
   subjectId: number;
   subjectName: string;
   coefficient : number ;
+  publishedAt: string | null;
+  attachmentCount: number;
+  hasAttachments: boolean;
 }
 
 export interface AddCourseRequest {
