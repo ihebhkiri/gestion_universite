@@ -54,14 +54,9 @@ export const routes: Routes = [
   {
     path: 'exams',
     loadComponent: () =>
-      import('./pages/student-section-placeholder/student-section-placeholder.component').then(
-        (m) => m.StudentSectionPlaceholderComponent,
+      import('./pages/student-exams/student-exams.component').then(
+        (m) => m.StudentExamsComponent,
       ),
-    data: {
-      title: 'Exams',
-      icon: 'quiz',
-      description: 'Your exam schedule and exam details will appear here.',
-    },
   },
   {
     path: 'payments',

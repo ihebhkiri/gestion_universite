@@ -17,19 +17,44 @@
   h3 {
     font-size: 1.25rem;
     font-weight: 850;
-    margin-bottom: 1.5rem;
+    margin: 0;
+  }
+}
+
+.exam-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  > div > span {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+    opacity: 0.72;
+  }
+}
+
+.exam-card__link {
+  display: inline-grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 2.25rem;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 12%);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  transition: background 180ms ease, transform 180ms ease;
+
+  &:hover {
+    background: rgb(255 255 255 / 20%);
+    transform: translateY(-1px);
   }
 
-  button {
-    width: 100%;
-    border: 0;
-    border-radius: var(--radius-lg);
-    background: var(--color-on-primary);
-    color: var(--color-primary-container);
-    font-size: 0.9rem;
-    font-weight: 850;
-    margin-top: 2rem;
-    padding: 0.85rem 1rem;
+  .material-symbols-outlined {
+    font-size: 1.2rem;
   }
 }
 
@@ -73,6 +98,7 @@
 .task-item h4 {
   font-size: 0.9rem;
   font-weight: 850;
+  margin: 0;
 }
 
 .exam-item p,
@@ -83,6 +109,54 @@
 
 .exam-item p {
   opacity: 0.72;
+}
+
+.exam-item small {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  margin-top: 0.35rem;
+  opacity: 0.82;
+}
+
+.exam-state {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  min-height: 8rem;
+  padding: 1rem;
+  place-content: center;
+  text-align: center;
+
+  .material-symbols-outlined {
+    font-size: 1.75rem;
+    opacity: 0.72;
+  }
+
+  p {
+    font-size: 0.85rem;
+    font-weight: 650;
+    margin: 0;
+    opacity: 0.82;
+  }
+
+  button {
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--color-on-primary);
+    color: var(--color-primary-container);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 850;
+    padding: 0.65rem 1rem;
+  }
+}
+
+.exam-state--error {
+  .material-symbols-outlined {
+    color: var(--color-error-container);
+    opacity: 1;
+  }
 }
 
 .tasks-card,

@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { StudentAgendaComponent } from '../../components/student-agenda/student-agenda.component';
 import { StudentPreviewCardComponent } from '../../components/student-preview-card/student-preview-card.component';
 import { StudentSidePanelComponent } from '../../components/student-side-panel/student-side-panel.component';
-import {
-  StudentExamItem,
-  StudentPreviewCard,
-} from '../../models/student-dashboard.models';
+import { StudentPreviewCard } from '../../models/student-dashboard.models';
 import { StudentHeaderComponent } from '../../../../shared/students/student-header/student-header.component';
 
 @Component({
@@ -88,23 +85,5 @@ export class StudentDashboardComponent {
       ],
     },
   ];
-
-  readonly exams: StudentExamItem[] = [
-    {
-      month: 'Oct',
-      day: '28',
-      title: 'Discrete Mathematics',
-      meta: '09:00 AM - Great Hall',
-    },
-    {
-      month: 'Nov',
-      day: '02',
-      title: 'Database Management',
-      meta: '02:00 PM - Room 108',
-    },
-  ];
-
-
-
 
 }

@@ -17,13 +17,6 @@ export interface StudentPerformanceItem {
   tone: 'success' | 'neutral';
 }
 
-export interface StudentExamItem {
-  month: string;
-  day: string;
-  title: string;
-  meta: string;
-}
-
 export interface StudentTaskItem {
   icon: string;
   title: string;
