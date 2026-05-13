@@ -37,14 +37,9 @@ export const routes: Routes = [
   {
     path: 'results',
     loadComponent: () =>
-      import('./pages/student-section-placeholder/student-section-placeholder.component').then(
-        (m) => m.StudentSectionPlaceholderComponent,
+      import('./pages/student-results/student-results.component').then(
+        (m) => m.StudentResultsComponent,
       ),
-    data: {
-      title: 'Results',
-      icon: 'grade',
-      description: 'Your published grades and academic performance details will appear here.',
-    },
   },
   {
     path: 'exams',

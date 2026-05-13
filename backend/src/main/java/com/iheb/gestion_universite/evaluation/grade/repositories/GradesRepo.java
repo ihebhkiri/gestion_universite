@@ -44,9 +44,11 @@ public interface GradesRepo extends JpaRepository<GradeEntity, Long> {
             join fetch grade.student student
             join fetch grade.exam exam
             left join fetch exam.course course
+            left join fetch course.subject subject
             left join fetch exam.academicClass academicClass
             left join fetch exam.studentGroup studentGroup
             left join fetch exam.semester semester
+            left join fetch semester.academicYear academicYear
             where student.id = :studentId
               and grade.published = true
             order by exam.examDate desc, exam.id desc

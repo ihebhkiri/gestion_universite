@@ -31,7 +31,7 @@ public class CourseEntity  {
 
     private Integer hours;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date publishedAt;
 
     @ManyToOne

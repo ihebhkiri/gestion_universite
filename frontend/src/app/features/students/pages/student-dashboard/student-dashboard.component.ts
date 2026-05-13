@@ -3,6 +3,7 @@ import { StudentAgendaComponent } from '../../components/student-agenda/student-
 import { StudentSidePanelComponent } from '../../components/student-side-panel/student-side-panel.component';
 import { StudentHeaderComponent } from '../../../../shared/students/student-header/student-header.component';
 import { StudentCoursesPreviewCardComponent } from '../../components/dashboard-cards/student-courses-preview-card/student-courses-preview-card.component';
+import { StudentResultsPreviewCardComponent } from '../../components/dashboard-cards/student-results-preview-card/student-results-preview-card.component';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -11,6 +12,7 @@ import { StudentCoursesPreviewCardComponent } from '../../components/dashboard-c
     StudentHeaderComponent,
     StudentAgendaComponent,
     StudentCoursesPreviewCardComponent,
+    StudentResultsPreviewCardComponent,
     StudentSidePanelComponent,
   ],
   templateUrl: './student-dashboard.component.html',
